@@ -1,0 +1,20 @@
+[remote:children]
+production
+staging
+
+[servers:children]
+production
+staging
+develop
+
+[production]
+www.nansen-cloud.no nickname=production vm=0 branch=production
+
+[staging]
+staging.nansen-cloud.no nickname=staging vm=0 branch=develop
+
+[develop]
+dev.nansen-cloud.no nickname=develop vm=1 branch=develop
+
+[default]
+127.0.0.1 ansible_connection=local ansible_ssh_user=vagrant
