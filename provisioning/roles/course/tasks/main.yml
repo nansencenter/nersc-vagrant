@@ -1,0 +1,42 @@
+---
+# file: roles/course/tasks/main.yml
+- name: Update/checkout Nansat
+  git: repo=https://github.com/nansencenter/nansat
+       dest="{{ dev_sources_dir }}/nansat/"
+       version=develop
+       update=yes
+
+- name: Install Nansat
+  shell: 'python setup.py install'
+  environment:
+    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
+  args:
+    chdir: '{{ dev_sources_dir }}/nansat'
+
+- name: Update/checkout OpenWind
+  git: repo=https://github.com/nansencenter/openwind
+       dest="{{ dev_sources_dir }}/openwind"
+       version=develop
+       update=yes
+
+- name: Install OpenWind
+  shell: 'python setup.py install'
+  environment:
+    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
+  args:
+    chdir: '{{ dev_sources_dir }}/openwind'
+
+- name: Create data folder
+  file: 
+    path = "{{ data_dir }}" 
+    state = directory
+
+- name: Download Sentinel-1 sample acquisition
+  get_url:
+    url: ftp://ftp.nersc.no/pub/python_test_data/sentinel1a/S1A_IW_GRDH_1SDV_20141003T053708_20141003T053737_002661_002F66_A2F4.zip
+    dest: "{{ data_dir }}"
+
+- name: Add Ipython Notebook to crontab
+  cron: name="Ipython Notebook" special_time=reboot job="{{ conda_dir }}/bin/ipython notebook --ip=0.0.0.0 --no-browser --notebook-dir=/home/vagrant/notebooks"
+
+#- name: Download ipython notebooks from nansat-course repository

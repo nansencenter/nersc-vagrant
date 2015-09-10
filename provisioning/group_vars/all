@@ -1,0 +1,6 @@
+---
+# file: group_vars/all
+project_name: nansen-cloud
+sources_dir: /usr/local/src
+conda_dir: /home/vagrant/miniconda
+data_dir: /home/vagrant/data

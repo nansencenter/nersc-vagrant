@@ -1,0 +1,7 @@
+---
+# file: course.yml
+- hosts: 127.0.0.1
+  remote_user: vagrant
+  roles:
+      - common
+      - course

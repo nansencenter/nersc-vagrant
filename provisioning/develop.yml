@@ -1,0 +1,7 @@
+---
+# file: develop.yml
+- hosts: develop
+  roles:
+    - common
+    - develop
+
