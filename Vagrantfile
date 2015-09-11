@@ -46,7 +46,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #config.ssh.private_key_path='/home/antonk/.ssh/id_rsa.pub'
 
   #config.vm.synced_folder "../notebooks", "/home/vagrant/notebooks" - these
-  # will be downloaded in the course tasks (TODO)
+  # will be downloaded in the course tasks
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "provisioning/provision.yml"

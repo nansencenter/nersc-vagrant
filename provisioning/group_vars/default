@@ -1,4 +1,0 @@
----
-# file: group_vars/local
-dev_sources_dir: /home/vagrant/python
-project_root: "{{ dev_sources_dir }}/{{ project_name }}"
