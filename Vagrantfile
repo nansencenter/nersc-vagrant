@@ -7,6 +7,8 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Every Vagrant virtual environment requires a box to build off of.
+  #https://atlas.hashicorp.com/ubuntu/trusty64
+  config.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty64"
   config.vm.box = "ubuntu/trusty64"
 
   config.vm.define "develop" do |develop|
@@ -25,10 +27,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #ipython notebook --ip=0.0.0.0 --no-browser
   #http://127.0.0.1:8888/tree
 
-  #config.vm.provider "virtualbox" do |v|
-  #  v.memory = 12000
-  #  v.cpus = 6
-  #end
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 8000
+    v.cpus = 4
+  end
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
