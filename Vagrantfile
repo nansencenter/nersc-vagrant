@@ -27,10 +27,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #ipython notebook --ip=0.0.0.0 --no-browser
   #http://127.0.0.1:8888/tree
 
-  config.vm.provider "virtualbox" do |v|
-    v.memory = 8000
-    v.cpus = 4
-  end
+  #config.vm.provider "virtualbox" do |v|
+  #  v.memory = 8000
+  #  v.cpus = 4
+  #end
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -47,8 +47,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.forward_x11 = true
   #config.ssh.private_key_path='/home/antonk/.ssh/id_rsa.pub'
 
-  #config.vm.synced_folder "../notebooks", "/home/vagrant/notebooks" - these
-  # will be downloaded in the course tasks
+  config.vm.synced_folder "mynotebooks", "/home/vagrant/mynotebooks", create: true
+  #these will be downloaded in the course tasks
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "provisioning/provision.yml"

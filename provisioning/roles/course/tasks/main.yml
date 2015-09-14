@@ -40,13 +40,6 @@
 - name: Add Ipython Notebook to crontab
   cron: name="Jupyter Notebook" special_time=reboot job=". /etc/environment; /usr/local/bin/jupyter notebook --ip=0.0.0.0 --no-browser --notebook-dir=/home/vagrant/notebooks"
 
-- name: Restart
-  command: shutdown -r now "Ansible updates triggered"
-  async: 0
-  poll: 0
-  ignore_errors: true
-  sudo: true
-
 - name: Clone nansat-lectures repository
   git: repo=https://github.com/nansencenter/nansat-lectures
        dest="{{ tutorials_dir }}/nansat-lectures"
@@ -59,11 +52,18 @@
         state=link
         force=yes
 
-- name: Create folder mynotebooks in shared folder
-  file: path=/vagrant/mynotebooks state=directory
 
 - name: Create link to mynotebooks folder
   file: path="{{ tutorials_dir }}/nansat-lectures/notebooks/mynotebooks"
-        src=/vagrant/mynotebooks
+        src=/home/vagrant/mynotebooks
         state=link
         force=yes
+
+- name: Restart
+  command: shutdown -r now "Ansible updates triggered"
+  async: 0
+  poll: 0
+  ignore_errors: true
+  sudo: true
+
+
