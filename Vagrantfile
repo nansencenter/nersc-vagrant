@@ -11,11 +11,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty64"
   config.vm.box = "ubuntu/trusty64"
 
-  config.vm.define "develop" do |develop|
+  config.vm.define "develop", autostart: false do |develop|
     develop.vm.network :private_network, ip: "192.168.33.10"
   end
 
-  config.vm.define "course" do |course|
+  config.vm.define "course", primary: true do |course|
     course.vm.network :private_network, ip: "192.168.33.11"
   end
 
