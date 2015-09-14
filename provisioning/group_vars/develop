@@ -1,0 +1,4 @@
+---
+# file: group_vars/develop
+dev_sources_dir: /home/vagrant/python
+python_dist_packages: /usr/local/lib/python2.7/dist-packages

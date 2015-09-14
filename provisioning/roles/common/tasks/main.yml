@@ -4,67 +4,65 @@
   apt: pkg={{ item }} state=installed update-cache=yes
   sudo: yes
   with_items:
+    - build-essential
+    - unzip
     - git
-    - libx11-dev
+    - libsqlite3-dev
+    - sqlite3 # for the command line client
+    - libspatialite-dev
+    - spatialite-bin
     - g++
+    - libx11-dev
+    - libpng-dev
+    - libjpeg-dev
+    - libtiff5-dev
+    - libgeotiff-dev
+    - libnetcdf-dev
+    - libproj-dev
+    - libgeos-dev
+    - libxml2-dev
+    - libpq-dev
+    - python-dev
+    - python-setuptools
+    - python-numpy
+    - python-scipy
+    - pkg-config
+    - libfreetype6-dev
+    - gdal-bin
+    - python-gdal
+    - libgdal-dev
+    - python-pip
 
-- name: Download Miniconda
-  get_url:
-    url: ftp://ftp.nersc.no/pub/Anton/Miniconda-latest-Linux-x86_64.sh
-    #url: http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
-    dest: '{{ sources_dir }}/miniconda.sh'
+- name: Perform aptitude safe-upgrade
+  apt: upgrade=safe
+
+- name: Install packages required for data science
+  pip: name={{ item }}
+  sudo: yes
+  with_items:
+    - ipython
+    - pillow
+    - netCDF
+    - scikit-learn
+    - pyzmq
+    - jinja2
+    - tornado
+    - ipdb
+    - nose
+    - coverage
+    - matplotlib
+    - Django
+    - django-forms-bootstrap
+    - django-leaflet
+    - jupyter
+
+- name: Symbolic link for libgeos
+  file: src=/usr/lib/libgeos-3.4.2.so dest=/usr/lib/libgeos.so state=link
   sudo: yes
 
-- name: Set Miniconda Owner
-  file: path={{ sources_dir }}/miniconda.sh owner=vagrant group=vagrant mode=755
+- name: Install Basemap
+  pip: name=basemap extra_args="--allow-external basemap --allow-unverified basemap"
   sudo: yes
-
-- name: Install Miniconda
-  shell: '{{ sources_dir }}/miniconda.sh -b -p {{ conda_dir }}'
-  args:
-    creates: '{{ conda_dir }}'
-
-- name: Add Miniconda PATH to .bashrc
-  lineinfile: dest=/home/vagrant/.bashrc line="export PATH={{ conda_dir }}/bin:$PATH"
-
-- name: Update Miniconda
-  shell: 'export PATH={{ conda_dir }}/bin:$PATH; conda update -q --yes conda'
-  args:
-    creates: '{{ conda_dir }}/conda-meta/history'
-
-- name: Install scientific Python packages
-  shell: 'export PATH={{ conda_dir }}/bin:$PATH; conda install -q --yes {{ item }}'
-  with_items:
-    numpy
-    scipy
-    matplotlib
-    nose
-    pillow
-    ipython
-    ipython-notebook
-    postgresql
-    curl
-    pycurl
-    cython
-
-- name: Install GDAL packages from OSGEO
-  shell: 'export PATH={{ conda_dir }}/bin:$PATH; conda install -q --yes -c osgeo {{ item }}'
-  with_items:
-    - gdal=1.11.2=np19py27_10
-    - proj4
-    - geos
-    - xerces-c
-    - libnetcdf=4.3.3.1=0
-    - hdf5=1.8.14=10
-
-- name: Add GDAL_DATA to .bashrc
-  lineinfile: dest=/home/vagrant/.bashrc line="export GDAL_DATA={{ conda_dir }}/share/gdal"
-
-- name: Install Basemap with PIP
-  shell: 'pip install basemap --allow-external basemap --allow-unverified basemap'
   environment:
-    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
-    GEOS_DIR: "{{ conda_dir }}"
-  args:
-    creates: '{{ conda_dir }}/lib/python2.7/site-packages/basemap-1.0.7.dist-info'
+    GEOS_DIR: "/usr"
 

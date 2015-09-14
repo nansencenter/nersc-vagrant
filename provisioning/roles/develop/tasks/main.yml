@@ -1,0 +1,40 @@
+---
+# file: roles/develop/tasks/main.yml
+- name: Update/checkout Nansat
+  git: repo=https://github.com/nansencenter/nansat
+       dest="{{ dev_sources_dir }}/nansat/"
+       version=develop
+       update=yes
+
+- name: Install Nansat (always run to keep the pixel functions updated)
+  shell: 'python setup.py build_ext --inplace'
+  sudo: no
+  args:
+    chdir: '{{ dev_sources_dir }}/nansat'
+
+- name: Create link from Python dist-packages to nansat
+  sudo: yes
+  file: path='{{ python_dist_packages }}/nansat'
+        src='{{ dev_sources_dir }}/nansat/nansat'
+        state=link
+        force=yes
+
+- name: Create link from Python dist-packages to end2endtests
+  sudo: yes
+  file: path='{{ python_dist_packages }}/end2endtests'
+        src='{{ dev_sources_dir }}/nansat/end2endtests'
+        state=link
+        force=yes
+
+- name: Update/checkout OpenWind
+  git: repo=https://github.com/nansencenter/openwind
+       dest="{{ dev_sources_dir }}/openwind"
+       version=develop
+       update=yes
+
+- name: Create link from Python dist-packages to openwind
+  sudo: yes
+  file: path='{{ python_dist_packages }}/openwind'
+        src='{{ dev_sources_dir }}/openwind/openwind'
+        state=link
+        force=yes
