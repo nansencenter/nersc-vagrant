@@ -1,8 +1,12 @@
 ---
-# file: course.yml
-- hosts: 192.168.33.11
+- hosts: course
   remote_user: vagrant
   sudo: yes
   roles:
       - common
       - course
+
+- hosts: develop
+  roles:
+    - common
+    - develop

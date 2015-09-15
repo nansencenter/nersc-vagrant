@@ -1,5 +1,4 @@
 ---
-# file: roles/course/tasks/main.yml
 - name: Update/checkout Nansat
   git: repo=https://github.com/nansencenter/nansat
        dest="{{ dev_sources_dir }}/nansat/"
@@ -28,7 +27,6 @@
 
 - name: Create data folder
   file: path="{{ data_dir }}/" state=directory
-  #file: path="{{ data_dir }}" state=directory
 
   #- name: Download Sentinel-1 sample acquisition
   #  get_url:
@@ -48,10 +46,9 @@
 
 - name: Create link to the ipython notebooks
   file: path="{{ notebook_dir }}"
-        src="{{ tutorials_dir }}/nansat-lectures/notebooks" 
+        src="{{ tutorials_dir }}/nansat-lectures/notebooks"
         state=link
         force=yes
-
 
 - name: Create link to mynotebooks folder
   file: path="{{ tutorials_dir }}/nansat-lectures/notebooks/mynotebooks"
