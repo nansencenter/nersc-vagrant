@@ -34,6 +34,7 @@
     - python-pip
 
 - name: Perform aptitude safe-upgrade
+  sudo: yes
   apt: upgrade=safe
 
 - name: Install packages required for data science
