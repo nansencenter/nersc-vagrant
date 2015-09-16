@@ -22,7 +22,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     course.vm.network :forwarded_port, guest: 8888, host: 8888
   end
 
-  config.vm.define "base", primary: true do |base|
+  config.vm.define "base", autostart: false do |base|
     base.vm.network :private_network, ip: "192.168.33.12"
     base.vm.box = "ubuntu/trusty64"
     base.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty64"
