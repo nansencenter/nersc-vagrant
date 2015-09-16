@@ -1,5 +1,6 @@
 ---
 - name: Perform aptitude safe-upgrade
+  sudo: yes
   apt: upgrade=safe
 
 - name: Install required system packages.
