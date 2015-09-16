@@ -20,10 +20,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     course.vm.synced_folder "mynotebooks", "/home/vagrant/mynotebooks", create: true
   end
 
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  #config.vm.network :forwarded_port, guest: 80, host: 8080
+  config.vm.define "base", primary: true do |base|
+    base.vm.network :private_network, ip: "192.168.33.12"
+    base.vm.box = "ubuntu/trusty64"
+    base.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty64"
+    base.vm.network :forwarded_port, guest: 80, host: 8080
+    base.vm.network :forwarded_port, guest: 8888, host: 8888
+
+    base.vm.provider "virtualbox" do |v|
+      v.memory = 1000
+      v.cpus = 1
+    end
+
+  end
 
   config.vm.provider "virtualbox" do |v|
     v.memory = 8000
