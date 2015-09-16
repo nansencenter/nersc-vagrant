@@ -13,6 +13,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "develop", autostart: false do |develop|
     develop.vm.network :private_network, ip: "192.168.33.10"
+    config.vm.synced_folder "python", "/home/vagrant/python", create: true
     config.vm.network :forwarded_port, guest: 99, host: 9999
   end
 
