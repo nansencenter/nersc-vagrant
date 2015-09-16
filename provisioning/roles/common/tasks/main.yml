@@ -1,5 +1,7 @@
 ---
-# file: roles/common/tasks/main.yml
+- name: Perform aptitude safe-upgrade
+  apt: upgrade=safe
+
 - name: Install required system packages.
   apt: pkg={{ item }} state=installed update-cache=yes
   sudo: yes
@@ -25,16 +27,22 @@
     - python-dev
     - python-setuptools
     - python-numpy
-    - python-scipy
     - pkg-config
     - libfreetype6-dev
     - gdal-bin
     - python-gdal
     - libgdal-dev
     - python-pip
+    - gfortran
+    - liblapack-dev
+    - python-qt4
 
-- name: Perform aptitude safe-upgrade
-  apt: upgrade=safe
+- name: Install latest PIP and Scipy
+  pip: name={{ item }} extra_args='--upgrade'
+  sudo: yes
+  with_items:
+    - pip
+    - scipy
 
 - name: Install packages required for data science
   pip: name={{ item }}
@@ -66,3 +74,5 @@
   environment:
     GEOS_DIR: "/usr"
 
+- name: Make default backend for matplotlib
+  lineinfile: dest=/usr/local/lib/python2.7/dist-packages/matplotlib/mpl-data/matplotlibrc regexp='backend *: *agg' line='backend : qt4agg'

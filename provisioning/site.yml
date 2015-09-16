@@ -6,6 +6,13 @@
       - common
       - course
 
+- hosts: base
+  remote_user: vagrant
+  sudo: yes
+  roles:
+      - common
+      - base
+
 - hosts: develop
   roles:
     - common
