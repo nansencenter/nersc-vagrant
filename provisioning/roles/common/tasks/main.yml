@@ -76,4 +76,5 @@
     GEOS_DIR: "/usr"
 
 - name: Make default backend for matplotlib
-  lineinfile: 'dest=/usr/local/lib/python2.7/dist-packages/matplotlib/mpl-data/matplotlibrc regexp="backend +: +agg" line="backend : qt4agg"'
+  sudo: yes
+  replace: 'dest=/usr/local/lib/python2.7/dist-packages/matplotlib/mpl-data/matplotlibrc regexp="backend +: +agg" replace="backend : qt4agg"'
