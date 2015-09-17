@@ -5,5 +5,7 @@ notebook_dir: /home/vagrant/notebooks
 tutorials_dir: /home/vagrant/tutorials
 sentinel_file: S1A_EW_GRDM_1SDH_20150702T172954_20150702T173054_006635_008DA5_55D1.zip
 meris_l1_file: MER_FRS_1PNPDK20120303_093810_000000333112_00180_52349_3561.N1
+modis_file1: A2015121113500.L2_LAC.NorthNorwegianSeas.hdf
+modis_file2: A2015122122000.L2_LAC.NorthNorwegianSeas.hdf
 
 project_root: "{{ dev_sources_dir }}/{{ project_name }}"
