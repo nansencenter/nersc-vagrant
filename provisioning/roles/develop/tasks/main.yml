@@ -38,3 +38,16 @@
         src='{{ dev_sources_dir }}/openwind/openwind'
         state=link
         force=yes
+
+- name: Update/checkout Nansen-Cloud Django
+  git: repo=https://github.com/nansencenter/nansen-cloud
+       dest="{{ dev_sources_dir }}/nansen-cloud"
+       version=develop
+       update=yes
+
+- name: Create link from Python dist-packages to nansen-cloud
+  sudo: yes
+  file: path='{{ python_dist_packages }}/nansencloud'
+        src='{{ dev_sources_dir }}/nansen-cloud/nansencloud'
+        state=link
+        force=yes
