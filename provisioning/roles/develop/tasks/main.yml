@@ -51,3 +51,9 @@
         src='{{ dev_sources_dir }}/nansen-cloud/nansencloud'
         state=link
         force=yes
+
+- name: Install Django Helpdesk for project management
+  pip: name={{ item }}
+  sudo: yes
+  with_items:
+      django-helpdesk
