@@ -18,8 +18,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "course", primary: true do |course|
     course.vm.network :private_network, ip: "192.168.33.11"
-    course.vm.synced_folder "mynotebooks", "/home/vagrant/mynotebooks", create: true
-    course.vm.network :forwarded_port, guest: 8000, host: 8000
     course.vm.network :forwarded_port, guest: 8888, host: 8888
   end
 
@@ -27,7 +25,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     base.vm.network :private_network, ip: "192.168.33.12"
     base.vm.box = "ubuntu/trusty64"
     base.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty64"
-    base.vm.network :forwarded_port, guest: 80, host: 8090
 
     base.vm.provider "virtualbox" do |v|
       v.memory = 2000
