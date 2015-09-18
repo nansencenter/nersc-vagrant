@@ -11,14 +11,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "develop", autostart: false do |develop|
     develop.vm.network :private_network, ip: "192.168.33.10"
-    develop.vm.network :forwarded_port, guest: 80, host: 9090
     develop.vm.synced_folder "python", "/home/vagrant/python", create: true
   end
 
   config.vm.define "course", primary: true do |course|
     course.vm.network :private_network, ip: "192.168.33.11"
     course.vm.synced_folder "mynotebooks", "/home/vagrant/mynotebooks", create: true
-    course.vm.network :forwarded_port, guest: 80, host: 8080
+    course.vm.network :forwarded_port, guest: 8000, host: 8000
     course.vm.network :forwarded_port, guest: 8888, host: 8888
   end
 
@@ -29,6 +28,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     base.vm.network :forwarded_port, guest: 80, host: 8090
 
     base.vm.provider "virtualbox" do |v|
+      v.memory = 2000
+      v.cpus = 2
+    end
+
+  end
+
+  config.vm.define "conda", autostart: false do |conda|
+    conda.vm.network :private_network, ip: "192.168.33.13"
+    conda.vm.box = "ubuntu/trusty64"
+    conda.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty64"
+
+    conda.vm.provider "virtualbox" do |v|
       v.memory = 2000
       v.cpus = 2
     end
