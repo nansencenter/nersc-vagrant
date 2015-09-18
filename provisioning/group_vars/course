@@ -1,6 +1,5 @@
 ---
 # file: group_vars/course
-shared_dir: /vagrant/shared
 data_dir: "{{ shared_dir }}/data"
 sentinel_file: S1A_EW_GRDM_1SDH_20150702T172954_20150702T173054_006635_008DA5_55D1.zip
 meris_l1_file: MER_FRS_1PNPDK20120303_093810_000000333112_00180_52349_3561.N1

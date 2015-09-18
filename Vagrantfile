@@ -33,12 +33,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   end
 
-  config.vm.define "conda", autostart: false do |conda|
-    conda.vm.network :private_network, ip: "192.168.33.13"
-    conda.vm.box = "ubuntu/trusty64"
-    conda.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty64"
+  config.vm.define "testconda", autostart: false do |testconda|
+    testconda.vm.network :private_network, ip: "192.168.33.13"
+    testconda.vm.box = "ubuntu/trusty64"
+    testconda.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty64"
 
-    conda.vm.provider "virtualbox" do |v|
+    testconda.vm.provider "virtualbox" do |v|
       v.memory = 2000
       v.cpus = 2
     end

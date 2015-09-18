@@ -1,0 +1,37 @@
+---
+- name: Create data folder
+  file: path="{{ shared_dir }}" state=directory
+
+- name: Download Miniconda
+  get_url:
+    url: http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
+    dest: "{{ shared_dir }}/miniconda.sh"
+
+- name: chmod Miniconda
+  file: path="{{ shared_dir }}/miniconda.sh" mode=775
+
+- name: Install Miniconda
+  shell: '{{ shared_dir }}/miniconda.sh -b -p {{ conda_dir }}'
+  args:
+    creates: '{{ conda_dir }}'
+
+- name: Add Miniconda PATH to .bashrc
+  lineinfile: dest=/home/vagrant/.bashrc line="export PATH={{ conda_dir }}/bin:$PATH"
+
+- name: Update Miniconda
+  shell: 'export PATH={{ conda_dir }}/bin:$PATH; conda update -q --yes conda'
+  args:
+    creates: '{{ conda_dir }}/conda-meta/history'
+
+- name: Install Nansat requirements
+  shell: 'export PATH={{ conda_dir }}/bin:$PATH; conda install -q --yes {{ item }}'
+  with_items:
+    numpy
+    scipy
+    matplotlib
+    nose
+    pillow
+    basemap
+
+- name: Instal nansat-gdal
+  shell: 'export PATH={{ conda_dir }}/bin:$PATH; conda install -c https://conda.anaconda.org/alevin nansat-gdal={{ gdal_version }}={{ gdal_build }}'

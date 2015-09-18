@@ -15,3 +15,7 @@
   roles:
       - common
       - base
+
+- hosts: testconda
+  roles:
+    - testconda

@@ -3,3 +3,4 @@
 project_name: nansen-cloud
 sources_dir: /usr/local/src
 data_dir: /home/vagrant/data
+shared_dir: /vagrant/shared
