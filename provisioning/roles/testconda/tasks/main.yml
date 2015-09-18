@@ -34,4 +34,4 @@
     basemap
 
 - name: Instal nansat-gdal
-  shell: 'export PATH={{ conda_dir }}/bin:$PATH; conda install -c https://conda.anaconda.org/alevin nansat-gdal={{ gdal_version }}={{ gdal_build }}'
+  shell: 'export PATH={{ conda_dir }}/bin:$PATH; conda install -q --yes -c https://conda.anaconda.org/alevin nansat-gdal'

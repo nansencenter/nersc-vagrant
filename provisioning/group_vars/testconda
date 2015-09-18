@@ -1,4 +1,2 @@
 ---
 conda_dir: /vagrant/shared/miniconda
-gdal_version: 2.0.0
-gdal_build: nppy27_3
