@@ -12,6 +12,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "develop", autostart: false do |develop|
     develop.vm.network :private_network, ip: "192.168.33.10"
     develop.vm.synced_folder "python", "/home/vagrant/python", create: true
+    # run django server: ./manage.py runserver 192.168.33.10:9090 let's you
+    # access that address in the browser...
   end
 
   config.vm.define "course", primary: true do |course|
