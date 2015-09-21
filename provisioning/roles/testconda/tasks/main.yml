@@ -1,4 +1,11 @@
 ---
+- name: Install required system packages.
+  apt: pkg={{ item }} state=installed update-cache=yes
+  sudo: yes
+  with_items:
+    - git
+    - libgfortran3
+
 - name: Create data folder
   file: path="{{ shared_dir }}" state=directory
 
@@ -32,6 +39,33 @@
     nose
     pillow
     basemap
+    proj.4
+    netcdf4
 
-- name: Instal nansat-gdal
-  shell: 'export PATH={{ conda_dir }}/bin:$PATH; conda install -q --yes -c https://conda.anaconda.org/alevin nansat-gdal'
+- name: Instal nansat-gdal and all requirements
+  shell: 'export PATH={{ conda_dir }}/bin:$PATH; conda install -q --yes -c alevin nansat-gdal'
+
+- name: Replace nansat-gdal with specific version/build
+  shell: 'export PATH={{ conda_dir }}/bin:$PATH; conda install -q --yes -c alevin nansat-gdal={{ nansat_gdal_version }}={{ nansat_gdal_build }}'
+  when: nansat_gdal_build is defined
+
+- name: Replace nansat-libgdal with specific version
+  shell: 'export PATH={{ conda_dir }}/bin:$PATH; conda install -q --yes -c alevin nansat-libgdal={{ nansat_gdal_version }}={{ nansat_libgdal_build }}'
+  when: nansat_libgdal_build is defined
+
+- name: Update/checkout Nansat
+  git: repo=https://github.com/nansencenter/nansat
+       dest="{{ shared_dir }}/nansat/"
+       version=develop
+       update=yes
+
+- name: Install Nansat
+  shell: 'export PATH={{ conda_dir }}/bin:$PATH; python setup.py install'
+  args:
+    chdir: '{{ shared_dir }}/nansat'
+
+- name: Run Nansat basic tests
+  shell: 'export PATH={{ conda_dir }}/bin:$PATH; export GDAL_DATA={{ conda_dir }}/share/gdal; nosetests nansat.tests'
+
+- name: Run Nansat mappers tests
+  shell: 'export PATH={{ conda_dir }}/bin:$PATH; export GDAL_DATA={{ conda_dir }}/share/gdal; nosetests end2endtests'

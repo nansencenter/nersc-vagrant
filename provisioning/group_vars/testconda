@@ -1,2 +1,7 @@
 ---
-conda_dir: /vagrant/shared/miniconda
+conda_dir: "{{shared_dir}}/miniconda"
+nansat_gdal_version: 2.0.0
+
+# comment out below variables to test default version of nansat_(lib)gdal
+nansat_gdal_build: nppy27_3
+nansat_libgdal_build: 3
