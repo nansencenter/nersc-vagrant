@@ -1,7 +1,16 @@
 ---
-conda_dir: "{{shared_dir}}/miniconda"
+shared_dir: /vagrant/shared_testconda
+conda_dir: "{{ shared_dir }}/miniconda"
+mapper_test_data_dir: "{{ shared_dir }}/mapper_test_data"
+
+export_path: "export PATH={{ conda_dir }}/bin:$PATH"
+export_gdal_data: "export GDAL_DATA={{ conda_dir }}/share/gdal"
+export_mapper_data: 'export MAPPER_TEST_DATA_DIR={{ mapper_test_data_dir }}'
+exports: "{{ export_path }}; {{  export_gdal_data  }};  {{ export_mapper_data }};"
+
 nansat_gdal_version: 2.0.0
 
 # comment out below variables to test default version of nansat_(lib)gdal
 nansat_gdal_build: nppy27_3
 nansat_libgdal_build: 3
+
