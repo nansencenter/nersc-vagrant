@@ -26,12 +26,12 @@
   lineinfile: dest=/home/vagrant/.bashrc line="export PATH={{ conda_dir }}/bin:$PATH"
 
 - name: Update Miniconda
-  shell: '{{ exports }}; conda update -q --yes conda'
+  shell: '{{ exports }} conda update -q --yes conda'
   args:
     creates: '{{ conda_dir }}/conda-meta/history'
 
 - name: Install Nansat requirements
-  shell: '{{ exports }}; conda install -q --yes {{ item }}'
+  shell: '{{ exports }} conda install -q --yes {{ item }}'
   with_items:
     numpy
     scipy
@@ -43,14 +43,14 @@
     netcdf4
 
 - name: Instal nansat-gdal and all requirements
-  shell: '{{ exports }}; conda install -q --yes -c alevin nansat-gdal'
+  shell: '{{ exports }} conda install -q --yes -c alevin nansat-gdal'
 
 - name: Replace nansat-gdal with specific version/build
-  shell: '{{ exports }}; conda install -q --yes -c alevin nansat-gdal={{ nansat_gdal_version }}={{ nansat_gdal_build }}'
+  shell: '{{ exports }} conda install -q --yes -c alevin nansat-gdal={{ nansat_gdal_version }}={{ nansat_gdal_build }}'
   when: nansat_gdal_build is defined
 
 - name: Replace nansat-libgdal with specific version
-  shell: '{{ exports }}; conda install -q --yes -c alevin nansat-libgdal={{ nansat_gdal_version }}={{ nansat_libgdal_build }}'
+  shell: '{{ exports }} conda install -q --yes -c alevin nansat-libgdal={{ nansat_gdal_version }}={{ nansat_libgdal_build }}'
   when: nansat_libgdal_build is defined
 
 - name: Update/checkout Nansat
@@ -60,15 +60,15 @@
        update=yes
 
 - name: Install Nansat
-  shell: '{{ exports }}; python setup.py install'
+  shell: '{{ exports }} python setup.py install'
   args:
     chdir: '{{ shared_dir }}/nansat'
 
 - name: Run Nansat basic tests
-  shell: '{{ exports }}; nosetests nansat.tests'
+  shell: '{{ exports }} nosetests nansat.tests'
 
 - name: Create dir for mapper test data
   file: path="{{ mapper_test_data_dir }}" state=directory
 
 - name: Run Nansat mappers tests
-  shell: '{{ exports }}; nosetests end2endtests'
+  shell: '{{ exports }} nosetests end2endtests'
