@@ -1,14 +1,4 @@
 ---
-- hosts: course
-  remote_user: vagrant
-  roles:
-      - course
-
-- hosts: develop
-  roles:
-    - common
-    - develop
-
 - hosts: base
   remote_user: vagrant
   sudo: yes
@@ -19,3 +9,19 @@
 - hosts: testconda
   roles:
     - testconda
+
+- hosts: course
+  remote_user: vagrant
+  roles:
+      - course
+
+- hosts: production
+  roles:
+    - common
+    - production
+
+- hosts: develop
+  roles:
+    - common
+    - develop
+

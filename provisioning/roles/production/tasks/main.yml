@@ -1,0 +1,41 @@
+---
+# file: roles/production/tasks/main.yml
+- name: Update/checkout Nansat
+  sudo: yes
+  git: repo=https://github.com/nansencenter/nansat
+       dest="{{ sources_dir }}/nansat/"
+       version=develop
+       update=yes
+
+- name: Install Nansat (always run to keep the pixel functions updated)
+  sudo: yes
+  shell: 'python setup.py install'
+  args:
+    chdir: '{{ sources_dir }}/nansat'
+
+- name: Update/checkout OpenWind
+  sudo: yes
+  git: repo=https://github.com/nansencenter/openwind
+       dest="{{ sources_dir }}/openwind"
+       version=develop
+       update=yes
+
+- name: Install openwind
+  sudo: yes
+  shell: 'python setup.py install'
+  args:
+    chdir: '{{ sources_dir }}/openwind'
+
+- name: Update/checkout Nansen-Cloud Django
+  git: repo=https://github.com/nansencenter/nansen-cloud
+       dest="/home/vagrant/nansen-cloud"
+       version=master
+       update=yes
+
+# Temporary quick install - later, we'll use setup.py or even pip
+- name: Create link from Python dist-packages to nansen-cloud
+  sudo: yes
+  file: path='{{ python_dist_packages }}/nansencloud'
+        src='/home/vagrant/nansen-cloud/nansencloud'
+        state=link
+        force=yes
