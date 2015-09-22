@@ -8,20 +8,24 @@
 
 - hosts: testconda
   roles:
+    - sample_datasets
     - testconda
 
 - hosts: course
   remote_user: vagrant
   roles:
-      - course
+    - sample_datasets
+    - course
 
 - hosts: production
   roles:
     - common
+    - sample_datasets
     - production
 
 - hosts: develop
   roles:
     - common
+    - sample_datasets
     - develop
 

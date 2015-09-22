@@ -51,3 +51,11 @@
         src='{{ dev_sources_dir }}/nansen-cloud/nansencloud'
         state=link
         force=yes
+
+- name: Run migrate on Nansen-Cloud project
+  django_manage: >
+      command=migrate
+      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
+      settings='{{ dev_sources_dir }}/nansen-cloud/project/project/settings.py'
+      pythonpath='{{ dev_sources_dir }}/nansen-cloud/project'
+

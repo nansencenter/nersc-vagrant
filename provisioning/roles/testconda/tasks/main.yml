@@ -79,8 +79,4 @@
 #- name Run gdalinfo
 #  shell: "{{ exports }} gdalinfo {{ mapper_test_data_dir }}/asar/ASA_WSM_1PNPDK20110108_205958_000000923098_00187_46322_6032.N1"
 
-#- name: Download MERIS L1 sample acquisition
-#  get_url: url="{{ test_data_url }}/{{ item.mapper }}/{{ item.name }}" dest="{{ data_dir }}/{{ item.mapper }}/{{ item.name }}" force=no
-#  with_items:
-#    {{ test_files }}
 
