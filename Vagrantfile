@@ -39,8 +39,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     testconda.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty64"
 
     testconda.vm.provider "virtualbox" do |v|
-      v.memory = 2000
-      v.cpus = 2
+      v.memory = 6000
+      v.cpus = 4
     end
 
   end

@@ -1,5 +1,6 @@
 ---
-shared_dir: /vagrant/shared_testconda
+shared_dir: /vagrant/shared/testconda
+# WINDOWS USERS: cange the below variable to /home/vagrant/miniconda
 conda_dir: "{{ shared_dir }}/miniconda"
 mapper_test_data_dir: "{{ shared_dir }}/mapper_test_data"
 
@@ -11,6 +12,6 @@ exports: "{{ export_path }}; {{  export_gdal_data  }};  {{ export_mapper_data }}
 nansat_gdal_version: 2.0.0
 
 # comment out below variables to test default version of nansat_(lib)gdal
-nansat_gdal_build: nppy27_3
-nansat_libgdal_build: 3
+#nansat_gdal_build: nppy27_3
+#nansat_libgdal_build: 3
 
