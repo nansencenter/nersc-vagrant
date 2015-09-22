@@ -1,0 +1,4 @@
+---
+# file: group_vars/production
+# add path to dist packages for linking (this is temporary - packages should be installed, not linked):
+python_dist_packages: /usr/local/lib/python2.7/dist-packages

@@ -45,6 +45,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   end
 
+  config.vm.define "production", autostart: false do |production|
+    production.vm.network :private_network, ip: "192.168.33.14"
+    # Is a synced folder needed here? Production should rely on safe, and well tested branches, right?
+    #production.vm.synced_folder "python", "/home/vagrant/python", create: true
+    production.vm.network :forwarded_port, guest: 90, host: 9090
+  end
+
   config.vm.provider "virtualbox" do |v|
     v.memory = 4000
     v.cpus = 2
