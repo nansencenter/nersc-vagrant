@@ -5,6 +5,10 @@
   with_items:
     - git
     - libgfortran3
+    - libsqlite3-dev
+    - sqlite3
+    - libspatialite-dev
+    - spatialite-bin
 
 - name: Create shared folder
   file: path="{{ shared_dir }}" state=directory
@@ -68,6 +72,17 @@
 
 - name: Add GDAL_DATA to .bashrc
   lineinfile: dest=/home/vagrant/.bashrc line="export GDAL_DATA={{ conda_dir }}/share/gdal"
+
+- name: Add links to some conda libraries to /usr/lib
+  sudo: yes
+  file: src="{{ conda_dir }}/lib/{{ item }}" dest="/usr/lib/{{ item }}" state=link
+  with_items:
+    - libgeos_c.so
+    - libgdal.so
+
+- name: Run ldconfig
+  sudo: yes
+  shell: 'ldconfig'
 
 - name: Update/checkout Nansat
   git: repo=https://github.com/nansencenter/nansat
