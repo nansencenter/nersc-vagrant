@@ -1,18 +1,17 @@
 ---
 # file: roles/sample_datasets/tasks/main.yml
-
-- stat: path="{{ test_data_dir }}"
-  register: p_test_data_dir
-  
 - name: Create test data folder
   file: path="{{ test_data_dir }}" state=directory
-  when: p_test_data_dir.stat.isdir is defined and p_test_data_dir.stat.isdir
+
+- name: Create test data subfolders (named after nansat mappers)
+  file: path="{{ test_data_dir }}/{{ item.mapper }}" state=directory
+  with_items:
+    - "{{ test_files }}"
 
 - name: Download sample datasets
   get_url: url="{{ test_data_url }}/{{ item.mapper }}/{{ item.name }}" dest="{{ test_data_dir }}/{{ item.mapper }}/{{ item.name }}" force=no
   with_items:
-      - "{{ test_files }}"
-  ignore_errors: yes
+    - "{{ test_files }}"
 
 - name: Download Nansat landmask
   get_url:
