@@ -21,13 +21,22 @@
   roles:
     - sample_datasets
     - develop
+  environment:
+    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
+    GDAL_DATA: "{{ conda_dir }}/share/gdal"
 
 - hosts: course
   roles:
     - course
+  environment:
+    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
+    GDAL_DATA: "{{ conda_dir }}/share/gdal"
 
 - hosts: production
   roles:
     - sample_datasets
     - production
+  environment:
+    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
+    GDAL_DATA: "{{ conda_dir }}/share/gdal"
 
