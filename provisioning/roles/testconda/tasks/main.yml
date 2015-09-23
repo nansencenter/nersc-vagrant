@@ -8,7 +8,7 @@
 
 - name: Create shared folder
   file: path="{{ shared_dir }}" state=directory
-
+  
 - name: Download Miniconda
   get_url:
     url: http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
@@ -22,8 +22,12 @@
   args:
     creates: '{{ conda_dir }}'
 
+- stat: path="{{ shared_dir }}/conda_pkgs"
+  register: p_conda_pkgs
+
 - name: Copy cahced packages from conda_pkgs
   shell: 'cp {{ shared_dir }}/conda_pkgs/* {{ conda_dir }}/pkgs/'
+  when: p_conda_pkgs.stat.isdir is defined and p_conda_pkgs.stat.isdir
 
 - name: Update Miniconda
   shell: '{{ exports }} conda update -q --yes --copy conda'
@@ -44,6 +48,9 @@
 
 - name: Instal nansat-gdal and all requirements
   shell: '{{ exports }} conda install -q --yes --copy -c alevin nansat-gdal'
+
+- name: Create conda_pkgs in shared folder
+  file: path="{{ shared_dir }}/conda_pkgs" state=directory
 
 - name: Copy downloaded packages to conda_pkgs
   shell: 'cp {{ conda_dir }}/pkgs/*.[bt][zx][2t] {{ shared_dir }}/conda_pkgs/'
@@ -78,10 +85,10 @@
   with_items:
     "{{ test_files }}"
 
-- name: Download test data
-  get_url: url="{{ test_data_url }}/{{ item.mapper }}/{{ item.name }}" dest="{{ test_data_dir }}/{{ item.mapper }}/{{ item.name }}" force=no
-  with_items:
-    "{{ test_files }}"
+#- name: Download test data
+#  get_url: url="{{ test_data_url }}/{{ item.mapper }}/{{ item.name }}" dest="{{ test_data_dir }}/{{ item.mapper }}/{{ item.name }}" force=no
+#  with_items:
+#    "{{ test_files }}"
 
 - name: Run Nansat mappers tests
   shell: "{{ exports }} nosetests -v -x end2endtests.test_mappers:TestAllMappers.test_mappers_basic"
