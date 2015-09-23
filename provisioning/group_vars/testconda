@@ -3,6 +3,9 @@ shared_dir: /vagrant/shared
 machine_shared_dir: "{{ shared_dir }}/testconda"
 conda_dir: /home/vagrant/miniconda
 
+dev_sources_dir: "{{ machine_shared_dir }}"
+python_dist_packages: "{{ conda_dir }}/lib/python2.7/site-packages"
+
 # comment out below variables to test default version of nansat_(lib)gdal
 #nansat_gdal_version: 2.0.0
 #nansat_gdal_build: nppy27_3
@@ -26,10 +29,5 @@ test_files:
   - {name: A2015223043500.L2_LAC.NorthNorwegianSeas.nc, mapper: obpg_l2_nc}
   - {name: S1A_S2_GRDH_1SDV_20150206T062844_20150206T062858_004499_00584F_5AB4.zip, mapper: sentinel1a_l1}
 
-export_mapper_data: 'export MAPPER_TEST_DATA_DIR={{ test_data_dir }}'
 
-
-export_path: "export PATH={{ conda_dir }}/bin:$PATH"
-export_gdal_data: "export GDAL_DATA={{ conda_dir }}/share/gdal"
-exports: "{{ export_path }}; {{  export_gdal_data  }};  {{ export_mapper_data }};"
 
