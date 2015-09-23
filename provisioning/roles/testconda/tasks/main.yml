@@ -59,6 +59,18 @@
     - django-forms-bootstrap
     - django-leaflet
 
+- name: Clone pysqlite
+  git: repo=https://github.com/ghaering/pysqlite
+       dest="{{ ansible_env.HOME }}/pysqlite/"
+       version=da389878e7c0623cf188387b9fce4fc77d0a9b2c
+  register: git_pysqlite
+
+- name: Install pysqlite
+  shell: 'python setup.py install'
+  args:
+    chdir: "{{ ansible_env.HOME }}/pysqlite/"
+  when: git_pysqlite.changed
+
 - name: Copy downloaded packages to conda_pkgs
   shell: 'cp {{ conda_dir }}/pkgs/*.[bt][zx][2t] {{ shared_dir }}/conda_pkgs/'
 
