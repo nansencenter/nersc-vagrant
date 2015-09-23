@@ -102,7 +102,7 @@
 - name: Update/checkout Nansat
   git: repo=https://github.com/nansencenter/nansat
        dest="{{ machine_shared_dir }}/nansat/"
-       version=issue142split-mapper-tests
+       version=develop
        update=yes
   register: git_nansat
 
