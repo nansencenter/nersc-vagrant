@@ -26,11 +26,15 @@
   args:
     creates: '{{ conda_dir }}'
 
-- name: Create conda_pkgs in shared folder
-  file: path="{{ shared_dir }}/conda_pkgs" state=directory
+- stat: path={{ shared_dir }}/conda_pkgs
+  register: p_conda_pkgs
 
 - name: Copy cahced packages from conda_pkgs
   shell: 'cp {{ shared_dir }}/conda_pkgs/* {{ conda_dir }}/pkgs/'
+  when: p_conda_pkgs.stat.isdir is defined and p_conda_pkgs.stat.isdir
+  
+- name: Create conda_pkgs in shared folder
+  file: path="{{ shared_dir }}/conda_pkgs" state=directory
 
 - name: Update Miniconda
   shell: 'conda update -q --yes --copy conda'
