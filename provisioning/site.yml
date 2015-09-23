@@ -7,7 +7,6 @@
   environment:
     PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
-    GEOS_LIBRARY_PATH: "{{ conda_dir }}/lib"
     MAPPER_TEST_DATA_DIR: "{{ test_data_dir }}"
 
   roles:
