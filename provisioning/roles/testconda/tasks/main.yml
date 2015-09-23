@@ -5,6 +5,10 @@
   with_items:
     - git
     - libgfortran3
+    - libsqlite3-dev
+    - sqlite3
+    - libspatialite-dev
+    - spatialite-bin
 
 - name: Create shared folder
   file: path="{{ shared_dir }}" state=directory
@@ -22,13 +26,19 @@
   args:
     creates: '{{ conda_dir }}'
 
+- name: Create conda_pkgs in shared folder
+  file: path="{{ shared_dir }}/conda_pkgs" state=directory
+
+- name: Copy cahced packages from conda_pkgs
+  shell: 'cp {{ shared_dir }}/conda_pkgs/* {{ conda_dir }}/pkgs/'
+
 - name: Update Miniconda
-  shell: '{{ exports }} conda update -q --yes --copy conda'
+  shell: 'conda update -q --yes --copy conda'
   args:
     creates: '{{ conda_dir }}/conda-meta/history'
 
 - name: Install Nansat requirements
-  shell: '{{ exports }} conda install -q --yes --copy {{ item }}'
+  shell: 'conda install -q --yes --copy {{ item }}'
   with_items:
     numpy
     scipy
@@ -38,45 +48,101 @@
     basemap
     proj.4
     netcdf4
+    django
 
 - name: Instal nansat-gdal and all requirements
-  shell: '{{ exports }} conda install -q --yes --copy -c alevin nansat-gdal'
+  shell: 'conda install -q --yes --copy -c alevin nansat-gdal'
+
+- name: Install nansen-cloud requirements
+  pip: name={{ item }}
+  with_items:
+    - django-forms-bootstrap
+    - django-leaflet
+
+- name: Copy downloaded packages to conda_pkgs
+  shell: 'cp {{ conda_dir }}/pkgs/*.[bt][zx][2t] {{ shared_dir }}/conda_pkgs/'
 
 - name: Replace nansat-gdal with specific version/build
-  shell: '{{ exports }} conda install -q --yes --copy -c alevin nansat-gdal={{ nansat_gdal_version }}={{ nansat_gdal_build }}'
+  shell: 'conda install -q --yes --copy -c alevin nansat-gdal={{ nansat_gdal_version }}={{ nansat_gdal_build }}'
   when: nansat_gdal_build is defined
 
 - name: Replace nansat-libgdal with specific version
-  shell: '{{ exports }} conda install -q --yes --copy -c alevin nansat-libgdal={{ nansat_gdal_version }}={{ nansat_libgdal_build }}'
+  shell: 'conda install -q --yes --copy -c alevin nansat-libgdal={{ nansat_gdal_version }}={{ nansat_libgdal_build }}'
   when: nansat_libgdal_build is defined
 
-- name: Stop further provisioning
-  shell: '/bin/false'
+- name: Add PATH to .bashrc
+  lineinfile: dest=/home/vagrant/.bashrc line="export PATH={{ conda_dir }}/bin:$PATH"
 
-#- name: Add exports .bashrc
-#  lineinfile: dest=/home/vagrant/.bashrc line="{{ exports }}"
+- name: Add GDAL_DATA to .bashrc
+  lineinfile: dest=/home/vagrant/.bashrc line="export GDAL_DATA={{ conda_dir }}/share/gdal"
 
-#- name: Update/checkout Nansat
-#  git: repo=https://github.com/nansencenter/nansat
-#       dest="{{ shared_dir }}/nansat/"
-#       version=issue142split-mapper-tests
-#       update=yes
+- name: Add links to some conda libraries to /usr/lib
+  sudo: yes
+  file: src="{{ conda_dir }}/lib/{{ item }}" dest="/usr/lib/{{ item }}" state=link
+  with_items:
+    - libgeos_c.so
+    - libgdal.so
 
-#- name: Install Nansat
-#  shell: '{{ exports }} python setup.py install'
-#  args:
-#    chdir: '{{ shared_dir }}/nansat'
+- name: Run ldconfig
+  sudo: yes
+  shell: 'ldconfig'
 
-#- name: Run Nansat basic tests
-#  shell: '{{ exports }} nosetests nansat.tests'
+- name: Update/checkout Nansat
+  git: repo=https://github.com/nansencenter/nansat
+       dest="{{ machine_shared_dir }}/nansat/"
+       version=issue142split-mapper-tests
+       update=yes
+  register: git_nansat
 
-#- name: Create dir for mapper test data
-#  file: path="{{ mapper_test_data_dir }}" state=directory
+- name: Install Nansat
+  shell: 'python setup.py install'
+  args:
+    chdir: '{{ machine_shared_dir }}/nansat'
 
-#- name: Run Nansat mappers tests
-#  shell: '{{ exports }} nosetests -v -x end2endtests.test_mappers:TestAllMappers.test_mappers_basic'
+- name: Run Nansat basic tests
+  shell: 'nosetests nansat.tests'
+  when: git_nansat.changed
 
-#- name Run gdalinfo
-#  shell: "{{ exports }} gdalinfo {{ mapper_test_data_dir }}/asar/ASA_WSM_1PNPDK20110108_205958_000000923098_00187_46322_6032.N1"
+- name: Create test data folder
+  file: path="{{ test_data_dir }}/{{ item.mapper }}" state=directory
+  with_items:
+    "{{ test_files }}"
 
+- name: Download test data
+  get_url: url="{{ test_data_url }}/{{ item.mapper }}/{{ item.name }}" dest="{{ test_data_dir }}/{{ item.mapper }}/{{ item.name }}" force=no
+  with_items:
+    "{{ test_files }}"
+  ignore_errors: yes
 
+- name: Add MAPPER_TEST_DATA_DIR to .bashrc
+  lineinfile: dest=/home/vagrant/.bashrc line="export MAPPER_TEST_DATA_DIR={{ test_data_dir }}"
+
+- name: Run Nansat mappers tests
+  shell: "nosetests -v -x end2endtests.test_mappers:TestAllMappers.test_mappers_basic"
+  when: git_nansat.changed
+
+- name: Run gdalinfo
+  shell: 'gdalinfo {{ test_data_dir }}/{{ item.mapper }}/{{ item.name }}'
+  with_items:
+    "{{ test_files }}"
+  ignore_errors: yes
+  no_log: True
+
+- name: Update/checkout Nansen-Cloud Django
+  git: repo=https://github.com/nansencenter/nansen-cloud
+       dest="{{ dev_sources_dir }}/nansen-cloud"
+       version=develop
+       update=yes
+
+- name: Create link from Python dist-packages to nansen-cloud
+  file: path='{{ python_dist_packages }}/nansencloud'
+        src='{{ dev_sources_dir }}/nansen-cloud/nansencloud'
+        state=link
+        force=yes
+
+- name: Run migrate on Nansen-Cloud project
+  django_manage: >
+      command=migrate
+      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
+      settings='project.settings'
+      pythonpath='{{ dev_sources_dir }}/nansen-cloud/project'

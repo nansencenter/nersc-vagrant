@@ -1,14 +1,15 @@
 ---
 - hosts: base
-  remote_user: vagrant
-  sudo: yes
   roles:
-      - common
       - base
 
 - hosts: testconda
+  environment:
+    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
+    GDAL_DATA: "{{ conda_dir }}/share/gdal"
+    MAPPER_TEST_DATA_DIR: "{{ test_data_dir }}"
+
   roles:
-    - sample_datasets
     - testconda
 
 - hosts: course

@@ -38,6 +38,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     testconda.vm.box = "ubuntu/trusty64"
     testconda.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty64"
 
+    # configure the line below if you have local folder with test data
+    testconda.vm.synced_folder "/Data/FTPRoot/pub/nansat/test_data", "/vagrant/shared/test_data", create: true
+
     testconda.vm.provider "virtualbox" do |v|
       v.memory = 6000
       v.cpus = 4
