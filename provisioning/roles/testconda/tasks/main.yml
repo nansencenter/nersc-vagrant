@@ -99,6 +99,7 @@
   register: git_nansat
 
 - name: Install Nansat
+- name: Install Nansat
   shell: 'python setup.py install'
   args:
     chdir: '{{ machine_shared_dir }}/nansat'
@@ -113,10 +114,12 @@
   with_items:
     "{{ test_files }}"
 
-#- name: Download test data
-#  get_url: url="{{ test_data_url }}/{{ item.mapper }}/{{ item.name }}" dest="{{ test_data_dir }}/{{ item.mapper }}/{{ item.name }}" force=no
-#  with_items:
-#    "{{ test_files }}"
+- name: Download test data
+  get_url: url="{{ test_data_url }}/{{ item.mapper }}/{{ item.name }}" dest="{{ test_data_dir }}/{{ item.mapper }}/{{ item.name }}" force=no
+  with_items:
+    "{{ test_files }}"
+  ignore_errors: yes
+  
 
 - name: Add MAPPER_TEST_DATA_DIR to .bashrc
   lineinfile: dest=/home/vagrant/.bashrc line="export MAPPER_TEST_DATA_DIR={{ test_data_dir }}"
