@@ -25,43 +25,6 @@
     chdir: '{{ shared_dir }}/openwind'
     creates: '/usr/local/lib/python2.7/dist-packages/openwind-0.7_dev.0-py2.7.egg'
 
-- name: Create data folder
-  file: path="{{ data_dir }}" state=directory
-
-- name: Download MERIS L1 sample acquisition
-  get_url:
-    url: "ftp://ftp.nersc.no/pub/python_test_data/meris_l1/{{ meris_l1_file }}"
-    dest: "{{ data_dir }}/{{ meris_l1_file }}"
-    force: no
-
-- name: Download MODIS sample acquisition 1
-  get_url:
-    url: "ftp://ftp.nersc.no/pub/python_test_data/obpg_l2/{{ modis_file1 }}"
-    dest: "{{ data_dir }}/{{ modis_file1 }}"
-    force: no
-
-- name: Download MODIS sample acquisition 2
-  get_url:
-    url: "ftp://ftp.nersc.no/pub/python_test_data/obpg_l2/{{ modis_file2 }}"
-    dest: "{{ data_dir }}/{{ modis_file2 }}"
-    force: no
-
-- name: Download Nansat landmask
-  get_url:
-    url: "ftp://ftp.nersc.no/pub/nansat/{{ nansat_landmask_file }}"
-    dest: "{{ data_dir }}/{{ nansat_landmask_file }}"
-    force: no
-
-- name: Create Nansat landmask data folder
-  file: path="{{ data_dir }}/MOD44W" state=directory
-
-- name: Extract Nansat landmask
-  unarchive:
-    copy: no
-    src: "{{ data_dir }}/{{ nansat_landmask_file }}"
-    dest: "{{ data_dir }}/MOD44W/"
-    force: no
-
 - name: Clone nansat-lectures repository
   git: repo=https://github.com/nansencenter/nansat-lectures
        dest="{{ shared_dir }}/nansat-lectures"

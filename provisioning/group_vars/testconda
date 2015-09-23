@@ -32,3 +32,4 @@ export_mapper_data: 'export MAPPER_TEST_DATA_DIR={{ test_data_dir }}'
 export_path: "export PATH={{ conda_dir }}/bin:$PATH"
 export_gdal_data: "export GDAL_DATA={{ conda_dir }}/share/gdal"
 exports: "{{ export_path }}; {{  export_gdal_data  }};  {{ export_mapper_data }};"
+

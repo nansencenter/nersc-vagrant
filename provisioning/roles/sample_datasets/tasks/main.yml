@@ -1,0 +1,27 @@
+---
+# file: roles/sample_datasets/tasks/main.yml
+- name: Create test data folder
+  file: path="{{ test_data_dir }}" state=directory
+
+- name: Download sample datasets
+  get_url: url="{{ test_data_url }}/{{ item.mapper }}/{{ item.name }}" dest="{{ test_data_dir }}/{{ item.mapper }}/{{ item.name }}" force=no
+  with_items:
+      - "{{ test_files }}"
+
+- name: Download Nansat landmask
+  get_url:
+    url: "{{ ftp_nansat_landmask }}/{{ nansat_landmask_file }}"
+    dest: "{{ test_data_dir }}/{{ nansat_landmask_file }}"
+    force: no
+
+- name: Create Nansat landmask data folder
+  file: path="{{ test_data_dir }}/MOD44W" state=directory
+
+- name: Extract Nansat landmask
+  unarchive:
+    copy: no
+    src: "{{ test_data_dir }}/{{ nansat_landmask_file }}"
+    dest: "{{ test_data_dir }}/MOD44W/"
+    force: no
+
+
