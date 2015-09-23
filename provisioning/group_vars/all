@@ -1,21 +1,22 @@
 ---
 # file: group_vars/all
 project_name: nansen-cloud
-sources_dir: /usr/local/src
 shared_dir: /vagrant/shared
+conda_dir: /home/vagrant/miniconda
+python_dist_packages: "{{ conda_dir }}/lib/python2.7/site-packages"
+
 ftp_nansat: ftp://ftp.nersc.no/pub/nansat
 
-# sample files used in most groups
-# consider changing from "test" to "sample"
-test_data_dir: "{{ shared_dir }}/test_data"
-test_data_url: "{{ ftp_nansat }}/test_data"
-test_files:
-  - {name: MER_FRS_1PNPDK20120303_093810_000000333112_00180_52349_3561.N1, mapper: meris_l1, procmodel: MerisWeb}
-  - {name: A2015121113500.L2_LAC.NorthNorwegianSeas.hdf, mapper: obpg_l2, procmodel: ModisWeb}
-  - {name: A2015122122000.L2_LAC.NorthNorwegianSeas.hdf, mapper: obpg_l2, procmodel: ModisWeb}
-  - {name: S1A_EW_GRDM_1SDH_20150702T172954_20150702T173054_006635_008DA5_55D1.zip, mapper: sentinel1a_l1, procmodel: SARWeb}
-
-export_mapper_data: 'export MAPPER_TEST_DATA_DIR={{ test_data_dir }}'
+sample_data_dir: "{{ shared_dir }}/test_data"
+sample_data_url: "{{ ftp_nansat }}/test_data"
+sample_files:
+  - {name: MER_FRS_1PNPDK20120303_093810_000000333112_00180_52349_3561.N1, mapper: meris_l1}
+  - {name: A2015121113500.L2_LAC.NorthNorwegianSeas.hdf, mapper: obpg_l2}
+  - {name: A2015122122000.L2_LAC.NorthNorwegianSeas.hdf, mapper: obpg_l2}
+  - {name: S1A_EW_GRDM_1SDH_20150702T172954_20150702T173054_006635_008DA5_55D1.zip, mapper: sentinel1a_l1}
 
 ftp_nansat_landmask: "{{ ftp_nansat }}"
 nansat_landmask_file: MOD44W.tgz
+
+nansat_version: develop
+nansencloud_version: develop

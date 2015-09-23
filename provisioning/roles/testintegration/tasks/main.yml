@@ -1,0 +1,31 @@
+- name: Replace nansat-gdal with specific version/build
+  shell: 'conda install -q --yes --copy -c alevin nansat-gdal={{ nansat_gdal_version }}={{ nansat_gdal_build }}'
+  when: nansat_gdal_build is defined
+
+- name: Replace nansat-libgdal with specific version
+  shell: 'conda install -q --yes --copy -c alevin nansat-libgdal={{ nansat_gdal_version }}={{ nansat_libgdal_build }}'
+  when: nansat_libgdal_build is defined
+
+- name: Run Nansat basic tests
+  shell: 'nosetests nansat.tests'
+  when: git_nansat.changed
+
+- name: Add MAPPER_TEST_DATA_DIR to .bashrc
+  lineinfile: dest=/home/vagrant/.bashrc line="export MAPPER_TEST_DATA_DIR={{ sample_data_dir }}"
+
+- name: Create link from Python dist-packages to end2endtests
+  file: path='{{ python_dist_packages }}/end2endtests'
+        src='{{ dev_sources_dir }}/nansat/end2endtests'
+        state=link
+        force=yes
+
+- name: Run Nansat mappers tests
+  shell: "nosetests -v -x end2endtests.test_mappers:TestAllMappers.test_mappers_basic"
+  when: git_nansat.changed
+
+- name: Run gdalinfo
+  shell: 'gdalinfo {{ sample_data_dir }}/{{ item.mapper }}/{{ item.name }}'
+  with_items:
+    "{{ sample_files }}"
+  ignore_errors: yes
+  no_log: True

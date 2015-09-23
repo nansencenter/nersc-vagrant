@@ -17,31 +17,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define "course", primary: true do |course|
+    course.vm.box = "ubuntu/trusty64"
+    course.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty64"
     course.vm.network :private_network, ip: "192.168.33.11"
-    course.vm.network :forwarded_port, guest: 8888, host: 8888
   end
 
-  config.vm.define "base", autostart: false do |base|
-    base.vm.network :private_network, ip: "192.168.33.12"
-    base.vm.box = "ubuntu/trusty64"
-    base.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty64"
-
-    base.vm.provider "virtualbox" do |v|
-      v.memory = 2000
-      v.cpus = 2
-    end
-
-  end
-
-  config.vm.define "testconda", autostart: false do |testconda|
-    testconda.vm.network :private_network, ip: "192.168.33.13"
-    testconda.vm.box = "ubuntu/trusty64"
-    testconda.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty64"
+  config.vm.define "testintegration", autostart: false do |testintegration|
+    testintegration.vm.network :private_network, ip: "192.168.33.12"
+    testintegration.vm.box = "ubuntu/trusty64"
+    testintegration.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty64"
 
     # configure the line below if you have local folder with test data
-    testconda.vm.synced_folder "/Data/FTPRoot/pub/nansat/test_data", "/vagrant/shared/test_data", create: true
+    testintegration.vm.synced_folder "/Data/FTPRoot/pub/nansat/test_data", "/vagrant/shared/test_data", create: true
 
-    testconda.vm.provider "virtualbox" do |v|
+    testintegration.vm.provider "virtualbox" do |v|
       v.memory = 6000
       v.cpus = 4
     end
