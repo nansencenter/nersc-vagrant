@@ -1,23 +1,34 @@
 ---
-shared_dir: /vagrant/shared/
+shared_dir: /vagrant/shared
 machine_shared_dir: "{{ shared_dir }}/testconda"
-# WINDOWS USERS: cange the below variable to /home/vagrant/miniconda
-conda_dir: "{{ machine_shared_dir }}/miniconda"
-
-nansat_gdal_version: 2.0.0
+conda_dir: /home/vagrant/miniconda
 
 # comment out below variables to test default version of nansat_(lib)gdal
+#nansat_gdal_version: 2.0.0
 #nansat_gdal_build: nppy27_3
 #nansat_libgdal_build: 3
 
 test_data_dir: "{{ shared_dir }}/test_data"
 test_data_url: ftp://ftp.nersc.no/pub/nansat/test_data
 test_files:
+  - {name: GW1AM2_201407010010_183D_L1SGRTBR_1110110.h5, mapper: amsr2_l1r}
+  - {name: GW1AM2_20141216_01D_PNMD_L3SGT06HA1110110.h5, mapper: amsr2_l3}
+  - {name: ASA_WSM_1PNPDK20110108_205958_000000923098_00187_46322_6032.N1, mapper: asar}
+  - {name: AST_L1B_00308152008163958_20100924185158_23033.hdf, mapper: aster_l1b}
+  - {name: CSKS4_SCS_B_PP_11_CO_LA_FF_20111215040251_20111215040257.h5, mapper: csks}
+  - {name: mapperTest_generic.tif, mapper: generic}
+  - {name: DNMI-NEurope.grb, mapper: hirlam}
+  - {name: LM52200021984220AAA04.tar.gz, mapper: landsat}
   - {name: MER_FRS_1PNPDK20120303_093810_000000333112_00180_52349_3561.N1, mapper: meris_l1}
+  - {name: MOD021KM.A2010105.2120.005.2010106075131.hdf, mapper: modis_l1}
+  - {name: gfs20120328.t00z.master.grbf00, mapper: ncep}
   - {name: A2015121113500.L2_LAC.NorthNorwegianSeas.hdf, mapper: obpg_l2}
-  - {name: A2015122122000.L2_LAC.NorthNorwegianSeas.hdf, mapper: obpg_l2}
+  - {name: A2015223043500.L2_LAC.NorthNorwegianSeas.nc, mapper: obpg_l2_nc}
+  - {name: S1A_S2_GRDH_1SDV_20150206T062844_20150206T062858_004499_00584F_5AB4.zip, mapper: sentinel1a_l1}
+
+export_mapper_data: 'export MAPPER_TEST_DATA_DIR={{ test_data_dir }}'
+
 
 export_path: "export PATH={{ conda_dir }}/bin:$PATH"
 export_gdal_data: "export GDAL_DATA={{ conda_dir }}/share/gdal"
-export_mapper_data: 'export MAPPER_TEST_DATA_DIR={{ test_data_dir }}'
 exports: "{{ export_path }}; {{  export_gdal_data  }};  {{ export_mapper_data }};"

@@ -22,6 +22,9 @@
   args:
     creates: '{{ conda_dir }}'
 
+- name: Copy cahced packages from conda_pkgs
+  shell: 'cp {{ shared_dir }}/conda_pkgs/* {{ conda_dir }}/pkgs/'
+
 - name: Update Miniconda
   shell: '{{ exports }} conda update -q --yes --copy conda'
   args:
@@ -42,6 +45,9 @@
 - name: Instal nansat-gdal and all requirements
   shell: '{{ exports }} conda install -q --yes --copy -c alevin nansat-gdal'
 
+- name: Copy downloaded packages to conda_pkgs
+  shell: 'cp {{ conda_dir }}/pkgs/*.[bt][zx][2t] {{ shared_dir }}/conda_pkgs/'
+
 - name: Replace nansat-gdal with specific version/build
   shell: '{{ exports }} conda install -q --yes --copy -c alevin nansat-gdal={{ nansat_gdal_version }}={{ nansat_gdal_build }}'
   when: nansat_gdal_build is defined
@@ -50,37 +56,43 @@
   shell: '{{ exports }} conda install -q --yes --copy -c alevin nansat-libgdal={{ nansat_gdal_version }}={{ nansat_libgdal_build }}'
   when: nansat_libgdal_build is defined
 
-- name: Stop further provisioning
-  shell: '/bin/false'
+- name: Update/checkout Nansat
+  git: repo=https://github.com/nansencenter/nansat
+       dest="{{ machine_shared_dir }}/nansat/"
+       version=issue142split-mapper-tests
+       update=yes
+  register: git_nansat
 
-#- name: Add exports .bashrc
-#  lineinfile: dest=/home/vagrant/.bashrc line="{{ exports }}"
+- name: Install Nansat
+  shell: '{{ exports }} python setup.py install'
+  args:
+    chdir: '{{ machine_shared_dir }}/nansat'
+  when: git_nansat.changed
 
-#- name: Update/checkout Nansat
-#  git: repo=https://github.com/nansencenter/nansat
-#       dest="{{ shared_dir }}/nansat/"
-#       version=issue142split-mapper-tests
-#       update=yes
+- name: Run Nansat basic tests
+  shell: '{{ exports }} nosetests nansat.tests'
+  when: git_nansat.changed
 
-#- name: Install Nansat
-#  shell: '{{ exports }} python setup.py install'
-#  args:
-#    chdir: '{{ shared_dir }}/nansat'
+- name: Create test data folder
+  file: path="{{ test_data_dir }}/{{ item.mapper }}" state=directory
+  with_items:
+    "{{ test_files }}"
 
-#- name: Run Nansat basic tests
-#  shell: '{{ exports }} nosetests nansat.tests'
+- name: Download test data
+  get_url: url="{{ test_data_url }}/{{ item.mapper }}/{{ item.name }}" dest="{{ test_data_dir }}/{{ item.mapper }}/{{ item.name }}" force=no
+  with_items:
+    "{{ test_files }}"
 
-#- name: Create dir for mapper test data
-#  file: path="{{ mapper_test_data_dir }}" state=directory
+- name: Run Nansat mappers tests
+  shell: "{{ exports }} nosetests -v -x end2endtests.test_mappers:TestAllMappers.test_mappers_basic"
+  when: git_nansat.changed
 
-#- name: Run Nansat mappers tests
-#  shell: '{{ exports }} nosetests -v -x end2endtests.test_mappers:TestAllMappers.test_mappers_basic'
+- name: Run gdalinfo
+  shell: '{{ exports }} gdalinfo {{ test_data_dir }}/{{ item.mapper }}/{{ item.name }}'
+  with_items:
+    "{{ test_files }}"
+  ignore_errors: yes
+  no_log: True
 
-#- name Run gdalinfo
-#  shell: "{{ exports }} gdalinfo {{ mapper_test_data_dir }}/asar/ASA_WSM_1PNPDK20110108_205958_000000923098_00187_46322_6032.N1"
-
-#- name: Download MERIS L1 sample acquisition
-#  get_url: url="{{ test_data_url }}/{{ item.mapper }}/{{ item.name }}" dest="{{ data_dir }}/{{ item.mapper }}/{{ item.name }}" force=no
-#  with_items:
-#    {{ test_files }}
-
+- name: Add exports .bashrc
+  lineinfile: dest=/home/vagrant/.bashrc line="{{ exports }}"
