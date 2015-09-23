@@ -1,12 +1,7 @@
 ---
 # file: roles/sample_datasets/tasks/main.yml
-
-- stat: path="{{ test_data_dir }}"
-  register: p_test_data_dir
-  
 - name: Create test data folder
   file: path="{{ test_data_dir }}" state=directory
-  when: p_test_data_dir.stat.isdir is defined and p_test_data_dir.stat.isdir
 
 - name: Create test data subfolders (named after nansat mappers)
   file: path="{{ test_data_dir }}/{{ item.mapper }}" state=directory
