@@ -35,7 +35,7 @@
 - hosts: production
   roles:
     - sample_datasets
-    - production
+    - develop
   environment:
     PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
