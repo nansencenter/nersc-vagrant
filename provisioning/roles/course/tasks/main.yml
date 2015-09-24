@@ -6,4 +6,4 @@
        update=yes
 
 - name: Add Ipython Notebook to crontab
-  cron: name="Jupyter Notebook" special_time=reboot job="sleep 60; . /etc/environment; {{ conda_dir }}/bin/jupyter notebook --ip=0.0.0.0 --no-browser --notebook-dir={{ dev_sources_dir }}/nansat-lectures/notebooks/"
+  cron: name="Jupyter Notebook" special_time=reboot job="sleep 60; {{ conda_dir }}/bin/jupyter-notebook --ip=0.0.0.0 --no-browser --notebook-dir={{ dev_sources_dir }}/nansat-lectures/notebooks/"

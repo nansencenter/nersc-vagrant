@@ -44,7 +44,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     testintegration.vm.network :private_network, ip: "192.168.33.12"
 
     # configure the line below if you have local folder with test data
-    #testintegration.vm.synced_folder "/local/path/to/test_data", "/vagrant/shared/test_data", create: true
+    #testintegration.vm.synced_folder "/Data/FTPRoot/pub/nansat/test_data", "/vagrant/shared/test_data", create: true
 
     testintegration.vm.provider "virtualbox" do |v|
       v.memory = 6000

@@ -1,2 +1,3 @@
 ---
-# file: group_vars/course
+dev_sources_dir: "{{ shared_dir }}/course_vm"
+
