@@ -37,7 +37,7 @@
       command='add_images {{ sample_data_dir }}/{{ item.mapper }}/'
       app_path='{{ dev_sources_dir }}/nansen-cloud/project'
   with_items:
-    - '{{ test_files }}'
+    - '{{ sample_files }}'
 
 - name: Apt install packages for testing new functionalities
   apt: pkg={{ item }} state=installed update-cache=yes
