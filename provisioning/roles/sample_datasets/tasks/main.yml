@@ -1,32 +1,32 @@
 ---
 # file: roles/sample_datasets/tasks/main.yml
 - name: Create test data folder
-  file: path="{{ test_data_dir }}" state=directory
+  file: path="{{ sample_data_dir }}" state=directory
 
-- name: Create test data subfolders (named after nansat mappers)
-  file: path="{{ test_data_dir }}/{{ item.mapper }}" state=directory
+- name: Create sample data subfolders (named after nansat mappers)
+  file: path="{{ sample_data_dir }}/{{ item.mapper }}" state=directory
   with_items:
-    - "{{ test_files }}"
+    - "{{ sample_files }}"
 
 - name: Download sample datasets
-  get_url: url="{{ test_data_url }}/{{ item.mapper }}/{{ item.name }}" dest="{{ test_data_dir }}/{{ item.mapper }}/{{ item.name }}" force=no
+  get_url: url="{{ sample_data_url }}/{{ item.mapper }}/{{ item.name }}" dest="{{ sample_data_dir }}/{{ item.mapper }}/{{ item.name }}" force=no
   with_items:
-    - "{{ test_files }}"
+    - "{{ sample_files }}"
 
 - name: Download Nansat landmask
   get_url:
     url: "{{ ftp_nansat_landmask }}/{{ nansat_landmask_file }}"
-    dest: "{{ test_data_dir }}/{{ nansat_landmask_file }}"
+    dest: "{{ sample_data_dir }}/{{ nansat_landmask_file }}"
     force: no
 
 - name: Create Nansat landmask data folder
-  file: path="{{ test_data_dir }}/MOD44W" state=directory
+  file: path="{{ sample_data_dir }}/MOD44W" state=directory
 
 - name: Extract Nansat landmask
   unarchive:
     copy: no
-    src: "{{ test_data_dir }}/{{ nansat_landmask_file }}"
-    dest: "{{ test_data_dir }}/MOD44W/"
+    src: "{{ sample_data_dir }}/{{ nansat_landmask_file }}"
+    dest: "{{ sample_data_dir }}/MOD44W/"
     force: no
 
 

@@ -4,77 +4,116 @@
   apt: upgrade=safe
 
 - name: Install required system packages.
-  apt: pkg={{ item }} state=installed update-cache=yes
+  apt: pkg={{ item }}
   sudo: yes
   with_items:
-    - build-essential
-    - unzip
     - git
+    - libgfortran3
     - libsqlite3-dev
-    - sqlite3 # for the command line client
+    - sqlite3
     - libspatialite-dev
     - spatialite-bin
-    - g++
-    - libx11-dev
-    - libpng-dev
-    - libjpeg-dev
-    - libtiff5-dev
-    - libgeotiff-dev
-    - libnetcdf-dev
-    - libproj-dev
-    - libgeos-dev
-    - libxml2-dev
-    - libpq-dev
-    - python-dev
-    - python-setuptools
-    - python-numpy
-    - pkg-config
-    - libfreetype6-dev
-    - gdal-bin
-    - python-gdal
-    - libgdal-dev
-    - python-pip
-    - gfortran
-    - liblapack-dev
-    - python-qt4
 
-- name: Install latest PIP and Scipy
-  pip: name={{ item }} extra_args='--upgrade'
-  sudo: yes
+- name: Create shared folder
+  file: path="{{ shared_dir }}" state=directory
+
+- name: Download Miniconda
+  get_url:
+    url: http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
+    dest: "{{ shared_dir }}/miniconda.sh"
+
+- name: chmod Miniconda
+  file: path="{{ shared_dir }}/miniconda.sh" mode=775
+
+- name: Install Miniconda
+  shell: '{{ shared_dir }}/miniconda.sh -b -p {{ conda_dir }}'
+  args:
+    creates: '{{ conda_dir }}'
+
+- name: Create conda_pkgs in shared folder
+  file: path="{{ shared_dir }}/conda_pkgs" state=directory
+
+- name: Copy cached packages from conda_pkgs
+  shell: 'cp {{ shared_dir }}/conda_pkgs/* {{ conda_dir }}/pkgs/'
+
+- name: Update Miniconda
+  shell: 'conda update -q --yes --copy conda'
+
+- name: Install Nansat requirements
+  shell: 'conda install -q --yes --copy {{ item }}'
   with_items:
-    - pip
-    - scipy
+    numpy
+    scipy
+    matplotlib
+    nose
+    pillow
+    basemap
+    proj.4
+    netcdf4
+    django
+    scikit-learn
+    nose
+    coverage
+    jupyter
 
-- name: Install packages required for data science
+- name: Instal nansat-gdal and all requirements
+  shell: 'conda install -q --yes --copy -c alevin nansat-gdal'
+
+- name: Install nansen-cloud requirements
   pip: name={{ item }}
-  sudo: yes
   with_items:
-    - ipython
-    - pillow
-    - netCDF
-    - scikit-learn
-    - pyzmq
-    - jinja2
-    - tornado
-    - ipdb
-    - nose
-    - coverage
-    - matplotlib
-    - Django
     - django-forms-bootstrap
     - django-leaflet
-    - jupyter
+    - ipdb
 
-- name: Symbolic link for libgeos
-  file: src=/usr/lib/libgeos-3.4.2.so dest=/usr/lib/libgeos.so state=link
-  sudo: yes
+- name: Clone pysqlite
+  git: repo=https://github.com/ghaering/pysqlite
+       dest="{{ ansible_env.HOME }}/pysqlite/"
+       version=da389878e7c0623cf188387b9fce4fc77d0a9b2c
+       update=no
+  register: git_pysqlite
 
-- name: Install Basemap
-  pip: name=basemap extra_args="--allow-external basemap --allow-unverified basemap"
-  sudo: yes
-  environment:
-    GEOS_DIR: "/usr"
+- name: Install pysqlite
+  shell: 'python setup.py install'
+  args:
+    chdir: "{{ ansible_env.HOME }}/pysqlite/"
+  when: git_pysqlite.changed
 
-- name: Make default backend for matplotlib
+- name: Copy downloaded packages to conda_pkgs
+  shell: 'cp {{ conda_dir }}/pkgs/*.[bt][zx][2t] {{ shared_dir }}/conda_pkgs/'
+
+- name: Add PATH to .bashrc
+  lineinfile: dest=/home/vagrant/.bashrc line="export PATH={{ conda_dir }}/bin:$PATH"
+
+- name: Add GDAL_DATA to .bashrc
+  lineinfile: dest=/home/vagrant/.bashrc line="export GDAL_DATA={{ conda_dir }}/share/gdal"
+
+- name: Add links to some conda libraries to /usr/lib
   sudo: yes
-  replace: 'dest=/usr/local/lib/python2.7/dist-packages/matplotlib/mpl-data/matplotlibrc regexp="backend +: +agg" replace="backend : qt4agg"'
+  file: src="{{ conda_dir }}/lib/{{ item }}" dest="/usr/lib/{{ item }}" state=link
+  with_items:
+    - libgeos_c.so
+    - libgdal.so
+
+- name: Run ldconfig
+  sudo: yes
+  shell: 'ldconfig'
+
+- name: Update/checkout Nansat
+  git: repo=https://github.com/nansencenter/nansat
+       dest="{{ dev_sources_dir }}/nansat/"
+       version="{{ nansat_version }}"
+       update=yes
+  register: git_nansat
+
+- name: Install Nansat (always run to keep the pixel functions updated)
+  shell: 'python setup.py build_ext --inplace'
+  args:
+    chdir: '{{ dev_sources_dir }}/nansat'
+
+- name: Create link from Python dist-packages to nansat
+  file: path='{{ python_dist_packages }}/nansat'
+        src='{{ dev_sources_dir }}/nansat/nansat'
+        state=link
+        force=yes
+

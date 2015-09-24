@@ -4,11 +4,8 @@
 [course]
 192.168.33.11
 
-[base]
+[testintegration]
 192.168.33.12
 
-[testconda]
-192.168.33.13
-
 [production]
-192.168.33.14
+192.168.33.13
