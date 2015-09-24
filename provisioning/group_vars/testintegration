@@ -1,19 +1,12 @@
 ---
-shared_dir: /vagrant/shared
-machine_shared_dir: "{{ shared_dir }}/testconda"
-conda_dir: /home/vagrant/miniconda
-
-dev_sources_dir: "{{ machine_shared_dir }}"
-python_dist_packages: "{{ conda_dir }}/lib/python2.7/site-packages"
+dev_sources_dir: "{{ shared_dir }}/testintegration_vm"
 
 # comment out below variables to test default version of nansat_(lib)gdal
 #nansat_gdal_version: 2.0.0
 #nansat_gdal_build: nppy27_3
 #nansat_libgdal_build: 3
 
-test_data_dir: "{{ shared_dir }}/test_data"
-test_data_url: ftp://ftp.nersc.no/pub/nansat/test_data
-test_files:
+sample_files:
   - {name: GW1AM2_201407010010_183D_L1SGRTBR_1110110.h5, mapper: amsr2_l1r}
   - {name: GW1AM2_20141216_01D_PNMD_L3SGT06HA1110110.h5, mapper: amsr2_l3}
   - {name: ASA_WSM_1PNPDK20110108_205958_000000923098_00187_46322_6032.N1, mapper: asar}
@@ -30,4 +23,5 @@ test_files:
   - {name: S1A_S2_GRDH_1SDV_20150206T062844_20150206T062858_004499_00584F_5AB4.zip, mapper: sentinel1a_l1}
 
 
+export_mapper_data: 'export MAPPER_TEST_DATA_DIR={{ sample_data_dir }}'
 

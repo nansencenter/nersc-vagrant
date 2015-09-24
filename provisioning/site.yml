@@ -1,32 +1,42 @@
 ---
-- hosts: base
+- hosts: all
   roles:
-      - base
-
-- hosts: testconda
+    - common
   environment:
     PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
-    MAPPER_TEST_DATA_DIR: "{{ test_data_dir }}"
 
-  roles:
-    - testconda
-
-- hosts: course
-  remote_user: vagrant
+- hosts: testintegration
   roles:
     - sample_datasets
+    - develop
+    - testintegration
     - course
-
-- hosts: production
-  roles:
-    - common
-    - sample_datasets
-    - production
+  environment:
+    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
+    GDAL_DATA: "{{ conda_dir }}/share/gdal"
+    MAPPER_TEST_DATA_DIR: "{{ sample_data_dir }}"
 
 - hosts: develop
   roles:
-    - common
     - sample_datasets
     - develop
+  environment:
+    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
+    GDAL_DATA: "{{ conda_dir }}/share/gdal"
+
+- hosts: course
+  roles:
+    - course
+  environment:
+    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
+    GDAL_DATA: "{{ conda_dir }}/share/gdal"
+
+- hosts: production
+  roles:
+    - sample_datasets
+    - production
+  environment:
+    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
+    GDAL_DATA: "{{ conda_dir }}/share/gdal"
 

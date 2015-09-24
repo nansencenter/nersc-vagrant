@@ -1,31 +1,4 @@
 ---
-# file: roles/develop/tasks/main.yml
-- name: Update/checkout Nansat
-  git: repo=https://github.com/nansencenter/nansat
-       dest="{{ dev_sources_dir }}/nansat/"
-       version=develop
-       update=yes
-
-- name: Install Nansat (always run to keep the pixel functions updated)
-  shell: 'python setup.py build_ext --inplace'
-  sudo: no
-  args:
-    chdir: '{{ dev_sources_dir }}/nansat'
-
-- name: Create link from Python dist-packages to nansat
-  sudo: yes
-  file: path='{{ python_dist_packages }}/nansat'
-        src='{{ dev_sources_dir }}/nansat/nansat'
-        state=link
-        force=yes
-
-- name: Create link from Python dist-packages to end2endtests
-  sudo: yes
-  file: path='{{ python_dist_packages }}/end2endtests'
-        src='{{ dev_sources_dir }}/nansat/end2endtests'
-        state=link
-        force=yes
-
 - name: Update/checkout OpenWind
   git: repo=https://github.com/nansencenter/openwind
        dest="{{ dev_sources_dir }}/openwind"
@@ -42,7 +15,7 @@
 - name: Update/checkout Nansen-Cloud Django
   git: repo=https://github.com/nansencenter/nansen-cloud
        dest="{{ dev_sources_dir }}/nansen-cloud"
-       version=develop
+       version="{{ nansencloud_version }}"
        update=yes
 
 - name: Create link from Python dist-packages to nansen-cloud
@@ -61,16 +34,7 @@
 
 - name: Add sample images to db
   django_manage: >
-      command='add_images {{ test_data_dir }}/{{ item.mapper }}/'
+      command='add_images {{ sample_data_dir }}/{{ item.mapper }}/'
       app_path='{{ dev_sources_dir }}/nansen-cloud/project'
   with_items:
-    - '{{ test_files }}'
-
-# This can be done later when all model classes exist...
-#- name: Add data to nansen.cloud.proc.models
-#  django_manage: >
-#      command='process '{{ item.procmodel }}'
-#      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
-#  with_items:
-#    - '{{ test_files }}'
-
+    - {name: MER_FRS_1PNPDK20120303_093810_000000333112_00180_52349_3561.N1, mapper: meris_l1}
