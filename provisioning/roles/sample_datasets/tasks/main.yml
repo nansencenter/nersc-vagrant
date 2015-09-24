@@ -16,7 +16,7 @@
 - name: Download Nansat landmask
   get_url:
     url: "{{ ftp_nansat_landmask }}/{{ nansat_landmask_file }}"
-    dest: "{{ sample_data_dir }}/{{ nansat_landmask_file }}"
+    dest: "{{ shared_dir }}/{{ nansat_landmask_file }}"
     force: no
 
 - name: Create Nansat landmask data folder

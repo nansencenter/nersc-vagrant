@@ -27,6 +27,7 @@
 
 - hosts: course
   roles:
+    - sample_datasets
     - course
   environment:
     PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
