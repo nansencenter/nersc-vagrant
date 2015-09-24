@@ -34,7 +34,10 @@
   file: path="{{ shared_dir }}/conda_pkgs" state=directory
 
 - name: Copy cached packages from conda_pkgs
-  shell: 'cp {{ shared_dir }}/conda_pkgs/* {{ conda_dir }}/pkgs/'
+  copy: src={{ item }} dest={{ conda_dir }}/pkgs/{{ item }}
+  with_fileglob:
+      - '{{ shared_dir }}/conda_pkgs/*'
+
 
 - name: Update Miniconda
   shell: 'conda update -q --yes --copy conda'

@@ -37,4 +37,18 @@
       command='add_images {{ sample_data_dir }}/{{ item.mapper }}/'
       app_path='{{ dev_sources_dir }}/nansen-cloud/project'
   with_items:
-    - {name: MER_FRS_1PNPDK20120303_093810_000000333112_00180_52349_3561.N1, mapper: meris_l1}
+    - '{{ test_files }}'
+
+- name: Apt install packages for testing new functionalities
+  apt: pkg={{ item }} state=installed update-cache=yes
+  sudo: yes
+  with_items:
+      - libxml2-dev
+      - libxslt1-dev
+      - python-dev
+
+- name: Pip install extra packages for testing new functionalities
+  pip: name={{ item }}
+  sudo: yes
+  with_items:
+    - thredds_crawler
