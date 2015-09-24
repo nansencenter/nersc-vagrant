@@ -74,3 +74,16 @@
 #  with_items:
 #    - '{{ test_files }}'
 
+- name: Install requirements for thredds_crawler
+  apt: pkg={{ item }} state=installed update-cache=yes
+  sudo: yes
+  with_items:
+      - libxml2-dev
+      - libxslt1-dev
+      - python-dev
+
+- name: Install extra packages for testing new functionalities
+  pip: name={{ item }}
+  sudo: yes
+  with_items:
+    - thredds_crawler
