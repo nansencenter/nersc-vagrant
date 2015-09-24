@@ -20,13 +20,13 @@
     force: no
 
 - name: Create Nansat landmask data folder
-  file: path="{{ sample_data_dir }}/MOD44W" state=directory
+  file: path="{{ shared_dir }}/MOD44W" state=directory
 
 - name: Extract Nansat landmask
   unarchive:
     copy: no
-    src: "{{ sample_data_dir }}/{{ nansat_landmask_file }}"
-    dest: "{{ sample_data_dir }}/MOD44W/"
+    src: "{{ shared_dir }}/{{ nansat_landmask_file }}"
+    dest: "{{ shared_dir }}/MOD44W/"
     force: no
 
 
