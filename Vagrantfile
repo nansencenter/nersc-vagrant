@@ -23,7 +23,7 @@ module OS
 end
 
 if OS.windows?
-  system("echo Vagrant launched from windows. '#{ARGV[0]}' & IF '#{ARGV[0]}' EQU 'up' setup.bat")
+  system("echo Vagrant launched from windows. & IF '#{ARGV[0]}' EQU 'up' setup.bat")
 end
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
