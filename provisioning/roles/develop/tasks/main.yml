@@ -25,12 +25,22 @@
         state=link
         force=yes
 
+- name: Create link from home directory to nansen-cloud
+  sudo: yes
+  file: path=/home/vagrant/nansen-cloud
+        src='{{ dev_sources_dir }}/nansen-cloud'
+        state=link
+        force=yes
+
 - name: Run migrate on Nansen-Cloud project
   django_manage: >
       command=migrate
       app_path='{{ dev_sources_dir }}/nansen-cloud/project'
       settings='project.settings'
       pythonpath='{{ dev_sources_dir }}/nansen-cloud/project'
+
+- name: Add MAPPER_TEST_DATA_DIR to .bashrc
+  lineinfile: dest=/home/vagrant/.bashrc line="export MAPPER_TEST_DATA_DIR={{ sample_data_dir }}"
 
 - name: Add sample images to db
   django_manage: >
