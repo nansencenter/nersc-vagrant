@@ -60,7 +60,7 @@
     jupyter
 
 - name: Instal nansat-gdal and all requirements
-  shell: 'conda install -q --yes --copy -c alevin nansat-gdal'
+  shell: 'conda install -q --yes --copy -c nersc nansat-gdal'
 
 - name: Install nansen-cloud requirements
   pip: name={{ item }}
