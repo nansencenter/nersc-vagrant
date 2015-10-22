@@ -53,6 +53,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   end
 
+  config.vm.define "thredds", autostart: false do |thredds|
+    thredds.vm.network :private_network, ip: "192.168.33.14"
+
+    thredds.vm.provider "virtualbox" do |v|
+      v.memory = 6000
+      v.cpus = 4
+    end
+
+  end
+
   config.vm.define "production", autostart: false do |production|
     production.vm.network :private_network, ip: "192.168.33.13"
   end

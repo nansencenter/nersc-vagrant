@@ -1,0 +1,10 @@
+---
+dev_sources_dir: "{{ shared_dir }}/thredds_vm"
+
+tomcat_url: http://apache.uib.no/tomcat/tomcat-8/v8.0.28/bin
+tomcat_file: apache-tomcat-8.0.28
+tomcat_home: /home/vagrant/{{ tomcat_file }}
+
+thredds_url: ftp://ftp.unidata.ucar.edu/pub/thredds/4.6/current
+thredds_file: thredds.war
+thredds_config_home: ../../../../../nersc-thredds

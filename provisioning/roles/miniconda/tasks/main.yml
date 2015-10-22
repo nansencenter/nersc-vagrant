@@ -31,13 +31,10 @@
     creates: '{{ conda_dir }}'
 
 - name: Create conda_pkgs in shared folder
-  file: path="{{ shared_dir }}/conda_pkgs" state=directory
+  file: path="{{ shared_dir }}/conda_pkgs/empty" state=directory
 
 - name: Copy cached packages from conda_pkgs
-  copy: src={{ item }} dest={{ conda_dir }}/pkgs/{{ item }}
-  with_fileglob:
-      - '{{ shared_dir }}/conda_pkgs/*'
-
+  shell: 'cp {{ shared_dir }}/conda_pkgs/* {{ conda_dir }}/pkgs/ -r'
 
 - name: Update Miniconda
   shell: 'conda update -q --yes --copy conda'
