@@ -1,26 +1,15 @@
 ---
-- hosts: miniconda
+- hosts: usepython
   roles:
-    - miniconda
+    - usepython
   environment:
     PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
-
-- hosts: testintegration
-  roles:
-    - sample_datasets
-    - develop
-    - testintegration
-    - course
-  environment:
-    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
-    GDAL_DATA: "{{ conda_dir }}/share/gdal"
-    MAPPER_TEST_DATA_DIR: "{{ sample_data_dir }}"
 
 - hosts: develop
   roles:
     - sample_datasets
-    - develop
+    - nansencloud
   environment:
     PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
@@ -33,13 +22,25 @@
     PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
 
-- hosts: production
+- hosts: testintegration
   roles:
     - sample_datasets
-    - develop
+    - nansencloud
+    - testintegration
+    - course
   environment:
     PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
+    MAPPER_TEST_DATA_DIR: "{{ sample_data_dir }}"
+
+- hosts: processing
+  roles:
+    - nansencloud
+
+- hosts: webservers
+  roles:
+    - nansencloud
+    - webserver
 
 - hosts: thredds
   roles:
