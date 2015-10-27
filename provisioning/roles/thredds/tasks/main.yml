@@ -12,16 +12,13 @@
     - default-jre-headless
     - cifs-utils
 
-- name: Create setenv
-  template: src=../templates/credentials dest="{{ home }}/credentials"
-
 - name: Mount network folders
   sudo: yes
   mount:
     name: "{{ mount_name }}/{{ item }}"
     src: "{{ mount_src }}/{{ item }}"
     fstype: cifs
-    opts: "credentials={{ home }}/credentials,uid=15001,gid=15001,username={{ username }},password={{ password }},domain={{ domain }}"
+    opts: "uid=15001,gid=15001,username={{ username }},password={{ password }},domain={{ domain }}"
     state: mounted
   with_items: mounted_dirs
 
@@ -41,7 +38,7 @@
   file: path={{ tomcat_home }}/content/ state=directory
 
 - name: Push THREDDS config
-  synchronize: src=../files/thredds dest={{ tomcat_home }}/content/
+  synchronize: src=../files/nersc-thredds/thredds dest={{ tomcat_home }}/content/
 
 - name: Stop TOMCAT
   shell: "{{ tomcat_home }}/bin/shutdown.sh"

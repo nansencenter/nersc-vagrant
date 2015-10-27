@@ -8,8 +8,8 @@ thredds_url: ftp://ftp.unidata.ucar.edu/pub/thredds/4.6/current
 thredds_file: thredds.war
 
 mounted_dirs: []
-mount_name: ''
-mount_src: ''
+mount_name: empty
+mount_src: empty
 
 username: empty
 password: empty
