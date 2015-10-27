@@ -26,7 +26,7 @@
   get_url: url="{{ tomcat_url }}/{{ tomcat_file }}.tar.gz" dest="{{ home }}{{ tomcat_file }}.tar.gz" force=no
 
 - name: Uncompress TOMCAT
-  unarchive: src="{{ home }}{{ tomcat_file }}.tar.gz" dest="{{ home }}" copy=no
+  unarchive: src="{{ home }}{{ tomcat_file }}.tar.gz" dest="{{ home }}" copy=no creates="{{ home }}/{{ tomcat_file }}"
 
 - name: Create setenv
   template: src=../templates/tomcat_setenv_sh dest="{{ tomcat_home }}/bin/setenv.sh"
@@ -38,7 +38,7 @@
   file: path={{ tomcat_home }}/content/ state=directory
 
 - name: Push THREDDS config
-  synchronize: src=../files/nersc-thredds/thredds dest={{ tomcat_home }}/content/
+  synchronize: src="{{ role_path }}/files/nersc-thredds/thredds" dest={{ tomcat_home }}/content/
 
 - name: Stop TOMCAT
   shell: "{{ tomcat_home }}/bin/shutdown.sh"
