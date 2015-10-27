@@ -44,4 +44,4 @@
 
 - hosts: thredds
   roles:
-    - nersc-thredds
+    - thredds

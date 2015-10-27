@@ -1,0 +1,55 @@
+---
+- name: Update apt-get
+  sudo: yes
+  apt: update_cache=yes cache_valid_time=36000
+
+- name: Install required system packages.
+  apt: pkg={{ item }}
+  sudo: yes
+  with_items:
+    - default-jdk
+    - default-jre
+    - default-jre-headless
+    - cifs-utils
+
+- name: Create setenv
+  template: src=../templates/credentials dest="{{ home }}/credentials"
+
+- name: Mount network folders
+  sudo: yes
+  mount:
+    name: "{{ mount_name }}/{{ item }}"
+    src: "{{ mount_src }}/{{ item }}"
+    fstype: cifs
+    opts: "credentials={{ home }}/credentials,uid=15001,gid=15001,username={{ username }},password={{ password }},domain={{ domain }}"
+    state: mounted
+  with_items: mounted_dirs
+
+- name: Download TOMCAT
+  get_url: url="{{ tomcat_url }}/{{ tomcat_file }}.tar.gz" dest="{{ home }}{{ tomcat_file }}.tar.gz" force=no
+
+- name: Uncompress TOMCAT
+  unarchive: src="{{ home }}{{ tomcat_file }}.tar.gz" dest="{{ home }}" copy=no
+
+- name: Create setenv
+  template: src=../templates/tomcat_setenv_sh dest="{{ tomcat_home }}/bin/setenv.sh"
+
+- name: Download and deploy THREDDS
+  get_url: url="{{ thredds_url }}/{{ thredds_file }}" dest="{{ tomcat_home }}/webapps/{{ thredds_file }}" force=no
+
+- name: Create THREDDS config dir
+  file: path={{ tomcat_home }}/content/ state=directory
+
+- name: Push THREDDS config
+  synchronize: src=../files/thredds dest={{ tomcat_home }}/content/
+
+- name: Stop TOMCAT
+  shell: "{{ tomcat_home }}/bin/shutdown.sh"
+
+- name: Wait for TOMCAT to stop
+  wait_for: port=8080 delay=10 state=stopped
+
+- name: Start TOMCAT
+  shell: "{{ tomcat_home }}/bin/startup.sh"
+  async: 10000
+  poll: 0

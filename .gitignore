@@ -1,3 +1,4 @@
 .vagrant/
 python/
 shared/
+provisioning/group_vars/thredds
