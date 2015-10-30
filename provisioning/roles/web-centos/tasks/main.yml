@@ -1,0 +1,68 @@
+---
+# Tasks for web-centos
+
+- name: Disable SElinux
+  selinux: state=disabled
+  become: yes
+  become_user: root
+  become_method: su
+  tags: disable_SEL
+  when: disable_se_linux is defined and disable_se_linux
+  
+- name: restart machine to disable SElinux
+  become: yes
+  become_user: root
+  become_method: su
+  shell: sleep 2 ; /sbin/shutdown -r now "Ansible disabling SE Linux"
+  async: 1
+  poll: 0
+  ignore_errors: True
+  tags: disable_SEL
+  when: disable_se_linux is defined and disable_se_linux
+
+- name: waiting for server to come back
+  local_action: wait_for 
+                host={{ inventory_hostname }}
+                port=5522
+                delay=10
+  sudo: false
+  tags: disable_SEL
+  when: disable_se_linux is defined and disable_se_linux
+
+- name: Install epel-release repo.
+  yum: name={{ item }}
+  become: yes
+  become_user: root
+  become_method: su
+  with_items:
+    - epel-release
+
+- name: Install required system packages.
+  yum: name={{ item }}
+  become: yes
+  become_user: root
+  become_method: su
+  with_items:
+#    - openssl-devel
+    - nginx
+    - supervisor
+  
+
+- name: Setup nginx and supervisord
+  command: '{{ item }}'
+  become: yes
+  become_user: root
+  become_method: su
+  with_items:
+    - "firewall-cmd --permanent --zone=public --add-service=http"
+    - "firewall-cmd --reload"
+    - systemctl start supervisord
+    - systemctl enable supervisord
+    - systemctl enable nginx
+    
+- name: Change owner of install_dir to allow installing software there
+  file: "path={{ install_dir }} owner={{ ansible_ssh_user }}"
+  become: yes
+  become_user: root
+  become_method: su
+  

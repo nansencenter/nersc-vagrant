@@ -1,0 +1,173 @@
+---
+# Tasks for web
+- name: Create the application user
+  user: "name={{ gunicorn_user }} state=present"
+  become: yes
+  become_user: root
+  become_method: su
+
+- name: Create the application group
+  group: "name={{ gunicorn_group }} system=yes state=present"
+  become: yes
+  become_user: root
+  become_method: su
+
+- name: Add the users to the application group
+  user: "name={{ item }} group={{ gunicorn_group }} state=present"
+  become: yes
+  become_user: root
+  become_method: su
+  with_items:
+    - "{{ gunicorn_user }}"
+    - nginx
+    - "{{ ansible_ssh_user }}"
+
+- name: Change owner/group of install_dir
+  file: "path={{ install_dir }} owner={{ ansible_ssh_user }} group={{ gunicorn_group }} recurse=yes"
+  become: yes
+  become_user: root
+  become_method: su
+
+- name: Change mode of install_dir
+  file: "path={{ install_dir }} mode=775"
+  become: yes
+  become_user: root
+  become_method: su
+  
+- name: create
+  file: "path={{ install_dir }}/run owner={{ ansible_ssh_user }} group={{ gunicorn_group }} mode=775 state=directory"
+  become: yes
+  become_user: root
+  become_method: su
+
+- name: Install gunicorn web
+  pip: name=gunicorn
+
+- name: Create link from Python dist-packages to project
+  file: path='{{ python_dist_packages }}/project'
+        src='{{ install_dir }}/nansen-cloud/project/project'
+        state=link
+        force=yes
+  tags:
+    - projectlink
+
+- name: Create the Gunicorn script file
+  become: yes
+  become_user: root
+  become_method: su
+  template: src=gunicorn_start.j2
+            dest={{ conda_dir }}/bin/gunicorn_start
+            owner={{ gunicorn_user }}
+            group={{ gunicorn_group }}
+            mode=0755
+            backup=yes
+  tags: deploy
+
+- name: Create the application log folder
+  become: yes
+  become_user: root
+  become_method: su
+  file: path={{ application_log_dir }}
+        owner={{ gunicorn_user }}
+        group={{ gunicorn_group }}
+        mode=0774
+        state=directory
+
+- name: Create the application log file
+  become: yes
+  become_user: root
+  become_method: su
+  command: touch {{ application_log_file }}
+           creates={{ application_log_file }}
+
+- name: Set permission to the application log file
+  become: yes
+  become_user: root
+  become_method: su
+  file: path={{ application_log_file }}
+        owner={{ gunicorn_user }}
+        group={{ gunicorn_group }}
+        mode=0664
+        state=file
+
+# - name: Create the virtualenv postactivate script to set environment variables
+  # template: src=virtualenv_postactivate.j2
+            # dest={{ virtualenv_path }}/bin/postactivate
+            # owner={{ gunicorn_user }}
+            # group={{ gunicorn_group }}
+            # mode=0640
+            # backup=yes
+  # tags: deploy
+
+# - name: Create the maintenance page
+  # template: src=maintenance_off.html
+            # dest={{ virtualenv_path }}/maintenance_off.html
+            # mode=0664
+
+- name: Override the settings.py file
+  template: src=settings.py
+            dest={{ project_path }}/project/settings.py
+            backup=yes
+
+- name: Run the Django syncdb command
+  django_manage:
+    command: syncdb
+    app_path: "{{ project_path }}"
+    virtualenv: "{{ virtualenv_path }}"
+    settings: "{{ django_settings_file }}"
+  environment: django_environment
+  when: run_django_syncdb is defined and run_django_syncdb
+  tags: django.syncdb
+
+- name: Run Django database migrations
+  django_manage:
+    command: migrate
+    app_path: "{{ project_path }}"
+    virtualenv: "{{ virtualenv_path }}"
+    settings: "{{ django_settings_file }}"
+  environment: django_environment
+  when: run_django_db_migrations is defined and run_django_db_migrations
+  tags: django.migrate
+  
+- name: Run Django collectstatic
+  django_manage:
+    command: collectstatic
+    app_path: "{{ project_path }}"
+    # virtualenv: "{{ virtualenv_path }}"
+    # settings: "{{ django_settings_file }}"
+  # environment: django_environment
+  when: run_django_collectstatic is defined and run_django_collectstatic
+  tags: django.collectstatic
+  
+- name: Create the Supervisor config file
+  become: yes
+  become_user: root
+  become_method: su
+  template: src=supervisor_config.j2
+            dest=/etc/supervisord.d/{{ application_name }}.ini
+            backup=yes
+  tags: reread-sup
+
+- name: Re-read the Supervisor config files
+  become: yes
+  become_user: root
+  become_method: su
+  supervisorctl: name={{ application_name }} state=present
+  tags: reread-sup
+
+- name: Restart Supervisor and then restart nginx
+  become: yes
+  become_user: root
+  become_method: su
+  supervisorctl: name={{ application_name }} state=restarted
+  notify: restart nginx
+  
+- name: Create the Nginx configuration file
+  become: yes
+  become_user: root
+  become_method: su
+  template: src=nginx_site_config.j2
+            dest=/etc/nginx/nginx.conf
+            backup=yes
+  notify: reload nginx
+  tags: nginx

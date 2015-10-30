@@ -1,0 +1,29 @@
+---
+# Tasks for centos
+# - name: Create link to shared folder
+  # sudo: yes
+  # file: src="{{ sync_dir }}" dest="{{ vagrant_folder }}" state=link
+
+- name: upgrade all packages
+  yum: name=* state=latest
+  become: yes
+  become_user: root
+  become_method: su
+
+- name: Install required system packages.
+  yum: name={{ item }}
+  become: yes
+  become_user: root
+  become_method: su
+  with_items:
+    - git
+    - bzip2
+    - gcc
+    - libXext
+    - libSM
+    - libXrender
+    # - libgfortran
+    # - libsqlite3-dev
+    # - sqlite
+    # - libspatialite-dev
+    # - spatialite-bin

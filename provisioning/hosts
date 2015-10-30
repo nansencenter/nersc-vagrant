@@ -1,24 +1,19 @@
-[develop]
-192.168.33.10
-
-[course]
-192.168.33.11
-
-[testintegration]
-192.168.33.12
-
-[webservers]
-192.168.33.13
-
 [processing]
-192.168.33.14
+#10.47.20.55:5522 ansible_ssh_user=sat
+
+[web]
+10.47.20.56:5522 ansible_ssh_user=sat
 
 [thredds]
-192.168.33.15
+192.168.33.14
 
-[usepython:children]
-develop
-course
-testintegration
-webservers
+[python:children]
 processing
+web
+
+[centos:children]
+processing
+web
+
+[web-centos:children]
+web

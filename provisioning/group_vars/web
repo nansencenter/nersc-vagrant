@@ -1,0 +1,63 @@
+---
+# file: group_vars/web
+
+install_dir: /opt
+conda_dir: "{{ install_dir }}/miniconda"
+python_dist_packages: "{{ conda_dir }}/lib/python2.7/site-packages"
+
+#Should rather find a workaround for se-linux.
+#The main issue is the socket
+#if yes, the system will make a reboot to disable SELinux
+#but it only needs to be done once per host.
+disable_se_linux: yes
+update_nansen-cloud: yes
+
+# Application settings.
+project_name: project
+application_name: nansen-cloud
+virtualenv_path: "{{ install_dir }}/{{ application_name }}"
+project_path: "{{ virtualenv_path }}/{{ project_name }}"
+application_log_dir: "{{ virtualenv_path }}/logs"
+application_log_file: "{{ application_log_dir }}/gunicorn_supervisor.log"
+#requirements_file: "{{ project_path }}/requirements.txt"
+
+
+# Gunicorn settings
+gunicorn_user: gunicorn
+gunicorn_group: www
+# Gunicorn settings. For the number of workers, a good rule to follow is
+# 2 x number of CPUs + 1
+gunicorn_num_workers: 1
+# Setting this to 1 will restart the Gunicorn process each time
+# you make a request, basically reloading the code. Very handy
+# when developing. Set to 0 for unlimited requests (default).
+gunicorn_max_requests: 0
+gunicorn_log_level: debug
+gunicorn_timeout_seconds: 300
+
+run_django_db_migrations: no
+run_django_syncdb: no
+run_django_collectstatic: yes
+
+# Nginx settings
+nginx_server_name: nansencloudweb.nersc.no
+nginx_http_port: 80
+#nginx_https_port: 443
+nginx_access_log_file: "{{ application_log_dir }}/nginx_access.log"
+nginx_error_log_file: "{{ application_log_dir }}/nginx_error.log"
+nginx_static_dir: "{{ project_path }}/project/site_media/static/"
+#nginx_media_dir: "{{ virtualenv_path }}/media/"
+
+
+# Django Environment variables
+django_environment:
+  DJANGO_SETTINGS_MODULE: "{{ django_settings_file }}"
+  DJANGO_SECRET_KEY: "{{ django_secret_key }}"
+  MEDIA_ROOT: "{{ nginx_media_dir }}"
+  STATIC_ROOT: "{{ nginx_static_dir }}"
+  DATABASE_USER: "{{ db_user }}"
+  DATABASE_PASSWORD: "{{ db_password }}"
+  EMAIL_HOST: "{{ email_host|default(omit) }}"
+  EMAIL_HOST_USER: "{{ email_host_user|default(omit) }}"
+  EMAIL_HOST_PASSWORD: "{{ email_host_password|default(omit) }}"
+  BROKER_URL: "{{ broker_url|default(omit) }}"

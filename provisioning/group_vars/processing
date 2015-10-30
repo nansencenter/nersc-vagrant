@@ -1,0 +1,6 @@
+---
+# file: group_vars/processing
+
+install_dir: /home/sat
+conda_dir: "{{ install_dir }}/miniconda"
+python_dist_packages: "{{ conda_dir }}/lib/python2.7/site-packages"

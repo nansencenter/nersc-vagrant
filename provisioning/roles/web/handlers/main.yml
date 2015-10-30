@@ -1,0 +1,19 @@
+---
+
+- name: restart application
+  become: yes
+  become_user: root
+  become_method: su
+  supervisorctl: name={{ application_name }} state=restarted
+
+- name: restart nginx
+  become: yes
+  become_user: root
+  become_method: su
+  service: name=nginx state=restarted enabled=yes
+
+- name: reload nginx
+  become: yes
+  become_user: root
+  become_method: su
+  service: name=nginx state=reloaded
