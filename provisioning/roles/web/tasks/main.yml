@@ -90,6 +90,7 @@
         mode=0664
         state=file
 
+# Might need some of these to setup the database properly (without the entire settings.py file)
 # - name: Create the virtualenv postactivate script to set environment variables
   # template: src=virtualenv_postactivate.j2
             # dest={{ virtualenv_path }}/bin/postactivate
@@ -98,11 +99,6 @@
             # mode=0640
             # backup=yes
   # tags: deploy
-
-# - name: Create the maintenance page
-  # template: src=maintenance_off.html
-            # dest={{ virtualenv_path }}/maintenance_off.html
-            # mode=0664
 
 - name: Override the settings.py file
   template: src=settings.py
@@ -133,6 +129,7 @@
   django_manage:
     command: collectstatic
     app_path: "{{ project_path }}"
+    # Might need some of these to setup the database properly (without the entire settings.py file)
     # virtualenv: "{{ virtualenv_path }}"
     # settings: "{{ django_settings_file }}"
   # environment: django_environment
