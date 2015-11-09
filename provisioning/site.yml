@@ -17,7 +17,7 @@
 - hosts: doppler
   roles:
     - sample_datasets
-    - develop
+    - nansencloud
     - doppler
   environment:
     PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
