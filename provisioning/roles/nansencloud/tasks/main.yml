@@ -44,7 +44,7 @@
 
 - name: Add sample images to db
   django_manage: >
-      command='add_images {{ sample_data_dir }}/{{ item.mapper }}/'
+      command='ingest {{ sample_data_dir }}/{{ item.mapper }}/{{ item.name }}'
       app_path='{{ dev_sources_dir }}/nansen-cloud/project'
   with_items:
     - '{{ sample_files }}'
