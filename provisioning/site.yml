@@ -14,6 +14,15 @@
     PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
 
+- hosts: doppler
+  roles:
+    - sample_datasets
+    - develop
+    - doppler
+  environment:
+    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
+    GDAL_DATA: "{{ conda_dir }}/share/gdal"
+
 - hosts: course
   roles:
     - sample_datasets

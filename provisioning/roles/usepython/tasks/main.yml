@@ -42,6 +42,7 @@
 - name: Install Nansat requirements
   shell: 'conda install -q --yes --copy {{ item }}'
   with_items:
+      #geos=3.3.3
     numpy
     scipy
     matplotlib

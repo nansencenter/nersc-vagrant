@@ -1,0 +1,55 @@
+---
+- name: Add the github SSH public key to the vm authorized_keys
+  authorized_key: user=vagrant key="{{ lookup('file', '/Users/mortenh/.ssh/id_rsa_github.pub') }}"
+
+# THIS DOESN'T WORK FOR ME..:
+#- name: Update/checkout sar-doppler
+#  git: repo=git@github.com:nansencenter/sar-doppler.git
+#       dest="{{ dev_sources_dir }}/sar-doppler"
+#       version=master
+#       update=yes
+#       accept_hostkey=yes
+#       #key_file=/home/vagrant/.ssh/id_rsa_github
+
+- name: Create link from Python dist-packages to sar-doppler
+  sudo: yes
+  file: path='{{ python_dist_packages }}/sardoppler'
+        src='{{ dev_sources_dir }}/sar-doppler/sardoppler'
+        state=link
+        force=yes
+
+- name: Create link from Python dist-packages to sar-doppler mappers
+  sudo: yes
+  file: path='{{ python_dist_packages }}/nansat_mappers'
+        src='{{ dev_sources_dir }}/sar-doppler/nansat_mappers'
+        state=link
+        force=yes
+
+#- name: Add netcdf files to db
+#  django_manage: >
+#      command='add_images {{ sample_data_dir }}/asar_netcdf_old_doppler/ASA*.nc'
+#      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
+#
+#- name: Add gsar files to db
+#  django_manage: >
+#      command='add_images {{ sample_data_dir }}/gsar/*.gsar'
+#      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
+
+- name: Create subfolders for collocated doppler files
+  file: path="{{ sample_data_dir }}/{{ item.mapper }}" state=directory
+  with_items:
+    - "{{ doppler_files }}"
+
+- name: Download collocated doppler files
+  get_url: url="{{ sample_data_url }}/{{ item.mapper }}/{{ item.name }}" dest="{{ sample_data_dir }}/{{ item.mapper }}/{{ item.name }}" force=no
+  with_items:
+    - "{{ doppler_files }}"
+
+- name: Add collocated doppler images to db
+  django_manage: >
+      command='add_images {{ sample_data_dir }}/{{ item.mapper }}/'
+      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
+  with_items:
+    - '{{ doppler_files }}'
+
+
