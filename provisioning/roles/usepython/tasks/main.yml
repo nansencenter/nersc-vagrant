@@ -14,6 +14,16 @@
     - libspatialite-dev
     - spatialite-bin
 
+- name: Mount network folders
+  sudo: yes
+  mount:
+    name: "{{ mount_name }}/{{ item }}"
+    src: "{{ mount_src }}/{{ item }}"
+    fstype: cifs
+    opts: "uid=15001,gid=15001,username={{ username }},password={{ password }},domain={{ domain }}"
+    state: mounted
+  with_items: mounted_dirs
+
 - name: Create shared folder
   file: path="{{ shared_dir }}" state=directory
 
