@@ -31,3 +31,5 @@ setup_ubuntu: yes
 setup_local_vm: yes
 use_shared_dir: yes
 use_conda_cache: yes
+setup_nansen_cloud: yes
+use_local_database: yes

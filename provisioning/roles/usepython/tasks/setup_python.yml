@@ -31,12 +31,18 @@
     matplotlib
     nose
     pillow
+    pyproj
     basemap
     netcdf4
+
+- name: Install Nansencloud requirements
+  shell: 'conda install -q --yes --copy {{ item }}'
+  with_items:
     django
     scikit-learn
     coverage
     jupyter
+  when: setup_nansen_cloud is defined and setup_nansen_cloud
 
 - name: Instal nansat-gdal and all requirements
   shell: 'conda install -q --yes --copy -c nersc nansat-gdal'
@@ -47,6 +53,7 @@
     - django-forms-bootstrap
     - django-leaflet
     - ipdb
+  when: setup_nansen_cloud is defined and setup_nansen_cloud
 
 - name: Clone pysqlite
   git: repo=https://github.com/ghaering/pysqlite
@@ -54,12 +61,14 @@
        version=da389878e7c0623cf188387b9fce4fc77d0a9b2c
        update=no
   register: git_pysqlite
+  when: setup_nansen_cloud is defined and setup_nansen_cloud and use_local_database is defined and use_local_database
 
 - name: Install pysqlite
   shell: 'python setup.py install'
   args:
     chdir: "{{ ansible_env.HOME }}/pysqlite/"
   when: git_pysqlite.changed
+  when: setup_nansen_cloud is defined and setup_nansen_cloud and use_local_database is defined and use_local_database
 
 - name: Copy downloaded packages to cached conda_pkgs
   shell: 'cp {{ conda_dir }}/pkgs/*.[bt][zx][2t] {{ cache_dir }}/conda_pkgs/'
