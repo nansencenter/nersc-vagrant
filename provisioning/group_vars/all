@@ -21,3 +21,6 @@ nansat_landmask_file: MOD44W.tgz
 
 nansat_version: develop
 nansencloud_version: develop
+
+# switches
+mount_network_folders: no

@@ -1,4 +1,5 @@
 ---
+#usepython\tasks\main.yml
 - name: Perform aptitude safe-upgrade
   sudo: yes
   apt: update_cache=yes cache_valid_time=36000
@@ -23,6 +24,7 @@
     opts: "uid=15001,gid=15001,username={{ username }},password={{ password }},domain={{ domain }}"
     state: mounted
   with_items: mounted_dirs
+  when: mount_network_folders is defined and mount_network_folders
 
 - name: Create shared folder
   file: path="{{ shared_dir }}" state=directory
