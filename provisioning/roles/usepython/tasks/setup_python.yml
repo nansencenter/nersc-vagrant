@@ -35,42 +35,8 @@
     basemap
     netcdf4
 
-- name: Install Nansencloud requirements
-  shell: 'conda install -q --yes --copy {{ item }}'
-  with_items:
-    django
-    scikit-learn
-    coverage
-    jupyter
-  when: setup_nansen_cloud is defined and setup_nansen_cloud
-#Note: jupyter installs "certifi" which breaks the ssl-certificate verification, so that conda partially breaks (at least on centos)
-#- need to disable checking certificates for now - FIX THIS (task "fixing certifi breaking things")
-
 - name: Instal nansat-gdal and all requirements
   shell: 'conda install -q --yes --copy -c nersc nansat-gdal'
-
-- name: Install nansen-cloud requirements
-  pip: name={{ item }}
-  with_items:
-    - django-forms-bootstrap
-    - django-leaflet
-    - ipdb
-  when: setup_nansen_cloud is defined and setup_nansen_cloud
-
-- name: Clone pysqlite
-  git: repo=https://github.com/ghaering/pysqlite
-       dest="{{ ansible_env.HOME }}/pysqlite/"
-       version=da389878e7c0623cf188387b9fce4fc77d0a9b2c
-       update=no
-  register: git_pysqlite
-  when: setup_nansen_cloud is defined and setup_nansen_cloud and use_local_database is defined and use_local_database
-
-- name: Install pysqlite
-  shell: 'python setup.py install'
-  args:
-    chdir: "{{ ansible_env.HOME }}/pysqlite/"
-  when: git_pysqlite.changed
-  when: setup_nansen_cloud is defined and setup_nansen_cloud and use_local_database is defined and use_local_database
 
 - name: Copy downloaded packages to cached conda_pkgs
   shell: 'cp {{ conda_dir }}/pkgs/*.[bt][zx][2t] {{ cache_dir }}/conda_pkgs/'
@@ -110,29 +76,3 @@
         src='{{ dev_sources_dir }}/nansat/nansat'
         state=link
         force=yes
-
-- name: Update/checkout Nansen-Cloud Django
-  git: repo=https://github.com/nansencenter/nansen-cloud
-       dest="{{ install_dir }}/nansen-cloud"
-       version="{{ nansencloud_version }}"
-       update=yes
-       force=yes
-  when: setup_nansen_cloud is defined and setup_nansen_cloud
-  tags: 
-    - update-nansencloud
-
-
-- name: Override the settings.py file
-  template: src=settings.py
-            dest={{ project_path }}/project/settings.py
-            backup=yes
-  tags: 
-    - update-nansencloud
-  when: setup_nansen_cloud is defined and setup_nansen_cloud
-
-- name: Create link from Python dist-packages to nansen-cloud
-  file: path='{{ python_dist_packages }}/nansencloud'
-        src='{{ install_dir }}/nansen-cloud/nansencloud'
-        state=link
-        force=yes
-  when: setup_nansen_cloud is defined and setup_nansen_cloud
