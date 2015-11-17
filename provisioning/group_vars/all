@@ -33,3 +33,5 @@ use_shared_dir: yes
 use_conda_cache: yes
 setup_nansen_cloud: yes
 use_local_database: yes
+make_migrations: yes
+run_migrate: yes

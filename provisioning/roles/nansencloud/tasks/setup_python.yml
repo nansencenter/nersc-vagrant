@@ -78,6 +78,7 @@
       app_path='{{ dev_sources_dir }}/nansen-cloud/project'
       settings='project.settings'
       pythonpath='{{ dev_sources_dir }}/nansen-cloud/project'
+  when: make_migrations is defined and make_migrations
 
 - name: Run migrate on Nansen-Cloud project
   django_manage: >
@@ -85,6 +86,7 @@
       app_path='{{ dev_sources_dir }}/nansen-cloud/project'
       settings='project.settings'
       pythonpath='{{ dev_sources_dir }}/nansen-cloud/project'
+  when: run_migrate is defined and run_migrate
 
 - name: Add MAPPER_TEST_DATA_DIR to .bashrc
   lineinfile: dest=/home/vagrant/.bashrc line="export MAPPER_TEST_DATA_DIR={{ sample_data_dir }}"
