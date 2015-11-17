@@ -1,6 +1,5 @@
 ---
 #usepython\tasks\setup_python.yml
-
 - name: Download Miniconda
   get_url:
     url: http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
@@ -28,17 +27,14 @@
 - name: Install Nansat requirements
   shell: 'conda install -q --yes --copy {{ item }}'
   with_items:
-    numpy
     scipy
     matplotlib
     nose
     pillow
     basemap
-    proj.4
     netcdf4
     django
     scikit-learn
-    nose
     coverage
     jupyter
 
