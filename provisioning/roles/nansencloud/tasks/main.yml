@@ -1,71 +1,9 @@
 ---
-- name: Update/checkout OpenWind
-  git: repo=https://github.com/nansencenter/openwind
-       dest="{{ dev_sources_dir }}/openwind"
-       version=develop
-       update=yes
+#nansencloud\tasks\main.yml
+- include: setup_centos.yml
+  when: setup_centos is defined and setup_centos
 
-- name: Create link from Python dist-packages to openwind
-  sudo: yes
-  file: path='{{ python_dist_packages }}/openwind'
-        src='{{ dev_sources_dir }}/openwind/openwind'
-        state=link
-        force=yes
+- include: setup_ubuntu.yml
+  when: setup_ubuntu is defined and setup_ubuntu
 
-- name: Update/checkout Nansen-Cloud Django
-  git: repo=https://github.com/nansencenter/nansen-cloud
-       dest="{{ dev_sources_dir }}/nansen-cloud"
-       version="{{ nansencloud_version }}"
-       update=yes
-
-- name: Create link from Python dist-packages to nansen-cloud
-  sudo: yes
-  file: path='{{ python_dist_packages }}/nansencloud'
-        src='{{ dev_sources_dir }}/nansen-cloud/nansencloud'
-        state=link
-        force=yes
-
-- name: Create link from home directory to nansen-cloud
-  sudo: yes
-  file: path=/home/vagrant/nansen-cloud
-        src='{{ dev_sources_dir }}/nansen-cloud'
-        state=link
-        force=yes
-
-- name: Run makemigrations on Nansen-Cloud project
-  django_manage: >
-      command=makemigrations
-      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
-      settings='project.settings'
-      pythonpath='{{ dev_sources_dir }}/nansen-cloud/project'
-
-- name: Run migrate on Nansen-Cloud project
-  django_manage: >
-      command=migrate
-      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
-      settings='project.settings'
-      pythonpath='{{ dev_sources_dir }}/nansen-cloud/project'
-
-- name: Add MAPPER_TEST_DATA_DIR to .bashrc
-  lineinfile: dest=/home/vagrant/.bashrc line="export MAPPER_TEST_DATA_DIR={{ sample_data_dir }}"
-
-- name: Add sample images to db
-  django_manage: >
-      command='ingest {{ sample_data_dir }}/{{ item.mapper }}/{{ item.name }}'
-      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
-  with_items:
-    - '{{ sample_files }}'
-
-- name: Apt install packages for testing new functionalities
-  apt: pkg={{ item }} state=installed update-cache=yes
-  sudo: yes
-  with_items:
-      - libxml2-dev
-      - libxslt1-dev
-      - python-dev
-
-- name: Pip install extra packages for testing new functionalities
-  pip: name={{ item }}
-  sudo: yes
-  with_items:
-    - thredds_crawler
+- include: setup_python.yml
