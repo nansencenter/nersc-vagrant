@@ -1,0 +1,193 @@
+---
+#webserver\tasks\setup_centos.yml
+
+- name: Centos | Including run-time settings
+  include_vars: web-vars.yml
+  tags:
+    - nginx
+    - update-nansencloud
+
+- name: Centos | Install epel-release repo.
+  yum: name={{ item }}
+  sudo: yes
+  with_items:
+    - epel-release
+
+- name: Centos | Install required system packages.
+  yum: name={{ item }}
+  sudo: yes
+  with_items:
+    - nginx
+    - supervisor
+
+- name: Centos | Configure firewall
+  command: "{{ item }}"
+  sudo: yes
+  with_items:
+    - "firewall-cmd --permanent --zone=public --add-service=http"
+    - "firewall-cmd --reload"
+
+- name: Centos | Start and enable nginx and supervisord 
+  sudo: yes
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+    - nginx
+    - supervisord
+
+- name: Centos | Change owner/group of install_dir
+  file: "path={{ install_dir }} owner={{ ansible_ssh_user }} group={{ gunicorn_group }} recurse=yes"
+  sudo: yes
+
+- name: Centos | Create the application user
+  user: "name={{ gunicorn_user }} state=present"
+  sudo: yes
+
+- name: Centos | Create the application group
+  group: "name={{ gunicorn_group }} system=yes state=present"
+  sudo: yes
+
+- name: Centos | Add the users to the application group
+  user: "name={{ item }} group={{ gunicorn_group }} state=present"
+  sudo: yes
+  with_items:
+    - "{{ gunicorn_user }}"
+    - nginx
+    - "{{ ansible_ssh_user }}"
+
+- name: Centos | Change mode of install_dir
+  file: "path={{ install_dir }} mode=775"
+  sudo: yes
+  
+- name: Centos | create
+  file: "path={{ install_dir }}/run owner={{ ansible_ssh_user }} group={{ gunicorn_group }} mode=775 state=directory"
+  sudo: yes
+
+- name: Centos | Install gunicorn web
+  pip: name=gunicorn
+
+- name: Centos | Create link from Python dist-packages to project
+  file: path='{{ python_dist_packages }}/project'
+        src='{{ install_dir }}/nansen-cloud/project/project'
+        state=link
+        force=yes
+  tags:
+    - projectlink
+
+- name: Centos | Create the Gunicorn script file
+  sudo: yes
+  template: src=gunicorn_start.j2
+            dest={{ conda_dir }}/bin/gunicorn_start
+            owner={{ gunicorn_user }}
+            group={{ gunicorn_group }}
+            mode=0755
+            backup=yes
+
+- name: Centos | Create the application log folder
+  sudo: yes
+  file: path={{ application_log_dir }}
+        owner={{ gunicorn_user }}
+        group={{ gunicorn_group }}
+        mode=0774
+        state=directory
+
+- name: Centos | Give correct permissions to nginx files
+  sudo: yes
+  file: path={{ item }} 
+        owner=nginx
+        group={{ gunicorn_group }}
+        state=touch
+        mode=0660
+  with_items:
+    - "{{ nginx_access_log_file }}"
+    - "{{ nginx_error_log_file }}"
+  tags: 
+    - nginx
+
+- name: Centos | Create the application log file
+  sudo: yes
+  command: touch {{ application_log_file }}
+           creates={{ application_log_file }}
+
+- name: Centos | Set permission to the application log file
+  sudo: yes
+  file: path={{ application_log_file }}
+        owner={{ gunicorn_user }}
+        group={{ gunicorn_group }}
+        mode=0664
+        state=file
+
+# Might need some of these to setup the database properly (without the entire settings.py file)
+# - name: Centos | Create the virtualenv postactivate script to set environment variables
+  # template: src=virtualenv_postactivate.j2
+            # dest={{ virtualenv_path }}/bin/postactivate
+            # owner={{ gunicorn_user }}
+            # group={{ gunicorn_group }}
+            # mode=0640
+            # backup=yes
+  # tags: deploy
+
+- name: Centos | Run Django database migrations
+  django_manage:
+    command: migrate
+    app_path: "{{ project_path }}"
+# Might need some of these to setup the database properly (without the entire settings.py file)
+    # virtualenv: "{{ virtualenv_path }}"
+    # settings: "{{ django_settings_file }}"
+  # environment: django_environment
+  when: run_django_db_migrations is defined and run_django_db_migrations
+  tags: 
+    - django.migrate
+    - update-nansencloud
+  
+- name: Centos | Run Django collectstatic
+  django_manage:
+    command: collectstatic
+    app_path: "{{ project_path }}"
+    # Might need some of these to setup the database properly (without the entire settings.py file)
+    # virtualenv: "{{ virtualenv_path }}"
+    # settings: "{{ django_settings_file }}"
+  # environment: django_environment
+  when: run_django_collectstatic is defined and run_django_collectstatic
+  tags: 
+    - django.collectstatic
+    - update-nansencloud
+
+- name: Centos | Create the Supervisor main config file
+  sudo: yes
+  template: src=supervisor_main_config.j2
+            dest=/etc/supervisord.conf
+            backup=yes
+
+- name: Centos | Restart supervisord 1
+  sudo: yes
+  service: name=supervisord state=restarted
+
+- name: Centos | Create the Supervisor application config file
+  sudo: yes
+  template: src=supervisor_config.j2
+            dest=/etc/supervisord.d/{{ application_name }}.ini
+            backup=yes
+  tags: reread-sup
+
+
+- name: Centos | Re-read the Supervisor config files
+  supervisorctl: name={{ application_name }} state=present  username={{ ansible_ssh_user }} password={{ supervisor_password }}
+  tags: 
+    - reread-sup
+    - update-nansencloud
+
+- name: Centos | Restart supervisord 2
+  sudo: yes
+  service: name=supervisord state=restarted
+
+- name: Centos | Create the Nginx configuration file
+  sudo: yes
+  template: src=nginx_site_config.j2
+            dest=/etc/nginx/nginx.conf
+            backup=yes
+  tags: 
+    - nginx
+
+- name: Centos | Restart nginx
+  sudo: yes
+  service: name=nginx state=restarted
