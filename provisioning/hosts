@@ -19,6 +19,10 @@
 [thredds]
 192.168.33.15
 
+[production:children]
+webserver
+processing
+
 [usepython:children]
 develop
 course

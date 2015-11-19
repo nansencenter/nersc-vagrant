@@ -42,13 +42,12 @@
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
     MAPPER_TEST_DATA_DIR: "{{ sample_data_dir }}"
 
-- hosts: processing
+- hosts: production
   roles:
     - nansencloud
 
 - hosts: webserver
   roles:
-    - nansencloud
     - webserver
 
 - hosts: thredds
