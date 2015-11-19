@@ -1,5 +1,9 @@
 ---
 #usepython\tasks\setup_python.yml
+- name: Python | Change owner of install directory
+  sudo: yes
+  file: path="{{ install_dir }}" owner="{{ ansible_ssh_user }}"
+
 - name: Python | Download Miniconda
   get_url:
     url: http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh

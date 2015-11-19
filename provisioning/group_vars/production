@@ -2,7 +2,7 @@
 nansat_version: master
 nansencloud_version: master
 home_dir: /home/sat
-install_dir: "{{ home_dir }}"
+install_dir: /opt
 cache_dir: "{{ home_dir }}"
 conda_dir: "{{ install_dir }}/miniconda"
 dev_sources_dir: "{{ install_dir }}"
