@@ -6,6 +6,7 @@
   tags:
     - nginx
     - update-nansencloud
+    - update-nansat
 
 - name: Centos | Install epel-release repo.
   yum: name={{ item }}
@@ -182,3 +183,4 @@
   supervisorctl: "name={{ application_name }} state=restarted username={{ ansible_ssh_user }} password={{ supervisor_password }}"
   tags: 
     - update-nansencloud
+    - update-nansat
