@@ -1,3 +1,0 @@
----
-dev_sources_dir: "{{ shared_dir }}/production_vm"
-nansencloud_version: master

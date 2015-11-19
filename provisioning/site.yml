@@ -46,7 +46,7 @@
   roles:
     - nansencloud
 
-- hosts: webservers
+- hosts: webserver
   roles:
     - nansencloud
     - webserver

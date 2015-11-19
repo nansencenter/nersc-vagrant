@@ -10,11 +10,11 @@
 [testintegration]
 192.168.33.12
 
-[webservers]
-192.168.33.13
+[webserver]
+10.47.20.56:5522 ansible_ssh_user=sat
 
 [processing]
-192.168.33.14
+10.47.20.55:5522 ansible_ssh_user=sat
 
 [thredds]
 192.168.33.15
@@ -24,5 +24,5 @@ develop
 course
 doppler
 testintegration
-webservers
+webserver
 processing

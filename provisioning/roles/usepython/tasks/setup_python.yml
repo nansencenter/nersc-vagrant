@@ -1,30 +1,30 @@
 ---
 #usepython\tasks\setup_python.yml
-- name: Download Miniconda
+- name: Python | Download Miniconda
   get_url:
     url: http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
     dest: "{{ cache_dir }}/miniconda.sh"
 
-- name: chmod Miniconda
+- name: Python | chmod Miniconda
   file: path="{{ cache_dir }}/miniconda.sh" mode=775
 
-- name: Install Miniconda
+- name: Python | Install Miniconda
   shell: '{{ cache_dir }}/miniconda.sh -b -p {{ conda_dir }}'
   args:
     creates: '{{ conda_dir }}'
 
-- name: Create conda_pkgs in shared folder
+- name: Python | Create conda_pkgs in shared folder
   file: path="{{ cache_dir }}/conda_pkgs/empty" state=directory
   when: use_conda_cache is defined and use_conda_cache
 
-- name: Copy cached packages from conda_pkgs
+- name: Python | Copy cached packages from conda_pkgs
   shell: 'cp {{ cache_dir }}/conda_pkgs/* {{ conda_dir }}/pkgs/ -r'
   when: use_conda_cache is defined and use_conda_cache
 
-- name: Update Miniconda
+- name: Python | Update Miniconda
   shell: 'conda update -q --yes --copy conda'
 
-- name: Install Nansat requirements
+- name: Python | Install Nansat requirements
   shell: 'conda install -q --yes --copy {{ item }}'
   with_items:
     scipy
@@ -35,43 +35,43 @@
     basemap
     netcdf4
 
-- name: Instal nansat-gdal and all requirements
+- name: Python | Instal nansat-gdal and all requirements
   shell: 'conda install -q --yes --copy -c nersc nansat-gdal'
 
-- name: Copy downloaded packages to cached conda_pkgs
+- name: Python | Copy downloaded packages to cached conda_pkgs
   shell: 'cp {{ conda_dir }}/pkgs/*.[bt][zx][2t] {{ cache_dir }}/conda_pkgs/'
   when: use_conda_cache is defined and use_conda_cache
 
-- name: Add PATH to .bashrc
-  lineinfile: dest=/home/vagrant/.bashrc line="export PATH={{ conda_dir }}/bin:$PATH"
+- name: Python | Add PATH to .bashrc
+  lineinfile: dest="{{ home_dir }}/.bashrc" line="export PATH={{ conda_dir }}/bin:$PATH"
 
-- name: Add GDAL_DATA to .bashrc
-  lineinfile: dest=/home/vagrant/.bashrc line="export GDAL_DATA={{ conda_dir }}/share/gdal"
+- name: Python | Add GDAL_DATA to .bashrc
+  lineinfile: dest="{{ home_dir }}/.bashrc" line="export GDAL_DATA={{ conda_dir }}/share/gdal"
 
-- name: Add links to some conda libraries to /usr/lib
+- name: Python | Add links to some conda libraries to /usr/lib
   sudo: yes
   file: src="{{ conda_dir }}/lib/{{ item }}" dest="/usr/lib/{{ item }}" state=link
   with_items:
     - libgeos_c.so
     - libgdal.so
 
-- name: Run ldconfig
+- name: Python | Run ldconfig
   sudo: yes
-  shell: 'ldconfig'
+  shell: '/sbin/ldconfig'
 
-- name: Update/checkout Nansat
+- name: Python | Update/checkout Nansat
   git: repo=https://github.com/nansencenter/nansat
        dest="{{ dev_sources_dir }}/nansat/"
        version="{{ nansat_version }}"
        update=yes
   register: git_nansat
 
-- name: Install Nansat (always run to keep the pixel functions updated)
+- name: Python | Install Nansat (always run to keep the pixel functions updated)
   shell: 'python setup.py build_ext --inplace'
   args:
     chdir: '{{ dev_sources_dir }}/nansat'
 
-- name: Create link from Python dist-packages to nansat
+- name: Python | Create link from Python dist-packages to nansat
   file: path='{{ python_dist_packages }}/nansat'
         src='{{ dev_sources_dir }}/nansat/nansat'
         state=link

@@ -1,2 +1,16 @@
 ---
-#usepython\tasks\centos.yml
+#usepython\tasks\setup_centos.yml
+- name: Centos | upgrade all packages
+  yum: name=* state=latest
+  sudo: yes
+
+- name: Centos | Install required system packages.
+  yum: name={{ item }}
+  sudo: yes
+  with_items:
+    - git
+    - bzip2
+    - gcc
+    - libXext
+    - libSM
+    - libXrender

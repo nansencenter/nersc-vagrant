@@ -4,7 +4,8 @@ project_name: nansen-cloud
 shared_dir: /vagrant/shared
 cache_dir: "{{ shared_dir }}"
 home_dir: /home/vagrant
-conda_dir: "{{ home_dir }}/miniconda"
+install_dir: "{{ home_dir }}"
+conda_dir: "{{ install_dir }}/miniconda"
 python_dist_packages: "{{ conda_dir }}/lib/python2.7/site-packages"
 
 ftp_nansat: ftp://ftp.nersc.no/pub/nansat
@@ -35,3 +36,7 @@ setup_nansen_cloud: yes
 use_local_database: yes
 make_migrations: yes
 run_migrate: yes
+git_force_nansencloud: no
+create_home_dir_link: yes
+nansencloud_extra: yes
+openwind: yes

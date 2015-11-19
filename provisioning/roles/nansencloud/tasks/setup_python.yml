@@ -1,6 +1,9 @@
 ---
 #nansencloud\tasks\setup_python.yml
 
+- name: fixing certifi breaking things
+  lineinfile: "dest={{ home_dir }}/.condarc line='ssl_verify: false'"
+
 - name: Install Nansencloud requirements
   shell: 'conda install -q --yes --copy {{ item }}'
   with_items:
@@ -33,23 +36,12 @@
   when: git_pysqlite.changed
   when: use_local_database is defined and use_local_database
 
-- name: Update/checkout OpenWind
-  git: repo=https://github.com/nansencenter/openwind
-       dest="{{ dev_sources_dir }}/openwind"
-       version=develop
-       update=yes
-
-- name: Create link from Python dist-packages to openwind
-  file: path='{{ python_dist_packages }}/openwind'
-        src='{{ dev_sources_dir }}/openwind/openwind'
-        state=link
-        force=yes
-
 - name: Update/checkout Nansen-Cloud Django
   git: repo=https://github.com/nansencenter/nansen-cloud
        dest="{{ dev_sources_dir }}/nansen-cloud"
        version="{{ nansencloud_version }}"
        update=yes
+       force="{{ git_force_nansencloud }}"
 
 - name: Create link from Python dist-packages to nansen-cloud
   file: path='{{ python_dist_packages }}/nansencloud'
@@ -62,6 +54,7 @@
         src='{{ dev_sources_dir }}/nansen-cloud'
         state=link
         force=yes
+  when: create_home_dir_link is defined and create_home_dir_link
 
 #Override settings.py for non-local-db
 - name: Override the settings.py file
@@ -87,19 +80,3 @@
       settings='project.settings'
       pythonpath='{{ dev_sources_dir }}/nansen-cloud/project'
   when: run_migrate is defined and run_migrate
-
-- name: Add MAPPER_TEST_DATA_DIR to .bashrc
-  lineinfile: dest=/home/vagrant/.bashrc line="export MAPPER_TEST_DATA_DIR={{ sample_data_dir }}"
-
-- name: Add sample images to db
-  django_manage: >
-      command='ingest {{ sample_data_dir }}/{{ item.mapper }}/{{ item.name }}'
-      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
-  with_items:
-    - '{{ sample_files }}'
-
-- name: Pip install extra packages for testing new functionalities
-  pip: name={{ item }}
-  sudo: yes
-  with_items:
-    - thredds_crawler

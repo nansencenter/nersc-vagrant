@@ -1,10 +1,10 @@
 ---
-#usepython\tasks\ubuntu.yml
-- name: Perform aptitude safe-upgrade
+#usepython\tasks\setup_ubuntu.yml
+- name: Ubuntu | Perform aptitude safe-upgrade
   sudo: yes
   apt: update_cache=yes cache_valid_time=36000
 
-- name: Install required system packages.
+- name: Ubuntu | Install required system packages for.
   apt: pkg={{ item }}
   sudo: yes
   with_items:
