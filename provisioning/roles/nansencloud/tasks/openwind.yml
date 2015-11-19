@@ -1,11 +1,11 @@
 ---
-- name: Update/checkout OpenWind
+- name: Openwind | Update/checkout OpenWind
   git: repo=https://github.com/nansencenter/openwind
        dest="{{ dev_sources_dir }}/openwind"
        version=develop
        update=yes
 
-- name: Create link from Python dist-packages to openwind
+- name: Openwind | Create link from Python dist-packages to openwind
   file: path='{{ python_dist_packages }}/openwind'
         src='{{ dev_sources_dir }}/openwind/openwind'
         state=link
