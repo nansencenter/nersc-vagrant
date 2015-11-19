@@ -46,6 +46,8 @@
        version="{{ nansencloud_version }}"
        update=yes
        force="{{ git_force_nansencloud }}"
+  tags: 
+    - update-nansencloud
 
 - name: Python | Create link from Python dist-packages to nansen-cloud
   file: path='{{ python_dist_packages }}/nansencloud'
@@ -75,6 +77,8 @@
       app_path='{{ dev_sources_dir }}/nansen-cloud/project'
       settings='project.settings'
       pythonpath='{{ dev_sources_dir }}/nansen-cloud/project'
+  tags: 
+    - update-nansencloud
   when: make_migrations is defined and make_migrations
 
 - name: Python | Run migrate on Nansen-Cloud project
@@ -83,4 +87,6 @@
       app_path='{{ dev_sources_dir }}/nansen-cloud/project'
       settings='project.settings'
       pythonpath='{{ dev_sources_dir }}/nansen-cloud/project'
+  tags: 
+    - update-nansencloud
   when: run_migrate is defined and run_migrate
