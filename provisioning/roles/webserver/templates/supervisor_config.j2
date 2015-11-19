@@ -1,0 +1,5 @@
+[program:{{ application_name }}]
+command = {{ conda_dir }}/bin/gunicorn_start
+user = {{ gunicorn_user }}
+stdout_logfile = {{ application_log_file }}
+redirect_stderr = true
