@@ -1,0 +1,16 @@
+---
+- name: Add MAPPER_TEST_DATA_DIR to .bashrc
+  lineinfile: dest="{{ home_dir }}/.bashrc" line="export MAPPER_TEST_DATA_DIR={{ sample_data_dir }}"
+
+- name: Add sample images to db
+  django_manage: >
+      command='ingest {{ sample_data_dir }}/{{ item.mapper }}/{{ item.name }}'
+      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
+  with_items:
+    - '{{ sample_files }}'
+
+- name: Pip install extra packages for testing new functionalities
+  pip: name={{ item }}
+  sudo: yes
+  with_items:
+    - thredds_crawler
