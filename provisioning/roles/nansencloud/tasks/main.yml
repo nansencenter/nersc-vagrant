@@ -6,6 +6,8 @@
 - include: setup_ubuntu.yml
   when: setup_ubuntu is defined and setup_ubuntu
 
+- include: nersc-metadata.yml
+
 - include: setup_python.yml
 
 - include: openwind.yml
