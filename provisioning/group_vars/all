@@ -2,7 +2,10 @@
 # file: group_vars/all
 project_name: nansen-cloud
 shared_dir: /vagrant/shared
-conda_dir: /home/vagrant/miniconda
+cache_dir: "{{ shared_dir }}"
+home_dir: /home/vagrant
+install_dir: "{{ home_dir }}"
+conda_dir: "{{ install_dir }}/miniconda"
 python_dist_packages: "{{ conda_dir }}/lib/python2.7/site-packages"
 
 ftp_nansat: ftp://ftp.nersc.no/pub/nansat
@@ -21,3 +24,19 @@ nansat_landmask_file: MOD44W.tgz
 
 nansat_version: develop
 nansencloud_version: develop
+
+# switches for certain tasks
+mount_network_folders: no
+setup_centos: no
+setup_ubuntu: yes
+setup_local_vm: yes
+use_shared_dir: yes
+use_conda_cache: yes
+setup_nansen_cloud: yes
+use_local_database: yes
+make_migrations: yes
+run_migrate: yes
+git_force_nansencloud: no
+create_home_dir_link: yes
+nansencloud_extra: yes
+openwind: yes

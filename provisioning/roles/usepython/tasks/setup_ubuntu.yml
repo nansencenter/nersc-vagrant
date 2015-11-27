@@ -1,0 +1,16 @@
+---
+#usepython\tasks\setup_ubuntu.yml
+- name: Ubuntu | Perform aptitude safe-upgrade
+  sudo: yes
+  apt: update_cache=yes cache_valid_time=36000
+
+- name: Ubuntu | Install required system packages for.
+  apt: pkg={{ item }}
+  sudo: yes
+  with_items:
+    - git
+    - libgfortran3
+    - libsqlite3-dev
+    - sqlite3
+    - libspatialite-dev
+    - spatialite-bin

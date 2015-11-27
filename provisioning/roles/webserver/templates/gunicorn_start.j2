@@ -1,0 +1,33 @@
+#!/bin/sh
+
+APP_NAME={{ application_name }}
+P_NAME={{ project_name }}
+DJANGODIR={{ project_path }}
+SOCKFILE={{ install_dir }}/run/gunicorn.sock
+USER={{ gunicorn_user }}
+GROUP={{ gunicorn_group }}
+NUM_WORKERS={{ gunicorn_num_workers }}
+MAX_REQUESTS={{ gunicorn_max_requests }}
+LOG_LEVEL={{ gunicorn_log_level }}
+
+# set python env
+export PATH={{ conda_dir }}/bin:$PATH
+export GDAL_DATA={{ conda_dir }}/share/gdal
+
+# Create the run directory if it doesn't exist.
+RUNDIR=$(dirname $SOCKFILE)
+test -d $RUNDIR || mkdir -p $RUNDIR
+
+# Programs meant to be run under supervisor should not daemonize themselves
+# (do not use --daemon).
+exec gunicorn \
+    --name $APP_NAME \
+    --workers $NUM_WORKERS \
+    --max-requests $MAX_REQUESTS \
+    --timeout {{ gunicorn_timeout_seconds|default(30) }} \
+    --user $USER \
+	--group $GROUP \
+    --log-level $LOG_LEVEL \
+    --bind unix:$SOCKFILE \
+    $P_NAME.wsgi
+	
