@@ -2,6 +2,14 @@
 - name: Add MAPPER_TEST_DATA_DIR to .bashrc
   lineinfile: dest="{{ home_dir }}/.bashrc" line="export MAPPER_TEST_DATA_DIR={{ sample_data_dir }}"
 
+- name: Pip install extra packages for testing new functionalities
+  pip: name={{ item }}
+  sudo: yes
+  with_items:
+    - thredds_crawler
+    - pynmea2
+    - libais
+
 - name: Add public sample images to db
   django_manage: >
       command='ingest {{ sample_data_dir }}/{{ item.mapper }}/{{ item.name }}'
@@ -16,11 +24,3 @@
   with_items:
     - '{{ private_sample_files }}'
   when: use_local_database is defined and use_local_database
-
-- name: Pip install extra packages for testing new functionalities
-  pip: name={{ item }}
-  sudo: yes
-  with_items:
-    - thredds_crawler
-    - pynmea2
-    - libais
