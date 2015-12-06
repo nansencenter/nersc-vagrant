@@ -8,10 +8,10 @@
 
 - include: nersc-metadata.yml
 
+- include: extra.yml
+  when: nansencloud_extra is defined and nansencloud_extra
+
 - include: setup_python.yml
 
 - include: openwind.yml
   when: openwind is defined and openwind
-
-- include: extra.yml
-  when: nansencloud_extra is defined and nansencloud_extra
