@@ -23,3 +23,4 @@
   with_items:
     - thredds_crawler
     - pynmea2
+    - libais
