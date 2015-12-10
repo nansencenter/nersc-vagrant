@@ -13,6 +13,9 @@
     - sqlite3
     - libspatialite-dev
     - spatialite-bin
+    - libudunits2-0
+    - libudunits2-dev
+
 
 - name: Mount network folders
   sudo: yes
@@ -73,6 +76,7 @@
 - name: Install nansen-cloud requirements
   pip: name={{ item }}
   with_items:
+    - cfunits
     - django-forms-bootstrap
     - django-leaflet
     - ipdb
