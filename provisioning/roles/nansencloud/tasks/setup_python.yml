@@ -24,6 +24,7 @@
     - django-forms-bootstrap
     - django-leaflet
     - ipdb
+    - cfunits
 
 - name: Python | Clone pysqlite
   git: repo=https://github.com/ghaering/pysqlite
@@ -46,7 +47,7 @@
        version="{{ nansencloud_version }}"
        update=yes
        force="{{ git_force_nansencloud }}"
-  tags: 
+  tags:
     - update-nansencloud
 
 - name: Python | Create link from Python dist-packages to nansen-cloud
@@ -67,7 +68,7 @@
   template: src=settings.py
             dest={{ project_path }}/project/settings.py
             backup=yes
-  tags: 
+  tags:
     - update-nansencloud
   when: use_local_database is not defined or not use_local_database
 
@@ -77,7 +78,7 @@
       app_path='{{ dev_sources_dir }}/nansen-cloud/project'
       settings='project.settings'
       pythonpath='{{ dev_sources_dir }}/nansen-cloud/project'
-  tags: 
+  tags:
     - update-nansencloud
   when: make_migrations is defined and make_migrations
 
@@ -87,6 +88,6 @@
       app_path='{{ dev_sources_dir }}/nansen-cloud/project'
       settings='project.settings'
       pythonpath='{{ dev_sources_dir }}/nansen-cloud/project'
-  tags: 
+  tags:
     - update-nansencloud
   when: run_migrate is defined and run_migrate
