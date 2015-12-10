@@ -1,0 +1,92 @@
+---
+#nansencloud\tasks\setup_python.yml
+
+- name: Python | Create condarc
+  file: "path={{ home_dir }}/.condarc state=touch"
+
+- name: Python | Fix certifi breaking things
+  lineinfile: "dest={{ home_dir }}/.condarc line='ssl_verify: false'"
+
+- name: Python | Install Nansencloud requirements
+  shell: 'conda install -q --yes --copy {{ item }}'
+  with_items:
+    django
+    scikit-learn
+    coverage
+    jupyter
+    psycopg2
+#Note: jupyter installs "certifi" which breaks the ssl-certificate verification, so that conda partially breaks (at least on centos)
+#- need to disable checking certificates for now - FIX THIS (task "fixing certifi breaking things")
+
+- name: Python | Install nansen-cloud requirements
+  pip: name={{ item }}
+  with_items:
+    - django-forms-bootstrap
+    - django-leaflet
+    - ipdb
+
+- name: Python | Clone pysqlite
+  git: repo=https://github.com/ghaering/pysqlite
+       dest="{{ ansible_env.HOME }}/pysqlite/"
+       version=da389878e7c0623cf188387b9fce4fc77d0a9b2c
+       update=no
+  register: git_pysqlite
+  when: use_local_database is defined and use_local_database
+
+- name: Python | Install pysqlite
+  shell: 'python setup.py install'
+  args:
+    chdir: "{{ ansible_env.HOME }}/pysqlite/"
+  when: git_pysqlite.changed
+  when: use_local_database is defined and use_local_database
+
+- name: Python | Update/checkout Nansen-Cloud Django
+  git: repo=https://github.com/nansencenter/nansen-cloud
+       dest="{{ dev_sources_dir }}/nansen-cloud"
+       version="{{ nansencloud_version }}"
+       update=yes
+       force="{{ git_force_nansencloud }}"
+  tags: 
+    - update-nansencloud
+
+- name: Python | Create link from Python dist-packages to nansen-cloud
+  file: path='{{ python_dist_packages }}/nansencloud'
+        src='{{ dev_sources_dir }}/nansen-cloud/nansencloud'
+        state=link
+        force=yes
+
+- name: Python | Create link from home directory to nansen-cloud
+  file: path="{{ home_dir }}/nansen-cloud"
+        src='{{ dev_sources_dir }}/nansen-cloud'
+        state=link
+        force=yes
+  when: create_home_dir_link is defined and create_home_dir_link
+
+#Override settings.py for non-local-db
+- name: Python | Override the settings.py file
+  template: src=settings.py
+            dest={{ project_path }}/project/settings.py
+            backup=yes
+  tags: 
+    - update-nansencloud
+  when: use_local_database is not defined or not use_local_database
+
+- name: Python | Run makemigrations on Nansen-Cloud project
+  django_manage: >
+      command=makemigrations
+      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
+      settings='project.settings'
+      pythonpath='{{ dev_sources_dir }}/nansen-cloud/project'
+  tags: 
+    - update-nansencloud
+  when: make_migrations is defined and make_migrations
+
+- name: Python | Run migrate on Nansen-Cloud project
+  django_manage: >
+      command=migrate
+      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
+      settings='project.settings'
+      pythonpath='{{ dev_sources_dir }}/nansen-cloud/project'
+  tags: 
+    - update-nansencloud
+  when: run_migrate is defined and run_migrate

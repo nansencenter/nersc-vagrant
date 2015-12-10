@@ -1,0 +1,26 @@
+---
+#webserver\tasks\selinux.yml
+
+- name: SELinux | Disable SELinux
+  selinux: state=disabled
+  sudo: yes
+  tags: disable_SEL
+  when: disable_se_linux is defined and disable_se_linux
+  
+- name: SELinux | restart machine to disable SELinux
+  sudo: yes
+  shell: sleep 2 ; /sbin/shutdown -r now "Ansible disabling SE Linux"
+  async: 1
+  poll: 0
+  ignore_errors: True
+  tags: disable_SEL
+  when: disable_se_linux is defined and disable_se_linux
+
+- name: SELinux | waiting for server to come back
+  local_action: wait_for 
+                host={{ inventory_hostname }}
+                port=5522
+                delay=10
+  sudo: false
+  tags: disable_SEL
+  when: disable_se_linux is defined and disable_se_linux

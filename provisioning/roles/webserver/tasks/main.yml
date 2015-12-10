@@ -1,0 +1,8 @@
+---
+# Tasks for webserver
+
+- include: selinux.yml
+  when: setup_centos is defined and setup_centos and disable_se_linux is defined and disable_se_linux
+
+- include: setup_centos.yml
+  when: setup_centos is defined and setup_centos
