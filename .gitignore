@@ -2,3 +2,4 @@
 python/
 shared/
 provisioning/group_vars/thredds
+provisioning/group_vars/usepython

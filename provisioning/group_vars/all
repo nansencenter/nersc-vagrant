@@ -2,7 +2,10 @@
 # file: group_vars/all
 project_name: nansen-cloud
 shared_dir: /vagrant/shared
-conda_dir: /home/vagrant/miniconda
+cache_dir: "{{ shared_dir }}"
+home_dir: /home/vagrant
+install_dir: "{{ home_dir }}"
+conda_dir: "{{ install_dir }}/miniconda"
 python_dist_packages: "{{ conda_dir }}/lib/python2.7/site-packages"
 
 ftp_nansat: ftp://ftp.nersc.no/pub/nansat
@@ -14,11 +17,26 @@ sample_files:
   - {name: ASA_WSM_1PNPDK20081110_205618_000000922073_00401_35024_0844.N1, mapper: asar}
   - {name: A2015121113500.L2_LAC.NorthNorwegianSeas.hdf, mapper: obpg_l2}
   - {name: A2015122122000.L2_LAC.NorthNorwegianSeas.hdf, mapper: obpg_l2}
-  # TODO: update sentinel1a_l1 mapper with correct metadata
-  #- {name: S1A_EW_GRDM_1SDH_20150702T172954_20150702T173054_006635_008DA5_55D1.zip, mapper: sentinel1a_l1}
+  - {name: S1A_EW_GRDM_1SDH_20150702T172954_20150702T173054_006635_008DA5_55D1.zip, mapper: sentinel1a_l1}
 
 ftp_nansat_landmask: "{{ ftp_nansat }}"
 nansat_landmask_file: MOD44W.tgz
 
 nansat_version: develop
 nansencloud_version: develop
+
+# switches for certain tasks
+mount_network_folders: no
+setup_centos: no
+setup_ubuntu: yes
+setup_local_vm: yes
+use_shared_dir: yes
+use_conda_cache: yes
+setup_nansen_cloud: yes
+use_local_database: yes
+make_migrations: yes
+run_migrate: yes
+git_force_nansencloud: no
+create_home_dir_link: yes
+nansencloud_extra: yes
+openwind: yes
