@@ -15,3 +15,5 @@
     - libspatialite-dev
     - spatialite-bin
     - g++
+    - libudunits2-0
+    - libudunits2-dev
