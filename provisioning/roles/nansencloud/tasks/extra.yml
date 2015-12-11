@@ -20,7 +20,7 @@
 
 - name: Add private sample images to db
   django_manage: >
-      command='ingest {{ mount_name }}/sat_downloads/{{ item.name }}'
+      command='ingest {{ mount_name }}/{{ item.name }}'
       app_path='{{ dev_sources_dir }}/nansen-cloud/project'
   with_items:
     - '{{ private_sample_files }}'
