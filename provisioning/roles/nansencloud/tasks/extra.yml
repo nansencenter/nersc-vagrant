@@ -9,7 +9,6 @@
     - thredds_crawler
     - pynmea2
     - libais
-    - cython
 
 - name: Add public sample images to db
   django_manage: >
