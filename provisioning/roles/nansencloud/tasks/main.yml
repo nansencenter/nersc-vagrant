@@ -17,3 +17,5 @@
 
 - include: openwind.yml
   when: openwind is defined and openwind
+
+- include: sample_data2db.yml
