@@ -1,21 +1,18 @@
 ---
-dev_sources_dir: "{{ shared_dir }}/develop_vm"
-
-# collocated data that can be added if no connection to local file system at
-# nersc
 doppler_files:
-  - {name: RVL_ASA_WS_20091031195910930.gsar, mapper: gsar}
-  - {name: RVL_ASA_WS_20091031195910930.gsar.json, mapper: gsar}
-  - {name: RVL_ASA_WS_20091031200033746.gsar, mapper: gsar}
-  - {name: RVL_ASA_WS_20091031200033746.gsar.json, mapper: gsar}
-  - {name: RVL_ASA_WS_20091116195616895.gsar, mapper: gsar}
-  - {name: RVL_ASA_WS_20091116195616895.gsar.json, mapper: gsar}
-  - {name: RVL_ASA_WS_20091116195738352.gsar, mapper: gsar}
-  - {name: RVL_ASA_WS_20091116195738352.gsar.json, mapper: gsar}
-  - {name: RVL_ASA_WS_20091116195940116.gsar, mapper: gsar}
-  - {name: RVL_ASA_WS_20091116195940116.gsar.json, mapper: gsar}
-  - {name: ASA_WSM_1PNPDK20091031_195404_000003732083_00472_40105_7946.doppler.nc, mapper: asar_netcdf_old_doppler}
-  - {name: ASA_WSM_1PNPDK20091031_200028_000001642083_00472_40105_7944.doppler.nc, mapper: asar_netcdf_old_doppler}
-  - {name: ASA_WSM_1PNPDK20091116_195431_000001762084_00200_40334_4591.doppler.nc, mapper: asar_netcdf_old_doppler}
-  - {name: ASA_WSM_1PNPDK20091116_195732_000000912084_00200_40334_4589.doppler.nc, mapper: asar_netcdf_old_doppler}
-  - {name: ASA_WSM_1PNPDK20091116_195928_000002312084_00200_40334_4593.doppler.nc, mapper: asar_netcdf_old_doppler}
+  - {name: sat/doppler/ASAR/*.doppler.nc, mapper: asar_netcdf_old_doppler}
+  #- {name: RVL_ASA_WS_20091031195910930.gsar, mapper: gsar}
+  #- {name: RVL_ASA_WS_20091031195910930.gsar.json, mapper: gsar}
+  #- {name: RVL_ASA_WS_20091031200033746.gsar, mapper: gsar}
+  #- {name: RVL_ASA_WS_20091031200033746.gsar.json, mapper: gsar}
+  #- {name: RVL_ASA_WS_20091116195616895.gsar, mapper: gsar}
+  #- {name: RVL_ASA_WS_20091116195616895.gsar.json, mapper: gsar}
+  #- {name: RVL_ASA_WS_20091116195738352.gsar, mapper: gsar}
+  #- {name: RVL_ASA_WS_20091116195738352.gsar.json, mapper: gsar}
+  #- {name: RVL_ASA_WS_20091116195940116.gsar, mapper: gsar}
+  #- {name: RVL_ASA_WS_20091116195940116.gsar.json, mapper: gsar}
+  #- {name: ASA_WSM_1PNPDK20091031_195404_000003732083_00472_40105_7946.doppler.nc, mapper: asar_netcdf_old_doppler}
+  #- {name: ASA_WSM_1PNPDK20091031_200028_000001642083_00472_40105_7944.doppler.nc, mapper: asar_netcdf_old_doppler}
+  #- {name: ASA_WSM_1PNPDK20091116_195431_000001762084_00200_40334_4591.doppler.nc, mapper: asar_netcdf_old_doppler}
+  #- {name: ASA_WSM_1PNPDK20091116_195732_000000912084_00200_40334_4589.doppler.nc, mapper: asar_netcdf_old_doppler}
+  #- {name: ASA_WSM_1PNPDK20091116_195928_000002312084_00200_40334_4593.doppler.nc, mapper: asar_netcdf_old_doppler}
