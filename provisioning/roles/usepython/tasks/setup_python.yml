@@ -1,5 +1,6 @@
 ---
 #usepython\tasks\setup_python.yml
+
 - name: Python | Change owner of install directory
   sudo: yes
   file: path="{{ install_dir }}" owner="{{ ansible_ssh_user }}"
@@ -41,6 +42,9 @@
     ipython
     jupyter
 
+#Note: jupyter installs "certifi" which breaks the ssl-certificate verification, so that conda partially breaks (at least on centos)
+#- need to disable checking certificates for now - FIX THIS (task "fixing certifi breaking things")
+
 - name: Python | Instal nansat-gdal and all requirements
   shell: 'conda install -q --yes --copy -c nersc nansat-gdal'
 
@@ -65,3 +69,8 @@
   sudo: yes
   shell: '/sbin/ldconfig'
 
+
+- name: Python | Install nansen-cloud requirements
+  pip: name={{ item }}
+  with_items:
+    - cfunits

@@ -13,10 +13,7 @@
     django
     scikit-learn
     coverage
-    jupyter
     psycopg2
-#Note: jupyter installs "certifi" which breaks the ssl-certificate verification, so that conda partially breaks (at least on centos)
-#- need to disable checking certificates for now - FIX THIS (task "fixing certifi breaking things")
 
 - name: Python | Install nansen-cloud requirements
   pip: name={{ item }}
@@ -24,7 +21,6 @@
     - django-forms-bootstrap
     - django-leaflet
     - ipdb
-    - cfunits
 
 - name: Python | Clone pysqlite
   git: repo=https://github.com/ghaering/pysqlite
