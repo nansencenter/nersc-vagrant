@@ -9,3 +9,7 @@
   when: setup_local_vm
 
 - include: setup_python.yml
+
+- include: nansat.yml
+
+- include: nersc-metadata.yml

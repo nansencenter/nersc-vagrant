@@ -38,6 +38,8 @@
     pyproj
     basemap
     netcdf4
+    ipython
+    jupyter
 
 - name: Python | Instal nansat-gdal and all requirements
   shell: 'conda install -q --yes --copy -c nersc nansat-gdal'
@@ -63,24 +65,3 @@
   sudo: yes
   shell: '/sbin/ldconfig'
 
-- name: Python | Update/checkout Nansat
-  git: repo=https://github.com/nansencenter/nansat
-       dest="{{ dev_sources_dir }}/nansat/"
-       version="{{ nansat_version }}"
-       update=yes
-  register: git_nansat
-  tags:
-    - update-nansat
-
-- name: Python | Install Nansat (always run to keep the pixel functions updated)
-  shell: 'python setup.py build_ext --inplace'
-  args:
-    chdir: '{{ dev_sources_dir }}/nansat'
-  tags:
-    - update-nansat
-
-- name: Python | Create link from Python dist-packages to nansat
-  file: path='{{ python_dist_packages }}/nansat'
-        src='{{ dev_sources_dir }}/nansat/nansat'
-        state=link
-        force=yes
