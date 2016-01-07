@@ -10,6 +10,8 @@
 
 - include: setup_python.yml
 
+- include: nersc-metadata.yml
+
 - include: nansat.yml
 
-- include: nersc-metadata.yml
+
