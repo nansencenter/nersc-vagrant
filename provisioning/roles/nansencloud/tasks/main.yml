@@ -9,7 +9,13 @@
 - include: extra.yml
   when: nansencloud_extra is defined and nansencloud_extra
 
+#- include: leeFilter.yml - not working..
+
 - include: setup_python.yml
 
 - include: openwind.yml
   when: openwind is defined and openwind
+
+- include: sample_data2db.yml
+  when: add_sample_data is defined and add_sample_data 
+
