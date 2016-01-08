@@ -1,6 +1,9 @@
 ---
+export_gtopo_path: 'export GTOPO30=/mnt/10.11.12.232/sat_auxdata/dem/gtopo30/gtopo30/gtopo30.vrt'
+
 doppler_files:
   - {name: sat/doppler/ASAR/*.doppler.nc, mapper: asar_netcdf_old_doppler}
+
   #- {name: RVL_ASA_WS_20091031195910930.gsar, mapper: gsar}
   #- {name: RVL_ASA_WS_20091031195910930.gsar.json, mapper: gsar}
   #- {name: RVL_ASA_WS_20091031200033746.gsar, mapper: gsar}
