@@ -11,6 +11,9 @@
 #       accept_hostkey=yes
 #       #key_file=/home/vagrant/.ssh/id_rsa_github
 
+- name: Add GTOPO30 vrt to .bashrc
+  lineinfile: dest="{{ home_dir }}/.bashrc" line='{{ export_gtopo_path }}'
+
 - name: Create link from Python dist-packages to sar-doppler
   sudo: yes
   file: path='{{ python_dist_packages }}/sardoppler'
@@ -24,6 +27,9 @@
         src='{{ dev_sources_dir }}/sar-doppler/nansat_mappers'
         state=link
         force=yes
+
+- name: Create Nansat gtopo30 data folder
+  file: path="{{ shared_dir }}/gtopo30" state=directory
 
 - name: Add doppler files to db
   django_manage: >
