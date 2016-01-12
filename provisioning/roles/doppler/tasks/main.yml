@@ -1,8 +1,8 @@
 ---
-- name: Add the github SSH public key to the vm authorized_keys
-  authorized_key: user=vagrant key="{{ lookup('file', '/Users/mortenh/.ssh/id_rsa_github.pub') }}"
-
-# THIS DOESN'T WORK FOR ME..:
+# THIS DOESN'T WORK..:
+#- name: Add the github SSH public key to the vm authorized_keys
+#  authorized_key: user=vagrant key="{{ lookup('file', '/Users/mortenh/.ssh/id_rsa_github.pub') }}"
+#
 #- name: Update/checkout sar-doppler
 #  git: repo=git@github.com:nansencenter/sar-doppler.git
 #       dest="{{ dev_sources_dir }}/sar-doppler"
@@ -10,6 +10,9 @@
 #       update=yes
 #       accept_hostkey=yes
 #       #key_file=/home/vagrant/.ssh/id_rsa_github
+
+- name: Add GTOPO30 vrt to .bashrc
+  lineinfile: dest="{{ home_dir }}/.bashrc" line='{{ export_gtopo_path }}'
 
 - name: Create link from Python dist-packages to sar-doppler
   sudo: yes
@@ -25,6 +28,23 @@
         state=link
         force=yes
 
+- name: Create Nansat gtopo30 data folder
+  file: path="{{ shared_dir }}/gtopo30" state=directory
+
+- name: Add doppler files to db
+  django_manage: >
+      command='ingest_pattern sat/doppler/ASAR/*.doppler.nc'
+      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
+  when: mount_network_folders is defined and mount_network_folders 
+
+#- name: Add doppler files to db
+#  django_manage: >
+#      command='ingest {{ mount_name }}/{{ item.name }}'
+#      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
+#  with_items:
+#    - '{{ doppler_files }}'
+#  when: mount_network_folders is defined and mount_network_folders 
+#
 #- name: Add netcdf files to db
 #  django_manage: >
 #      command='add_images {{ sample_data_dir }}/asar_netcdf_old_doppler/ASA*.nc'
@@ -34,22 +54,4 @@
 #  django_manage: >
 #      command='add_images {{ sample_data_dir }}/gsar/*.gsar'
 #      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
-
-- name: Create subfolders for collocated doppler files
-  file: path="{{ sample_data_dir }}/{{ item.mapper }}" state=directory
-  with_items:
-    - "{{ doppler_files }}"
-
-- name: Download collocated doppler files
-  get_url: url="{{ sample_data_url }}/{{ item.mapper }}/{{ item.name }}" dest="{{ sample_data_dir }}/{{ item.mapper }}/{{ item.name }}" force=no
-  with_items:
-    - "{{ doppler_files }}"
-
-- name: Add collocated doppler images to db
-  django_manage: >
-      command='add_images {{ sample_data_dir }}/{{ item.mapper }}/'
-      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
-  with_items:
-    - '{{ doppler_files }}'
-
 
