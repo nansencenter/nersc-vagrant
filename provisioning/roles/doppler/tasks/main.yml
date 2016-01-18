@@ -12,7 +12,8 @@
 #       #key_file=/home/vagrant/.ssh/id_rsa_github
 
 - name: Add GTOPO30 vrt to .bashrc
-  lineinfile: dest="{{ home_dir }}/.bashrc" line='{{ export_gtopo_path }}'
+  lineinfile: dest="{{ home_dir }}/.bashrc" line='export GTOPO30={{ gtopo30_path }}'
+  when: mount_network_folders is defined and mount_network_folders
 
 - name: Create link from Python dist-packages to sar-doppler
   sudo: yes
