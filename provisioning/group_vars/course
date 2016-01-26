@@ -1,3 +1,4 @@
 ---
 dev_sources_dir: "{{ shared_dir }}/course_vm"
+nansat_version: master
 
