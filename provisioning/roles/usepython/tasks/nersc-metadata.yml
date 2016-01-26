@@ -5,8 +5,14 @@
        version=master
        update=yes
 
-- name: nersc-metadata | Install nersc-metadata
-  shell: 'python setup.py install'
+- name: nersc-metadata | Create link from Python dist-packages to nersc-metadata
+  file: path='{{ python_dist_packages }}/nerscmetadata'
+        src='{{ dev_sources_dir }}/nersc-metadata/nerscmetadata'
+        state=link
+        force=yes
+
+- name: nersc-metadata | Download GCMD keywords as JSON file
+  shell: "python -c 'from nerscmetadata.gcmd_keywords import write_json; write_json()'"
   args:
     chdir: '{{ dev_sources_dir }}/nersc-metadata'
 
