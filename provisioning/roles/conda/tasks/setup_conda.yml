@@ -1,0 +1,25 @@
+---
+#usepython\tasks\setup_python.yml
+
+- name: Conda | Change owner of install directory
+  sudo: yes
+  file: path="{{ install_dir }}" owner="{{ ansible_ssh_user }}"
+
+- name: Conda | Download Miniconda
+  get_url:
+    url: http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
+    dest: "{{ cache_dir }}/miniconda.sh"
+
+- name: Conda | chmod Miniconda
+  file: path="{{ cache_dir }}/miniconda.sh" mode=775
+
+- name: Conda | Install Miniconda
+  shell: '{{ cache_dir }}/miniconda.sh -b -p {{ conda_dir }}'
+  args:
+    creates: '{{ conda_dir }}'
+
+- name: Conda | Update Miniconda
+  shell: 'conda update -q --yes --copy conda'
+
+- name: Conda | Add PATH to .bashrc
+  lineinfile: dest="{{ home_dir }}/.bashrc" line="export PATH={{ conda_dir }}/bin:$PATH"

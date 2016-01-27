@@ -1,0 +1,11 @@
+---
+- name: Install conda-build
+  shell: 'conda install -q --yes --copy {{ item }}'
+  with_items:
+    conda-build
+
+- name: Update/checkout conda-recipes
+  git: repo=https://github.com/nansencenter/conda-recipes
+       dest="{{ dev_sources_dir }}/conda-recipes/"
+       version=master
+       update=yes

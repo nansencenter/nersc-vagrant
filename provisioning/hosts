@@ -4,29 +4,17 @@
 [course]
 192.168.33.11
 
+[condarecipes]
+192.168.33.13
+
 [doppler]
 192.168.33.14
 
-[testintegration]
-192.168.33.12
+[thredds]
+192.168.33.15
 
 [webserver]
 10.47.20.56:5522 ansible_ssh_user=sat
 
 [processing]
 10.47.20.55:5522 ansible_ssh_user=sat
-
-[thredds]
-192.168.33.15
-
-[production:children]
-webserver
-processing
-
-[usepython:children]
-develop
-course
-doppler
-testintegration
-webserver
-processing

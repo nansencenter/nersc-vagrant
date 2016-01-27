@@ -53,14 +53,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   end
 
-  config.vm.define "thredds", autostart: false do |thredds|
-    thredds.vm.network :private_network, ip: "192.168.33.15"
-
-    thredds.vm.provider "virtualbox" do |v|
-      v.memory = 6000
-      v.cpus = 4
-    end
-
+  config.vm.define "condarecipes", primary: true do |condarecipes|
+    condarecipes.vm.network :private_network, ip: "192.168.33.13"
   end
 
   config.vm.define "doppler", autostart: false do |doppler|
@@ -69,6 +63,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #doppler.vm.synced_folder "/Data/sat/downloads/ASAR/level-0/gsar_rvl", "/vagrant/shared/test_data/gsar", create: true
     #doppler.vm.synced_folder "/Volumes/sat/doppler/ASAR", "/vagrant/shared/test_data/asar_netcdf_old_doppler", create: true
     doppler.ssh.insert_key = '~/.ssh/id_rsa_github'
+  end
+
+  config.vm.define "thredds", autostart: false do |thredds|
+    thredds.vm.network :private_network, ip: "192.168.33.15"
+
+    thredds.vm.provider "virtualbox" do |v|
+      v.memory = 6000
+      v.cpus = 4
+    end
+
   end
 
   config.vm.provider "virtualbox" do |v|
