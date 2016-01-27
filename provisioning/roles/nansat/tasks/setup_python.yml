@@ -1,22 +1,5 @@
 ---
-#usepython\tasks\setup_python.yml
-
-- name: Python | Change owner of install directory
-  sudo: yes
-  file: path="{{ install_dir }}" owner="{{ ansible_ssh_user }}"
-
-- name: Python | Download Miniconda
-  get_url:
-    url: http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
-    dest: "{{ cache_dir }}/miniconda.sh"
-
-- name: Python | chmod Miniconda
-  file: path="{{ cache_dir }}/miniconda.sh" mode=775
-
-- name: Python | Install Miniconda
-  shell: '{{ cache_dir }}/miniconda.sh -b -p {{ conda_dir }}'
-  args:
-    creates: '{{ conda_dir }}'
+#nansat\tasks\setup_python.yml
 
 - name: Python | Create conda_pkgs in shared folder
   file: path="{{ cache_dir }}/conda_pkgs/empty" state=directory
@@ -25,9 +8,6 @@
 - name: Python | Copy cached packages from conda_pkgs
   shell: 'cp {{ cache_dir }}/conda_pkgs/* {{ conda_dir }}/pkgs/ -r'
   when: use_conda_cache is defined and use_conda_cache
-
-- name: Python | Update Miniconda
-  shell: 'conda update -q --yes --copy conda'
 
 - name: Python | Install Nansat requirements
   shell: 'conda install -q --yes --copy {{ item }}'
@@ -51,9 +31,6 @@
   shell: 'cp {{ conda_dir }}/pkgs/*.[bt][zx][2t] {{ cache_dir }}/conda_pkgs/'
   when: use_conda_cache is defined and use_conda_cache
 
-- name: Python | Add PATH to .bashrc
-  lineinfile: dest="{{ home_dir }}/.bashrc" line="export PATH={{ conda_dir }}/bin:$PATH"
-
 - name: Python | Add GDAL_DATA to .bashrc
   lineinfile: dest="{{ home_dir }}/.bashrc" line="export GDAL_DATA={{ conda_dir }}/share/gdal"
 
@@ -67,7 +44,6 @@
 - name: Python | Run ldconfig
   sudo: yes
   shell: '/sbin/ldconfig'
-
 
 - name: Python | Install nansen-cloud requirements
   pip: name={{ item }} extra_args='--no-cache-dir -I'
