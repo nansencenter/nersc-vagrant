@@ -1,61 +1,62 @@
 Configuration of Nansen-Cloud provisioning with vagrant
 =======================================================
+All Virtual machines (VMs) use miniconda to install python and various libraries.
 
+Usage
+=====
+```
+git clone https://github.com/nansencenter/nersc-vagrant
+cd nersc-vagrant
+vagrant up
+```
 
-All Virtual machines (VMs) now use miniconda to install python and various libraries.
+Vurtual machines:
+=================
+* develop : 192.168.33.10
+* course : 192.168.33.11
+* testintegration : 192.168.33.12
+* condarecipes : 192.168.33.13
+* doppler : 192.168.33.14
+* thredds : 192.168.33.15
 
 Roles
 =====
-* common
- * install system libraries and update
- * install miniconda and update
- * install conda packages (and cache in shared directory)
- * install gdal and dependencies from alevin conda repo
- * install nansat using clone, build, link
+* conda
+ * Setup Ubunto or CentOS
+ * Install minimal conda
+* condarecipes
+ * Prepare for building packages for conda
+* course
+ * Clone nansat-lectures
+ * Add Jupyter-notebook to crontab
+
+* doppler
+ * Doppler specific
+
+* nansat
+ * Install Nansat requirements from conda and pip
+ * Install Nansat
+
+* nansencloud
+ * Install Nansen-Cloud requirements
+ * Install Nansen-Cloud
+
+* production
+ * Empty
 
 * sample_datasets
- * download sample data
- * download MODIS landmask
-
-* develop
- * install openwind
- * install nansen-cloud
- * migrate
- * add sample data to database
-
-* course
- * clone nansat-lectures
- * add jupyter to crontab
-
-* production
- * intentionally left empty (it should be just like develop but with a different version of nansat/nansencloud which is configured in group_vars)
+ * Download sample data
 
 * testintegration
- * run nansat tests
- * run end2end tests
- * run gdalinfo
+ * Run end2endtests
 
-Groups
-======
-* all:
- * common
+* thredds
+ * Install TOMCAT and THREDDS
+ * Copy THREDDS configuration
 
-* develop
- * sample_datasets
- * develop
+* webserver
+ * Run webserver on Centos
 
-* production
- * sample_datasets
- * develop
-
-* course
- * course
-
-* testintegration
- * sample_datasets
- * develop
- * testintegration
- * course
 
 Shared directories
 ==================
@@ -71,5 +72,3 @@ Shared directories
   * openwind
 
 NB! **You have to destroy all your machines before git clone**
-
-
