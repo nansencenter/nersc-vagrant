@@ -17,3 +17,5 @@
     - g++
     - libudunits2-0
     - libudunits2-dev
+    - libjpeg-dev
+    - libx11-dev

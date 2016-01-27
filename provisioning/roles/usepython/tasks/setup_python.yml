@@ -35,7 +35,6 @@
     scipy
     matplotlib
     nose
-    pillow
     pyproj
     basemap
     netcdf4
@@ -71,6 +70,7 @@
 
 
 - name: Python | Install nansen-cloud requirements
-  pip: name={{ item }}
+  pip: name={{ item }} extra_args='--no-cache-dir -I'
   with_items:
     - cfunits
+    - pillow
