@@ -2,5 +2,5 @@
 python/
 shared/
 provisioning/group_vars/thredds
-provisioning/group_vars/usepython
 provisioning/roles/nansencloud/templates/settings.py
+provisioning/group_vars/mounting
