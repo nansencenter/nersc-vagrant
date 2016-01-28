@@ -1,5 +1,3 @@
-TEST
-
 Configuration of Nansen-Cloud provisioning with vagrant
 =======================================================
 All Virtual machines (VMs) use miniconda to install python and various libraries.
