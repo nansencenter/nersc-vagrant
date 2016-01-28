@@ -2,19 +2,3 @@
 dev_sources_dir: "{{ shared_dir }}/course_vm"
 nansat_version: master
 
-mount_network_folders: yes
-uid: 15001
-gid: 15001
-mount_name: /mnt/10.11.12.232
-mount_src: //10.47.20.21
-mounted_dirs: [WebData, sim, Projects]
-
-mount_name: /mnt/10.11.12.231
-mount_src: //10.47.20.22
-mounted_dirs: [Service1]
-
-username: sat
-password: Compote2014
-domain: ad
-
-

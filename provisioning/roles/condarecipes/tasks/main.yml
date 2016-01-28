@@ -13,7 +13,6 @@
   shell: 'conda install -q --yes --copy {{ item }}'
   with_items:
     conda-build
-    binstar
     anaconda-client
 
 - name: Update/checkout conda-recipes
