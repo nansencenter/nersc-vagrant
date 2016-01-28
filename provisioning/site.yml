@@ -55,3 +55,5 @@
   roles:
     - thredds
 
+- hosts: mounting
+  roles:

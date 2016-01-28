@@ -18,3 +18,10 @@
 
 [processing]
 10.47.20.55:5522 ansible_ssh_user=sat
+
+[mounting:children]
+develop
+course
+condarecipes
+doppler
+thredds
