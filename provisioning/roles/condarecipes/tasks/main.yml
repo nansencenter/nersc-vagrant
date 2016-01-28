@@ -21,3 +21,14 @@
        dest="{{ dev_sources_dir }}/conda-recipes/"
        version=master
        update=yes
+
+- name: Add links to sqlite libraries to /usr/lib
+  sudo: yes
+  file: src="{{ conda_dir }}/lib/{{ item }}" dest="/usr/lib/x86_64-linux-gnu/{{ item }}" state=link
+  with_items:
+    - libsqlite3.so
+    - libsqlite3.so.0
+
+- name: Run ldconfig
+  sudo: yes
+  shell: '/sbin/ldconfig'
