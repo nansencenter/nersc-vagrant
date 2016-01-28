@@ -1,8 +1,20 @@
 ---
+- name: Instal system tools
+  apt: pkg={{ item }}
+  sudo: yes
+  with_items:
+    - libsm6
+    - libxrender1
+    - libfontconfig1
+    - g++
+    - make
+
 - name: Install conda-build
   shell: 'conda install -q --yes --copy {{ item }}'
   with_items:
     conda-build
+    binstar
+    anaconda-client
 
 - name: Update/checkout conda-recipes
   git: repo=https://github.com/nansencenter/conda-recipes
