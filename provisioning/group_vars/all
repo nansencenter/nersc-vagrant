@@ -23,7 +23,7 @@ ftp_nansat_landmask: "{{ ftp_nansat }}"
 nansat_landmask_file: MOD44W.tgz
 
 nansat_version: develop
-nansencloud_version: develop
+nansencloud_version: issue7-restructuring # develop
 
 # switches for certain tasks
 mount_network_folders: no
