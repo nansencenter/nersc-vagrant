@@ -57,6 +57,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     condarecipes.vm.network :private_network, ip: "192.168.33.13"
   end
 
+  config.vm.define "condarecipes32", primary: true do |condarecipes32|
+    condarecipes32.vm.box = "ubuntu/trusty32"
+    condarecipes32.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty32"
+    condarecipes32.vm.network :private_network, ip: "192.168.33.16"
+  end
+
   config.vm.define "doppler", autostart: false do |doppler|
     doppler.vm.network :private_network, ip: "192.168.33.14"
     # local at nersc
