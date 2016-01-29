@@ -37,8 +37,8 @@
 - name: Create THREDDS config dir
   file: path={{ tomcat_home }}/content/ state=directory
 
-- name: Push THREDDS config
-  synchronize: src="{{ role_path }}/files/nersc-thredds/thredds" dest={{ tomcat_home }}/content/
+- name: Link to TDS config in shared folder
+  file: src=/vagrant/shared/thredds/config dest={{ tomcat_home }}/content/thredds state=link
 
 - name: Stop TOMCAT
   shell: "{{ tomcat_home }}/bin/shutdown.sh"
