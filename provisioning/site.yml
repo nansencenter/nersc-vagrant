@@ -27,6 +27,14 @@
     PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
 
+- hosts: condarecipes32
+  roles:
+    - conda
+    - condarecipes
+  environment:
+    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
+    GDAL_DATA: "{{ conda_dir }}/share/gdal"
+
 - hosts: doppler
   roles:
     - conda
