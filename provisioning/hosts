@@ -13,6 +13,9 @@
 [thredds]
 192.168.33.15
 
+[condarecipes32]
+192.168.33.16
+
 [webserver]
 10.47.20.56:5522 ansible_ssh_user=sat
 
