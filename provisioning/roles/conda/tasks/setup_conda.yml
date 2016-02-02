@@ -7,14 +7,14 @@
 
 - name: Conda | Download Miniconda
   get_url:
-    url: http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
-    dest: "{{ cache_dir }}/miniconda.sh"
+    url: 'http://repo.continuum.io/miniconda/{{ conda_filename }}'
+    dest: "{{ cache_dir }}/{{ conda_filename }}"
 
 - name: Conda | chmod Miniconda
-  file: path="{{ cache_dir }}/miniconda.sh" mode=775
+  file: path="{{ cache_dir }}/{{ conda_filename }}" mode=775
 
 - name: Conda | Install Miniconda
-  shell: '{{ cache_dir }}/miniconda.sh -b -p {{ conda_dir }}'
+  shell: '{{ cache_dir }}/{{ conda_filename }} -b -p {{ conda_dir }}'
   args:
     creates: '{{ conda_dir }}'
 
