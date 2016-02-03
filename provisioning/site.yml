@@ -66,10 +66,6 @@
 - hosts: mounting
   roles:
 
-- hosts: localhost
-  remote_user: root
+- hosts: travis
   roles:
     - conda
-    - nansat
-    - sample_datasets
-    - course
