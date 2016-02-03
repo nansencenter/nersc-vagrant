@@ -1,3 +1,5 @@
+localhost
+
 [develop]
 192.168.33.10
 
@@ -28,5 +30,3 @@ course
 condarecipes
 doppler
 thredds
-
-localhosts

@@ -2,6 +2,21 @@
 language: python
 python: "2.7"
 
+addons:
+  apt:
+    packages:
+    - git
+    - libgfortran3
+    - libsqlite3-dev
+    - sqlite3
+    - libspatialite-dev
+    - spatialite-bin
+    - g++
+    - libudunits2-0
+    - libudunits2-dev
+    - libjpeg-dev
+    - libx11-dev
+
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y curl
