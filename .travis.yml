@@ -1,4 +1,6 @@
 ---
+# https://www.michaelrigart.be/en/blog/testing-ansible-roles-with-travis-ci.html
+# https://github.com/geerlingguy/ansible-role-ansible
 language: python
 python: "2.7"
 
@@ -20,11 +22,11 @@ addons:
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y curl
+  - sudo apt-get install -qq -y python-apt
 
 install:
   # Install Ansible.
   - pip install ansible
-  - pip install python-apt
 
 script:
   - cd provisioning
