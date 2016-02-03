@@ -1,3 +1,2 @@
 ---
 dev_sources_dir: "{{ shared_dir }}/condarecipes_vm"
-conda_filename: 'Miniconda-latest-Linux-x86_64.sh'
