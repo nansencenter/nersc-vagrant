@@ -22,8 +22,9 @@ sample_files:
 ftp_nansat_landmask: "{{ ftp_nansat }}"
 nansat_landmask_file: MOD44W.tgz
 
+nersc_metadata_version: v0.2
 nansat_version: develop
-nansencloud_version: issue7-restructuring # develop
+nansencloud_version: develop
 
 # switches for certain tasks
 mount_network_folders: no
