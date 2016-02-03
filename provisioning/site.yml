@@ -66,6 +66,6 @@
 - hosts: mounting
   roles:
 
-- hosts: travis
+- hosts: localhost
   roles:
     - conda
