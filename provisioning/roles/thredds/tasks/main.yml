@@ -18,7 +18,7 @@
     name: "{{ mount_name }}/{{ item }}"
     src: "{{ mount_src }}/{{ item }}"
     fstype: cifs
-    opts: "uid=15001,gid=15001,username={{ username }},password={{ password }},domain={{ domain }}"
+    opts: "uid={{ uid }},gid={{ gid }},username={{ username }},password={{ password }},domain={{ domain }}"
     state: mounted
   with_items: mounted_dirs
 
@@ -30,6 +30,9 @@
 
 - name: Create setenv
   template: src=../templates/tomcat_setenv_sh dest="{{ tomcat_home }}/bin/setenv.sh"
+  
+- name: Set setenv to executable
+  file: path="{{ tomcat_home }}/bin/setenv.sh" mode=775
 
 - name: Download and deploy THREDDS
   get_url: url="{{ thredds_url }}/{{ thredds_file }}" dest="{{ tomcat_home }}/webapps/{{ thredds_file }}" force=no
@@ -37,16 +40,13 @@
 - name: Create THREDDS config dir
   file: path={{ tomcat_home }}/content/ state=directory
 
-- name: Link to TDS config in shared folder
-  file: src=/vagrant/shared/thredds/config dest={{ tomcat_home }}/content/thredds state=link
-
 - name: Stop TOMCAT
-  shell: "{{ tomcat_home }}/bin/shutdown.sh"
+  shell: "{{ tomcat_home }}/bin/catalina.sh stop"
 
 - name: Wait for TOMCAT to stop
   wait_for: port=8080 delay=10 state=stopped
 
 - name: Start TOMCAT
-  shell: "{{ tomcat_home }}/bin/startup.sh"
+  shell: "{{ tomcat_home }}/bin/catalina.sh start"
   async: 10000
   poll: 0
