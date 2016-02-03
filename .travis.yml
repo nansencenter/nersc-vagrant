@@ -18,11 +18,7 @@ addons:
     - libudunits2-dev
     - libjpeg-dev
     - libx11-dev
-
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -y curl
-  - sudo apt-get install -qq -y python-apt
+    - python-apt
 
 install:
   # Install Ansible.
