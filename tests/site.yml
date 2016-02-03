@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  remote_user: root
+  roles:
+    - conda
+    - nansat
+    - sample_datasets
+    - course
+
