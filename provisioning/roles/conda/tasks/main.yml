@@ -1,6 +1,4 @@
 ---
-- shell: 'echo {{ setup_ubuntu }}'
-
 - include: setup_centos.yml
   when: setup_centos is defined and setup_centos
 
