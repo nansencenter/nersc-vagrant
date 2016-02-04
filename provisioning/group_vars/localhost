@@ -41,3 +41,4 @@ create_home_dir_link: yes
 nansencloud_extra: yes
 openwind: no
 add_sample_data: no
+setup_ubuntu: no
