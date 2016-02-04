@@ -28,7 +28,6 @@ nansencloud_version: develop
 # switches for certain tasks
 mount_network_folders: no
 setup_centos: no
-setup_ubuntu: yes
 setup_local_vm: no
 use_shared_dir: no
 use_conda_cache: no

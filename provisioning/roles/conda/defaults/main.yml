@@ -1,2 +1,4 @@
 ---
 conda_filename: 'Miniconda-latest-Linux-x86_64.sh'
+setup_centos: no
+setup_ubuntu: yes
