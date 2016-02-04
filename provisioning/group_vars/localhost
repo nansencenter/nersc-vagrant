@@ -1,7 +1,7 @@
 ---
 # file: group_vars/all
 project_name: nansen-cloud
-shared_dir: /home/travis/cache/
+shared_dir: /home/travis
 cache_dir: "{{ shared_dir }}"
 home_dir: /home/travis
 install_dir: "{{ home_dir }}"
@@ -26,10 +26,11 @@ nansat_version: develop
 nansencloud_version: develop
 
 # switches for certain tasks
-mount_network_folders: no
 setup_centos: no
-setup_local_vm: no
-use_shared_dir: no
+setup_ubuntu: no
+mount_network_folders: no
+setup_local_vm: yes
+use_shared_dir: yes
 use_conda_cache: no
 setup_nansen_cloud: no
 use_local_database: yes
@@ -40,4 +41,4 @@ create_home_dir_link: yes
 nansencloud_extra: yes
 openwind: no
 add_sample_data: no
-setup_ubuntu: no
+
