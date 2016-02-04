@@ -19,4 +19,3 @@
     - libudunits2-dev
     - libjpeg-dev
     - libx11-dev
-  when: setup_ubuntu is defined and setup_ubuntu
