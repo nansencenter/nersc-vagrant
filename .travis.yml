@@ -27,7 +27,7 @@ script:
   - cd provisioning
 
   # Check the role/playbook's syntax.
-  - "ansible-playbook site.yml -i localhost --syntax-check"
+  - "ansible-playbook site.yml -i hosts -l localhost --syntax-check"
 
   # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook site.yml -i localhost --connection=local --sudo"
+  - "ansible-playbook site.yml -i hosts -l localhost --connection=local --sudo"
