@@ -31,3 +31,5 @@ script:
 
   # Run the role/playbook with ansible-playbook.
   - "ansible-playbook site.yml -i hosts -l localhost --connection=local --sudo"
+
+  - nosetests nansat
