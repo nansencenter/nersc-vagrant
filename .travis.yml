@@ -21,9 +21,9 @@ addons:
 
 install:
   # Install Ansible.
-  - pip install https://launchpad.net/python-distutils-extra/trunk/2.39/+download/python-distutils-extra-2.39.tar.gz
-  - pip install python-apt
-  - pip install ansible
+  - pip install --user https://launchpad.net/python-distutils-extra/trunk/2.39/+download/python-distutils-extra-2.39.tar.gz
+  - pip install --user python-apt
+  - pip install --user ansible
 
 script:
   - cd provisioning
