@@ -7,6 +7,7 @@ home_dir: /home/travis
 install_dir: "{{ home_dir }}"
 conda_dir: "{{ install_dir }}/miniconda"
 python_dist_packages: "{{ conda_dir }}/lib/python2.7/site-packages"
+dev_sources_dir: "{{ shared_dir }}/localhost_vm"
 
 ftp_nansat: ftp://ftp.nersc.no/pub/nansat
 
