@@ -66,6 +66,7 @@
 - hosts: mounting
   roles:
 
+# testing machine
 - hosts: localhost
   roles:
     - conda
