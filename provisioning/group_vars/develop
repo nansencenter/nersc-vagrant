@@ -1,2 +1,5 @@
 ---
 dev_sources_dir: "{{ shared_dir }}/develop_vm"
+
+nansat_vesrion: develop
+nansencloud_version: develop
