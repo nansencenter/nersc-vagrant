@@ -1,7 +1,7 @@
 ---
 - include: setup_python.yml
 
-- include: nersc-metadata.yml
+- include: py-thesaurus-interface.yml
 
 - include: nansat.yml
 

@@ -1,24 +1,43 @@
 ---
+# https://www.michaelrigart.be/en/blog/testing-ansible-roles-with-travis-ci.html
+# https://github.com/geerlingguy/ansible-role-ansible
 language: python
 python: "2.7"
 
-env:
-  - SITE=test.yml
-
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -y curl
+addons:
+  apt:
+    packages:
+    - git
+    - libgfortran3
+    - libsqlite3-dev
+    - sqlite3
+    - libspatialite-dev
+    - spatialite-bin
+    - g++
+    - libudunits2-0
+    - libudunits2-dev
+    - libjpeg-dev
+    - libx11-dev
 
 install:
   # Install Ansible.
-  - pip install ansible
-
-  # Add ansible.cfg to pick up roles path.
-  - "{ echo '[defaults]'; echo 'roles_path = /home/travis/build/nansencenter/nersc-vagrant/provisioning'; } >> ansible.cfg"
+  - pip install -Iv ansible==1.9.3
 
 script:
   # Check the role/playbook's syntax.
-  - "ansible-playbook -i provisioning/tests/inventory provisioning/tests/$SITE --syntax-check"
+  - "ansible-playbook provisioning/test_site.yml -i provisioning/test_hosts --syntax-check"
 
   # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook -i provisioning/tests/inventory provisioning/tests/$SITE --connection=local --sudo"
+  - "ansible-playbook provisioning/test_site.yml -i provisioning/test_hosts -l localhost --connection=local --sudo"
+
+  - $HOME/miniconda/bin/nosetests nansat
+
+## for fresh ubuntu to mimic travis:
+#sudo apt-get install git libgfortran3 libsqlite3-dev sqlite3 libspatialite-dev spatialite-bin g++ libudunits2-0 libudunits2-dev libjpeg-dev libx11-dev python-dev libffi-dev libssl-dev
+#sudo apt-get install python-pip
+#sudo pip install pip --upgrade
+#sudo pip install --upgrade ndg-httpsclient
+#pip install -Iv ansible==1.9.3
+#ansible-playbook provisioning/test_site.yml -i provisioning/test_hosts --syntax-check
+#ansible-playbook provisioning/test_site.yml -i provisioning/test_hosts -l localhost --connection=local --sudo
+#$HOME/miniconda/bin/nosetests nansat
