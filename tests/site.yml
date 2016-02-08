@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  roles:
+    - conda
+    - nansat
+  environment:
+    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
+    GDAL_DATA: "{{ conda_dir }}/share/gdal"
