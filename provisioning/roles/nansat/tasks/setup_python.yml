@@ -24,7 +24,7 @@
 #Note: jupyter installs "certifi" which breaks the ssl-certificate verification, so that conda partially breaks (at least on centos)
 #- need to disable checking certificates for now - FIX THIS (task "fixing certifi breaking things")
 
-- name: Python | Instal nansat-gdal and all requirements
+- name: Python | Instal nansat-gdal
   shell: 'conda install -q --yes --copy -c nersc nansat-gdal'
 
 - name: Python | Copy downloaded packages to cached conda_pkgs
@@ -45,7 +45,7 @@
   sudo: yes
   shell: '/sbin/ldconfig'
 
-- name: Python | Install nansen-cloud requirements
+- name: Python | Install nansat requirements with PIP
   pip: name={{ item }} extra_args='--no-cache-dir -I'
   with_items:
     - cfunits

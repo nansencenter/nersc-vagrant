@@ -1,0 +1,13 @@
+---
+- name: py-thesaurus-interface | Update/checkout
+  git: repo=https://github.com/nansencenter/py-thesaurus-interface
+       dest="{{ dev_sources_dir }}/py-thesaurus-interface"
+       version="{{ pythesint_version}}"
+       update=yes
+
+- name: py-thesaurus-interface | Create link from Python dist-packages
+  file: path='{{ python_dist_packages }}/pythesint'
+        src='{{ dev_sources_dir }}/py-thesaurus-interface/pythesint'
+        state=link
+        force=yes
+
