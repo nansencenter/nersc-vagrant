@@ -29,15 +29,6 @@
         state=link
         force=yes
 
-- name: Create Nansat gtopo30 data folder
-  file: path="{{ shared_dir }}/gtopo30" state=directory
-
-- name: Add doppler files to db
-  django_manage: >
-      command='ingest_pattern sat/doppler/ASAR/*.doppler.nc'
-      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
-  when: mount_network_folders is defined and mount_network_folders 
-
 #- name: Add doppler files to db
 #  django_manage: >
 #      command='ingest {{ mount_name }}/{{ item.name }}'
@@ -46,12 +37,12 @@
 #    - '{{ doppler_files }}'
 #  when: mount_network_folders is defined and mount_network_folders 
 #
-#- name: Add netcdf files to db
+#- name: Add netcdf doppler files to db
 #  django_manage: >
 #      command='add_images {{ sample_data_dir }}/asar_netcdf_old_doppler/ASA*.nc'
 #      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
 #
-#- name: Add gsar files to db
+#- name: Add gsar doppler files to db
 #  django_manage: >
 #      command='add_images {{ sample_data_dir }}/gsar/*.gsar'
 #      app_path='{{ dev_sources_dir }}/nansen-cloud/project'

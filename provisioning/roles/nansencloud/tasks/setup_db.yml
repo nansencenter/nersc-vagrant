@@ -1,0 +1,20 @@
+---
+- name: Setup Python | Run makemigrations on Nansen-Cloud project
+  django_manage: >
+      command=makemigrations
+      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
+      settings='project.settings'
+      pythonpath='{{ dev_sources_dir }}/nansen-cloud/project'
+  tags:
+    - update-nansencloud
+  when: make_migrations is defined and make_migrations
+
+- name: Setup Python | Run migrate on Nansen-Cloud project
+  django_manage: >
+      command=migrate
+      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
+      settings='project.settings'
+      pythonpath='{{ dev_sources_dir }}/nansen-cloud/project'
+  tags:
+    - update-nansencloud
+  when: run_migrate is defined and run_migrate
