@@ -22,7 +22,6 @@ sample_files:
 ftp_nansat_landmask: "{{ ftp_nansat }}"
 nansat_landmask_file: MOD44W.tgz
 
-nansat_version: develop
 nansencloud_version: develop
 
 # switches for certain tasks
