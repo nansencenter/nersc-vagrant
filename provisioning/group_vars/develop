@@ -1,2 +1,4 @@
 ---
 dev_sources_dir: "{{ shared_dir }}/develop_vm"
+nansencloud_version: issue7-restructuring 
+nersc_metadata_version: master

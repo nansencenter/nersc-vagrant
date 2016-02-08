@@ -1,8 +1,42 @@
 ---
-- name: Add MAPPER_TEST_DATA_DIR to .bashrc
+- name: Extra | Add MAPPER_TEST_DATA_DIR to .bashrc
   lineinfile: dest="{{ home_dir }}/.bashrc" line="export MAPPER_TEST_DATA_DIR={{ sample_data_dir }}"
 
-- name: Pip install extra packages for testing new functionalities
+- name: Extra | Ensure .ipython folder exists
+  file: path=/home/vagrant/.ipython state=directory
+
+- name: Extra | Ensure .ipython/profile_default folder exists
+  file: path=/home/vagrant/.ipython/profile_default state=directory
+
+- name: Extra | Check if ipython history file exists in default location
+  stat: path=/home/vagrant/.ipython/profile_default/history.sqlite
+  register: ipython_history
+
+- name: Extra | Move ipython history file if it exists in default location
+  command: mv /home/vagrant/.ipython/profile_default/history.sqlite /vagrant/shared/history.sqlite
+  when: ipython_history.stat.exists and not ipython_history.stat.islnk
+
+- name: Extra | Create link to ipython history file
+  file: path=/home/vagrant/.ipython/profile_default/history.sqlite
+        src=/vagrant/shared/ipython_history.sqlite
+        state=link
+        force=yes
+
+- name: Extra | Check if bash history file exists in default location
+  stat: path=/home/vagrant/.bash_history
+  register: bash_history
+
+- name: Extra | Move bash history file if it exists in default location
+  command: mv /home/vagrant/.bash_history /vagrant/shared/dot_bash_history
+  when: bash_history.stat.exists and not bash_history.stat.islnk
+
+- name: Extra | Create link to bash history file
+  file: path=/home/vagrant/.bash_history
+        src=/vagrant/shared/dot_bash_history
+        state=link
+        force=yes
+
+- name: Extra | Pip install packages for testing new functionalities
   pip: name={{ item }}
   sudo: yes
   with_items:
@@ -11,17 +45,3 @@
     - libais
     - cython
 
-- name: Add public sample images to db
-  django_manage: >
-      command='ingest {{ sample_data_dir }}/{{ item.mapper }}/{{ item.name }}'
-      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
-  with_items:
-    - '{{ sample_files }}'
-
-- name: Add private sample images to db
-  django_manage: >
-      command='ingest {{ mount_name }}/{{ item.name }}'
-      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
-  with_items:
-    - '{{ private_sample_files }}'
-  when: use_local_database is defined and use_local_database
