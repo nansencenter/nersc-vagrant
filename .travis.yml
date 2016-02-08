@@ -25,9 +25,9 @@ install:
 
 script:
   # Check the role/playbook's syntax.
-  - "ansible-playbook provisioning/tests/site.yml -i tests/hosts --syntax-check"
+  - "ansible-playbook provisioning/tests/site.yml -i provisioning/tests/hosts --syntax-check"
 
   # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook provisioning/tests/site.yml -i tests/hosts -l localhost --connection=local --sudo"
+  - "ansible-playbook provisioning/tests/site.yml -i provisioning/tests/hosts -l localhost --connection=local --sudo"
 
-  - nosetests nansat
+  - $HOME/miniconda/bin/nosetests nansat
