@@ -6,7 +6,7 @@
        update=yes
 
 - name: py-thesaurus-interface | Create link from Python dist-packages
-  file: path='{{ python_dist_packages }}/nerscmetadata'
+  file: path='{{ python_dist_packages }}/pythesint'
         src='{{ dev_sources_dir }}/py-thesaurus-interface/pythesint'
         state=link
         force=yes
