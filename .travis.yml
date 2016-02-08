@@ -27,9 +27,9 @@ script:
   - cd provisioning
 
   # Check the role/playbook's syntax.
-  - "ansible-playbook site.yml -i hosts -l localhost --syntax-check"
+  - "ansible-playbook tests/site.yml -i tests/hosts -l localhost --syntax-check"
 
   # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook site.yml -i hosts -l localhost --connection=local --sudo"
+  - "ansible-playbook tests/site.yml -i tests/hosts -l localhost --connection=local --sudo"
 
   - nosetests nansat
