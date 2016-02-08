@@ -10,7 +10,7 @@ cd nersc-vagrant
 vagrant up
 ```
 
-Vurtual machines:
+Virtual machines:
 =================
 * develop : 192.168.33.10
 * course : 192.168.33.11
@@ -22,10 +22,16 @@ Vurtual machines:
 Roles
 =====
 * conda
- * Setup Ubunto or CentOS
+ * Setup Ubuntu or CentOS
+ * Mount netwrok folders
  * Install minimal conda
+
 * condarecipes
  * Prepare for building packages for conda
+
+* condarecipes32
+ * Prepare for building packages for conda for 32bits
+
 * course
  * Clone nansat-lectures
  * Add Jupyter-notebook to crontab
@@ -71,4 +77,4 @@ Shared directories
   * nansen-cloud
   * openwind
 
-NB! **You have to destroy all your machines before git clone**
+NB! **You better destroy all your machines before git clone**
