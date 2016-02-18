@@ -23,8 +23,6 @@ ftp_nansat_landmask: "{{ ftp_nansat }}"
 nansat_landmask_file: MOD44W.tgz
 
 # switches for certain tasks
-mount_network_folders: no
-setup_local_vm: yes
 use_shared_dir: yes
 use_conda_cache: yes
 setup_nansen_cloud: yes

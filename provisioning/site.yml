@@ -1,17 +1,18 @@
 ---
 - hosts: develop
   roles:
+    - localvm
     - conda
     - nansat
     - sample_datasets
     - nansencloud
-
   environment:
     PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
 
 - hosts: course
   roles:
+    - localvm
     - conda
     - nansat
     - sample_datasets
@@ -22,6 +23,7 @@
 
 - hosts: condarecipes
   roles:
+    - localvm
     - conda
     - condarecipes
   environment:
@@ -30,6 +32,7 @@
 
 - hosts: condarecipes32
   roles:
+    - localvm
     - conda
     - condarecipes
   environment:
@@ -38,6 +41,7 @@
 
 - hosts: doppler
   roles:
+    - localvm
     - conda
     - nansat
     - sample_datasets
