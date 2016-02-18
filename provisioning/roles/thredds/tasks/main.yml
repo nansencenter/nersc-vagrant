@@ -12,16 +12,6 @@
     - default-jre-headless
     - cifs-utils
 
-- name: Mount network folders
-  sudo: yes
-  mount:
-    name: "{{ mount_name }}/{{ item }}"
-    src: "{{ mount_src }}/{{ item }}"
-    fstype: cifs
-    opts: "uid={{ uid }},gid={{ gid }},username={{ username }},password={{ password }},domain={{ domain }}"
-    state: mounted
-  with_items: mounted_dirs
-
 - name: Download TOMCAT
   get_url: url="{{ tomcat_url }}/{{ tomcat_file }}.tar.gz" dest="{{ home }}{{ tomcat_file }}.tar.gz" force=no
 
@@ -30,7 +20,7 @@
 
 - name: Create setenv
   template: src=../templates/tomcat_setenv_sh dest="{{ tomcat_home }}/bin/setenv.sh"
-  
+
 - name: Set setenv to executable
   file: path="{{ tomcat_home }}/bin/setenv.sh" mode=775
 

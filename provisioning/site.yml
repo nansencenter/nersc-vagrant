@@ -62,7 +62,5 @@
 
 - hosts: thredds
   roles:
+    - localvm
     - thredds
-
-- hosts: mounting
-  roles:
