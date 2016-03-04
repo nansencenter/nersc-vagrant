@@ -24,13 +24,3 @@ nansat_landmask_file: MOD44W.tgz
 
 # switches for certain tasks
 use_shared_dir: yes
-use_conda_cache: yes
-setup_nansen_cloud: yes
-use_local_database: yes
-make_migrations: yes
-run_migrate: yes
-git_force_nansencloud: no
-create_home_dir_link: yes
-nansencloud_extra: yes
-openwind: yes
-add_sample_data: yes

@@ -20,7 +20,6 @@ setup_ubuntu: no
 setup_local_vm: no
 use_shared_dir: no
 use_conda_cache: no
-setup_nansen_cloud: yes
 use_local_database: no
 make_migrations: no
 run_migrate: no
