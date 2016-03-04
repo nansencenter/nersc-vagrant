@@ -33,4 +33,4 @@ git_force_nansencloud: no
 create_home_dir_link: yes
 nansencloud_extra: yes
 openwind: yes
-add_sample_data: yes
+add_sample_data: no
