@@ -33,7 +33,6 @@ mount_network_folders: no
 setup_local_vm: yes
 use_shared_dir: yes
 use_conda_cache: no
-setup_nansen_cloud: no
 use_local_database: yes
 make_migrations: yes
 run_migrate: yes
