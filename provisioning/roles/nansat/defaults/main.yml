@@ -1,3 +1,4 @@
 ---
-nansat_version: v0.6.8
-pythesint_version: v0.3
+use_conda_cache: yes
+nansat_version: v0.6.12
+pythesint_version: v1.1.1
