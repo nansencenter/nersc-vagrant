@@ -1,16 +1,16 @@
 ---
 - name: Sample data to database | Add public sample images to db
   django_manage: >
-      command='ingest {{ sample_data_dir }}/{{ item.mapper }}/{{ item.name }}'
+      command='ingest file://localhost{{ sample_data_dir }}/{{ item.mapper }}/{{ item.name }}'
       app_path='{{ dev_sources_dir }}/nansen-cloud/project'
   with_items:
     - '{{ sample_files }}'
 
 - name: Sample data to database | Add private sample images to db
   django_manage: >
-      command='ingest {{ mount_name }}/{{ item.name }}'
+      command='ingest file://localhost{{ mount_name }}/{{ item.name }}'
       app_path='{{ dev_sources_dir }}/nansen-cloud/project'
   with_items:
     - '{{ private_sample_files }}'
-  when: mount_network_folders is defined and mount_network_folders and use_local_database is defined and use_local_database
+  when: mount_name is defined and use_local_database is defined and use_local_database
 
