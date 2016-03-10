@@ -1,0 +1,11 @@
+---
+use_local_database: yes
+make_migrations: yes
+run_migrate: yes
+git_force_nansencloud: no
+create_home_dir_link: yes
+nansencloud_extra: yes
+openwind: yes
+add_sample_data: yes
+nansencloud_version: develop
+private_sample_files: []

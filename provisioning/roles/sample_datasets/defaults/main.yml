@@ -1,0 +1,5 @@
+---
+ftp_nansat: ftp://ftp.nersc.no/pub/nansat
+sample_data_url: "{{ ftp_nansat }}/test_data"
+ftp_nansat_landmask: "{{ ftp_nansat }}"
+nansat_landmask_file: MOD44W.tgz

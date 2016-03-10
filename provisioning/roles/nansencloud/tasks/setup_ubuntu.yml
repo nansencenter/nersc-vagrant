@@ -2,7 +2,7 @@
 #nansencloud\tasks\ubuntu.yml
 - name: Apt install packages for testing new functionalities
   apt: pkg={{ item }} state=installed update-cache=yes
-  sudo: yes
+  become: yes
   with_items:
       - libxml2-dev
       - libxslt1-dev

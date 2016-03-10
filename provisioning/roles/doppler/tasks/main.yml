@@ -16,14 +16,14 @@
   when: mount_network_folders is defined and mount_network_folders
 
 - name: Create link from Python dist-packages to sar-doppler
-  sudo: yes
+  become: yes
   file: path='{{ python_dist_packages }}/sardoppler'
         src='{{ dev_sources_dir }}/sar-doppler/sardoppler'
         state=link
         force=yes
 
 - name: Create link from Python dist-packages to sar-doppler mappers
-  sudo: yes
+  become: yes
   file: path='{{ python_dist_packages }}/nansat_mappers'
         src='{{ dev_sources_dir }}/sar-doppler/nansat_mappers'
         state=link
