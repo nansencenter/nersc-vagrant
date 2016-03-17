@@ -27,9 +27,6 @@
 - name: Download and deploy THREDDS
   get_url: url="{{ thredds_url }}/{{ thredds_file }}" dest="{{ tomcat_home }}/webapps/{{ thredds_file }}" force=no
 
-- name: Create THREDDS config dir
-  file: path={{ tomcat_home }}/content/ state=directory
-
 - name: Stop TOMCAT
   shell: "{{ tomcat_home }}/bin/catalina.sh stop"
 
