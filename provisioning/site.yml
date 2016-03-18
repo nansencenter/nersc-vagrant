@@ -6,6 +6,7 @@
     - nansat
     - sample_datasets
     - nansencloud
+    - doppler
   environment:
     PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
@@ -35,18 +36,6 @@
     - localvm
     - conda
     - condarecipes
-  environment:
-    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
-    GDAL_DATA: "{{ conda_dir }}/share/gdal"
-
-- hosts: doppler
-  roles:
-    - localvm
-    - conda
-    - nansat
-    - sample_datasets
-    - nansencloud
-    - doppler
   environment:
     PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
