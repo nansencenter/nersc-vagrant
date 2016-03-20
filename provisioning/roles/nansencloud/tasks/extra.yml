@@ -38,7 +38,6 @@
 
 - name: Extra | Pip install packages for testing new functionalities
   pip: name={{ item }}
-  sudo: yes
   with_items:
     - thredds_crawler
     - pynmea2
