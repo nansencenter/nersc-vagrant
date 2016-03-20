@@ -6,3 +6,5 @@ tomcat_home: '{{ home }}/{{ tomcat_file }}'
 
 thredds_url: ftp://ftp.unidata.ucar.edu/pub/thredds/4.6/current
 thredds_file: thredds.war
+
+thredds_content_dir: /vagrant/shared/thredds_vm/nersc-thredds

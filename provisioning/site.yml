@@ -8,7 +8,7 @@
     - nansencloud
     - doppler
   environment:
-    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
+    PATH: "{{ conda_dir }}/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
 
 - hosts: course
@@ -19,7 +19,7 @@
     - sample_datasets
     - course
   environment:
-    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
+    PATH: "{{ conda_dir }}/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
 
 - hosts: condarecipes
@@ -28,7 +28,7 @@
     - conda
     - condarecipes
   environment:
-    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
+    PATH: "{{ conda_dir }}/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
 
 - hosts: condarecipes32
@@ -37,7 +37,7 @@
     - conda
     - condarecipes
   environment:
-    PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
+    PATH: "{{ conda_dir }}/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
 
 - hosts: processing

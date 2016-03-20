@@ -1,11 +1,11 @@
 ---
 - name: Update apt-get
-  sudo: yes
+  become: yes
   apt: update_cache=yes cache_valid_time=36000
 
 - name: Install required system packages.
   apt: pkg={{ item }}
-  sudo: yes
+  become: yes
   with_items:
     - default-jdk
     - default-jre
@@ -26,9 +26,6 @@
 
 - name: Download and deploy THREDDS
   get_url: url="{{ thredds_url }}/{{ thredds_file }}" dest="{{ tomcat_home }}/webapps/{{ thredds_file }}" force=no
-
-- name: Create THREDDS config dir
-  file: path={{ tomcat_home }}/content/ state=directory
 
 - name: Stop TOMCAT
   shell: "{{ tomcat_home }}/bin/catalina.sh stop"

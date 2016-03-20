@@ -2,11 +2,11 @@
 #usepython\tasks\setup_centos.yml
 - name: Centos | upgrade all packages
   yum: name=* state=latest
-  sudo: yes
+  become: yes
 
 - name: Centos | Install required system packages.
   yum: name={{ item }}
-  sudo: yes
+  become: yes
   with_items:
     - git
     - bzip2
