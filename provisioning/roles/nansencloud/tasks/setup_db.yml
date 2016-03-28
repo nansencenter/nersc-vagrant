@@ -19,8 +19,8 @@
     - update-nansencloud
   when: run_migrate is defined and run_migrate
 
-- name: Setup DB | Load fixture for vocabularies
+- name: Setup DB | Update vocabularies
   django_manage: >
-      command='loaddata {{ dev_sources_dir }}/nansen-cloud/nansencloud/vocabularies/fixtures/vocabularies.json'
+      command='update_vocabularies'
       app_path='{{ dev_sources_dir }}/nansen-cloud/project'
   when: run_migrate is defined and run_migrate
