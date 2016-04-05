@@ -10,6 +10,7 @@
   environment:
     PATH: "{{ conda_dir }}/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
+    LC_ALL: "en_US.UTF-8"
 
 - hosts: course
   roles:
@@ -21,6 +22,7 @@
   environment:
     PATH: "{{ conda_dir }}/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
+    LC_ALL: "en_US.UTF-8"
 
 - hosts: condarecipes
   roles:
@@ -30,6 +32,7 @@
   environment:
     PATH: "{{ conda_dir }}/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
+    LC_ALL: "en_US.UTF-8"
 
 - hosts: condarecipes32
   roles:
@@ -39,6 +42,7 @@
   environment:
     PATH: "{{ conda_dir }}/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
+    LC_ALL: "en_US.UTF-8"
 
 - hosts: processing
   roles:
