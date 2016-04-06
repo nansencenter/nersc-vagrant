@@ -53,22 +53,26 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   end
 
-  config.vm.define "condarecipes", primary: true do |condarecipes|
+  config.vm.define "condarecipes", autostart: false do |condarecipes|
     condarecipes.vm.network :private_network, ip: "192.168.33.13"
   end
 
-  config.vm.define "condarecipes32", primary: true do |condarecipes32|
+  config.vm.define "condarecipes32", autostart: false do |condarecipes32|
     condarecipes32.vm.box = "ubuntu/trusty32"
     condarecipes32.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty32"
     condarecipes32.vm.network :private_network, ip: "192.168.33.16"
   end
 
-  config.vm.define "doppler", autostart: false do |doppler|
-    doppler.vm.network :private_network, ip: "192.168.33.14"
-    # local at nersc
-    #doppler.vm.synced_folder "/Data/sat/downloads/ASAR/level-0/gsar_rvl", "/vagrant/shared/test_data/gsar", create: true
-    #doppler.vm.synced_folder "/Volumes/sat/doppler/ASAR", "/vagrant/shared/test_data/asar_netcdf_old_doppler", create: true
-    doppler.ssh.insert_key = '~/.ssh/id_rsa_github'
+  config.vm.define "condarecipes_osx", autostart: false do |condarecipes_osx|
+    condarecipes_osx.vm.box = "jhcook/osx-elcapitan-10.11"
+    condarecipes_osx.vm.box_url = "https://atlas.hashicorp.com/jhcook/boxes/osx-elcapitan-10.11"
+    condarecipes_osx.vm.network :private_network, ip: "192.168.33.17"
+
+    condarecipes_osx.vm.provider "virtualbox" do |v|
+      v.memory = 6000
+      v.cpus = 4
+    end
+
   end
 
   config.vm.define "thredds", autostart: false do |thredds|
@@ -95,5 +99,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.inventory_path = "provisioning/hosts"
     ansible.verbose = "v"
   end
+
 
 end
