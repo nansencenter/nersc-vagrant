@@ -39,8 +39,11 @@
 - name: Extra | Pip install packages for testing new functionalities
   pip: name={{ item }}
   with_items:
-    - thredds_crawler
     - pynmea2
     - libais
     - cython
 
+- name: Extra | Pip install customized thredds_crawler
+  pip: name={{ item }} extra_args='--upgrade'
+  with_items:
+    - https://github.com/nansencenter/thredds_crawler/archive/master.tar.gz
