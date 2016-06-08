@@ -9,6 +9,8 @@ git clone https://github.com/nansencenter/nersc-vagrant
 cd nersc-vagrant
 vagrant up
 ```
+ 
+Note: on Windows, you probably need to change the path on line 4 in setup.bat to match your cygwin installation.
 
 Virtual machines:
 =================
