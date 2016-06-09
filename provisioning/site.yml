@@ -83,3 +83,7 @@
   roles:
     - localvm
     - thredds
+
+- hosts: pyoai
+  roles:
+    - pyoai

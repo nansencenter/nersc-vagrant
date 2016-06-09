@@ -93,6 +93,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   end
 
+    config.vm.define "pyoai", autostart: false do |pyoai|
+    pyoai.vm.box = "centos/7"
+    pyoai.vm.network :private_network, ip: "192.168.33.18"
+
+    pyoai.vm.provider "virtualbox" do |v|
+      v.memory = 2000
+      v.cpus = 1
+    end
+
+  end
+  
   config.vm.provider "virtualbox" do |v|
     v.memory = 4000
     v.cpus = 2
