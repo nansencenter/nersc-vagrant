@@ -52,6 +52,11 @@ Roles
 * production
  * Empty
 
+* pyoai
+ * Installs moai, pyoai and all requirements
+ * Installs apache httpd and mod_wsgi
+ * Configures apache with moai and starts httpd
+
 * sample_datasets
  * Download sample data
 
