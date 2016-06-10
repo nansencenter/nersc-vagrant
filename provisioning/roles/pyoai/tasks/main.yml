@@ -1,9 +1,16 @@
 ---
 #usepython\tasks\setup_centos.yml
+- name: Check whether /etc/sysconfig/selinux contains "SELINUX=disabled"
+  command: grep -Fxq "SELINUX=disabled" /etc/sysconfig/selinux
+  register: selinuxOn
+  always_run: True
+  ignore_errors: True
+  changed_when: False
+
 - name: Disable SElinux
   selinux: state=disabled
   become: yes
-  when: disable_se_linux is defined and disable_se_linux
+  when: selinuxOn.rc == 1
   
 - name: restart machine to disable SElinux
   become: yes
@@ -11,7 +18,7 @@
   async: 1
   poll: 0
   ignore_errors: True
-  when: disable_se_linux is defined and disable_se_linux
+  when: selinuxOn.rc == 1
 
 - name: waiting for server to come back
   local_action: wait_for 
@@ -19,7 +26,7 @@
                 port=22
                 delay=10
   tags: disable_SEL
-  when: disable_se_linux is defined and disable_se_linux
+  when: selinuxOn.rc == 1
 
 - name: Install epel-release repo.
   yum: name={{ item }}
