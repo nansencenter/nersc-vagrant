@@ -11,7 +11,9 @@
   selinux: state=disabled
   become: yes
   when: selinuxOn.rc == 1
-  
+
+# Reboot from within os breaks synched folders
+# solution: need to halt the machine and run 'vagrant up --provision pyoai' again
 - name: restart machine to disable SElinux
   become: yes
   shell: sleep 2 ; /sbin/shutdown -r now "Ansible disabling SE Linux"
@@ -27,6 +29,9 @@
                 delay=10
   tags: disable_SEL
   when: selinuxOn.rc == 1
+
+# - name: Create shared folder
+  # file: path=/vagrant/shared/pyoai state=directory
 
 - name: Install epel-release repo.
   yum: name={{ item }}
@@ -79,11 +84,11 @@
   become: yes
 
 - name: install moai
-  pip: name=file:///var/www/moai virtualenv=/opt/moai-env editable=yes
+  pip: name=file:///var/www/moai virtualenv=/opt/moai-env 
   become: yes
 
 - name: create database folder
-  file: path=/opt/data state=directory mode=0755 owner=apache group=apache
+  file: path=/opt/data state=directory mode=0755
   become: yes
 
 - name: Setup httpd
@@ -99,4 +104,9 @@
 - name: restart httpd
   service: name=httpd state=restarted
   become: yes
-  
+
+- name: Add examples to database
+  command: /opt/moai-env/bin/update_moai moai_example --config /var/www/moai/settings.ini
+  become: yes
+- file: path=/opt/data/moai-example.db owner=apache group=apache mode=0600
+  become: yes
