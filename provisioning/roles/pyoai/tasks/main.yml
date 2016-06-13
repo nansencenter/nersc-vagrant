@@ -97,10 +97,10 @@
             backup=yes
   become: yes
 
-- name: Copy settings.ini
-  template: src=settings.ini
-            dest=/var/www/moai/settings.ini
-  become: yes
+# - name: Copy settings.ini
+  # template: src=settings.ini
+            # dest=/var/www/moai/settings.ini
+  # become: yes
 - name: restart httpd
   service: name=httpd state=restarted
   become: yes
