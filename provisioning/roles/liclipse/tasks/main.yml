@@ -1,0 +1,5 @@
+---
+- include: install_liclipse.yml
+  when: install_liclipse is defined and install_liclipse
+
+
