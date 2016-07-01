@@ -94,11 +94,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.forward_agent = true
   config.ssh.forward_x11 = true
 
-  config.vm.provision "ansible" do |ansible|
+  config.vm.provision "ansible_local" do |ansible|
     ansible.playbook = "provisioning/site.yml"
     ansible.inventory_path = "provisioning/hosts"
+    ansible.provisioning_path = "/vagrant"
     ansible.verbose = "v"
   end
-
 
 end
