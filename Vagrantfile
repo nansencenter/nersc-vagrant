@@ -42,15 +42,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "testintegration", autostart: false do |testintegration|
     testintegration.vm.network :private_network, ip: "192.168.33.12"
-
     # configure the line below if you have local folder with test data
     #testintegration.vm.synced_folder "/Data/FTPRoot/pub/nansat/test_data", "/vagrant/shared/test_data", create: true
-
     testintegration.vm.provider "virtualbox" do |v|
       v.memory = 6000
       v.cpus = 4
     end
-
   end
 
   config.vm.define "condarecipes", autostart: false do |condarecipes|
@@ -72,6 +69,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.memory = 6000
       v.cpus = 4
     end
+  end
 
   config.vm.define "condarecipes32", primary: true do |condarecipes32|
     condarecipes32.vm.box = "ubuntu/trusty32"
@@ -89,8 +87,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   end
 
-    config.vm.define "pyoai", autostart: false do |pyoai|
-	pyoai.vm.box_url = "https://atlas.hashicorp.com/geerlingguy/boxes/centos7"
+  config.vm.define "pyoai", autostart: false do |pyoai|
+    pyoai.vm.box_url = "https://atlas.hashicorp.com/geerlingguy/boxes/centos7"
     pyoai.vm.box = "geerlingguy/centos7"
     pyoai.vm.network :private_network, ip: "192.168.33.18"
 
@@ -110,11 +108,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.forward_agent = true
   config.ssh.forward_x11 = true
 
-  config.vm.provision "ansible" do |ansible|
+  config.vm.provision "ansible_local" do |ansible|
     ansible.playbook = "provisioning/site.yml"
     ansible.inventory_path = "provisioning/hosts"
-    ansible.verbose = "v"
+    ansible.provisioning_path = "/vagrant"
+    ansible.verbose = "vvv"
   end
-
 
 end

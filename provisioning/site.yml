@@ -6,6 +6,7 @@
     - nansat
     - sample_datasets
     - nansencloud
+    - doppler
     - liclipse
   environment:
     PATH: "{{ conda_dir }}/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -49,19 +50,6 @@
     - localvm
     - conda
     - condarecipes
-  environment:
-    PATH: "{{ conda_dir }}/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    GDAL_DATA: "{{ conda_dir }}/share/gdal"
-    LC_ALL: "en_US.UTF-8"
-
-- hosts: doppler
-  roles:
-    - localvm
-    - conda
-    - nansat
-    - sample_datasets
-    - nansencloud
-    - doppler
   environment:
     PATH: "{{ conda_dir }}/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
