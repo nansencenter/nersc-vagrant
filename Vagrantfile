@@ -78,9 +78,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     condarecipes32.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty32"
     condarecipes32.vm.network :private_network, ip: "192.168.33.16"
   end
->>>>>>> master
-
-  end
 
   config.vm.define "thredds", autostart: false do |thredds|
     thredds.vm.network :private_network, ip: "192.168.33.15"
