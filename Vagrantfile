@@ -53,11 +53,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   end
 
-<<<<<<< HEAD
-  config.vm.define "condarecipes", primary: true do |condarecipes|
-    condarecipes.vm.network :private_network, ip: "192.168.33.13"
-  end
-=======
   config.vm.define "condarecipes", autostart: false do |condarecipes|
     condarecipes.vm.network :private_network, ip: "192.168.33.13"
   end
@@ -77,7 +72,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.memory = 6000
       v.cpus = 4
     end
->>>>>>> d159b991d3f4cd78914c231becfcb4c2acdd871f
 
   config.vm.define "condarecipes32", primary: true do |condarecipes32|
     condarecipes32.vm.box = "ubuntu/trusty32"
@@ -103,8 +97,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   end
 
-<<<<<<< HEAD
-=======
     config.vm.define "pyoai", autostart: false do |pyoai|
 	pyoai.vm.box_url = "https://atlas.hashicorp.com/geerlingguy/boxes/centos7"
     pyoai.vm.box = "geerlingguy/centos7"
@@ -117,7 +109,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   end
   
->>>>>>> d159b991d3f4cd78914c231becfcb4c2acdd871f
   config.vm.provider "virtualbox" do |v|
     v.memory = 4000
     v.cpus = 2
