@@ -12,7 +12,9 @@
 - name: Python | Install Nansat requirements
   shell: 'conda install -q --yes --copy {{ item }}'
   with_items:
-    scipy
+    libgfortran=1.0
+    numpy=1.10.2
+    scipy=0.16.0
     matplotlib
     nose
     pyproj

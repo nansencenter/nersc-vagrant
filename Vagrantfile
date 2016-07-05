@@ -53,9 +53,31 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   end
 
+<<<<<<< HEAD
   config.vm.define "condarecipes", primary: true do |condarecipes|
     condarecipes.vm.network :private_network, ip: "192.168.33.13"
   end
+=======
+  config.vm.define "condarecipes", autostart: false do |condarecipes|
+    condarecipes.vm.network :private_network, ip: "192.168.33.13"
+  end
+
+  config.vm.define "condarecipes32", autostart: false do |condarecipes32|
+    condarecipes32.vm.box = "ubuntu/trusty32"
+    condarecipes32.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty32"
+    condarecipes32.vm.network :private_network, ip: "192.168.33.16"
+  end
+
+  config.vm.define "condarecipes_osx", autostart: false do |condarecipes_osx|
+    condarecipes_osx.vm.box = "jhcook/osx-elcapitan-10.11"
+    condarecipes_osx.vm.box_url = "https://atlas.hashicorp.com/jhcook/boxes/osx-elcapitan-10.11"
+    condarecipes_osx.vm.network :private_network, ip: "192.168.33.17"
+
+    condarecipes_osx.vm.provider "virtualbox" do |v|
+      v.memory = 6000
+      v.cpus = 4
+    end
+>>>>>>> d159b991d3f4cd78914c231becfcb4c2acdd871f
 
   config.vm.define "condarecipes32", primary: true do |condarecipes32|
     condarecipes32.vm.box = "ubuntu/trusty32"
@@ -81,6 +103,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   end
 
+<<<<<<< HEAD
+=======
+    config.vm.define "pyoai", autostart: false do |pyoai|
+	pyoai.vm.box_url = "https://atlas.hashicorp.com/geerlingguy/boxes/centos7"
+    pyoai.vm.box = "geerlingguy/centos7"
+    pyoai.vm.network :private_network, ip: "192.168.33.18"
+
+    pyoai.vm.provider "virtualbox" do |v|
+      v.memory = 2000
+      v.cpus = 1
+    end
+
+  end
+  
+>>>>>>> d159b991d3f4cd78914c231becfcb4c2acdd871f
   config.vm.provider "virtualbox" do |v|
     v.memory = 4000
     v.cpus = 2
@@ -95,5 +132,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.inventory_path = "provisioning/hosts"
     ansible.verbose = "v"
   end
+
 
 end
