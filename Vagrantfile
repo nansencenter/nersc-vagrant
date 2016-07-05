@@ -79,14 +79,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     condarecipes32.vm.network :private_network, ip: "192.168.33.16"
   end
 
-  config.vm.define "doppler", autostart: false do |doppler|
-    doppler.vm.network :private_network, ip: "192.168.33.14"
-    # local at nersc
-    #doppler.vm.synced_folder "/Data/sat/downloads/ASAR/level-0/gsar_rvl", "/vagrant/shared/test_data/gsar", create: true
-    #doppler.vm.synced_folder "/Volumes/sat/doppler/ASAR", "/vagrant/shared/test_data/asar_netcdf_old_doppler", create: true
-    doppler.ssh.insert_key = '~/.ssh/id_rsa_github'
-  end
-
   config.vm.define "thredds", autostart: false do |thredds|
     thredds.vm.network :private_network, ip: "192.168.33.15"
 
