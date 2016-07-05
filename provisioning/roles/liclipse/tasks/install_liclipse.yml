@@ -1,0 +1,23 @@
+---
+#liclipse\tasks\install_liclipse.yml
+
+- name: LiClipse | Install required system packages for X-forwarding.
+  apt: pkg={{ item }}
+  become: yes
+  with_items:
+    - libgtk2.0-0
+    - libxtst6
+    - openjdk-7-jdk
+
+- name: LiClipse | Download
+  get_url: url=https://googledrive.com/host/0BwwQN8QrgsRpLVlDeHRNemw3S1E/LiClipse%203.0.6/liclipse_3.0.6_linux.gtk.x86_64.tar.gz dest=/tmp/liclipse_3.0.6_linux.gtk.x86_64.tar.gz
+
+- name: LiClipse | Unarchive
+  unarchive: src=/tmp/liclipse_3.0.6_linux.gtk.x86_64.tar.gz dest=/home/vagrant copy=no
+
+- name: LiClipse | Create link from usr/bin
+  become: yes
+  file: path='/usr/local/bin/LiClipse'
+        src='/home/vagrant/liclipse/LiClipse'
+        state=link
+        force=yes

@@ -7,6 +7,7 @@
     - sample_datasets
     - nansencloud
     - doppler
+    - liclipse
   environment:
     PATH: "{{ conda_dir }}/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
@@ -71,3 +72,7 @@
   roles:
     - localvm
     - thredds
+
+- hosts: pyoai
+  roles:
+    - pyoai

@@ -1,0 +1,112 @@
+---
+#usepython\tasks\setup_centos.yml
+- name: Check whether /etc/sysconfig/selinux contains "SELINUX=disabled"
+  command: grep -Fxq "SELINUX=disabled" /etc/sysconfig/selinux
+  register: selinuxOn
+  always_run: True
+  ignore_errors: True
+  changed_when: False
+
+- name: Disable SElinux
+  selinux: state=disabled
+  become: yes
+  when: selinuxOn.rc == 1
+
+# Reboot from within os breaks synched folders
+# solution: need to halt the machine and run 'vagrant up --provision pyoai' again
+- name: restart machine to disable SElinux
+  become: yes
+  shell: sleep 2 ; /sbin/shutdown -r now "Ansible disabling SE Linux"
+  async: 1
+  poll: 0
+  ignore_errors: True
+  when: selinuxOn.rc == 1
+
+- name: waiting for server to come back
+  local_action: wait_for 
+                host={{ inventory_hostname }}
+                port=22
+                delay=10
+  tags: disable_SEL
+  when: selinuxOn.rc == 1
+
+# - name: Create shared folder
+  # file: path=/vagrant/shared/pyoai state=directory
+
+- name: Install epel-release repo.
+  yum: name={{ item }}
+  become: yes
+  with_items:
+    - epel-release
+# - name: Install EPEL repo.
+  # yum:
+    # name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
+    # state: present
+  # become: yes
+
+- name: Install dependencies with yum
+  yum: name={{ item }} state=latest
+  become: yes
+  with_items:
+    - gcc
+    - python-pip
+    - python-devel
+    - libxml2-devel
+    - libxslt-devel
+    - libxml2-python
+    - httpd
+    - mod_wsgi
+    - git
+# For development:
+    - nano
+    - mlocate
+
+- name: Upgrade pip
+  pip: name=pip state=latest
+  become: yes
+
+- name: Install virtualenv with pip
+  pip: name={{ item }}
+  become: yes
+  with_items:
+    - virtualenv
+
+- name: Install pyoai with pip
+  pip: name={{ item }} virtualenv=/opt/moai-env
+  become: yes
+  with_items:
+    - pyoai
+
+- git: repo=https://github.com/nansencenter/moai.git
+       dest=/var/www/moai
+       version=master
+       force=yes
+  become: yes
+
+- name: install moai
+  pip: name=file:///var/www/moai virtualenv=/opt/moai-env 
+  become: yes
+
+- name: create database folder
+  file: path=/opt/data state=directory mode=0755
+  become: yes
+
+- name: Setup httpd
+  template: src=000-moai.conf
+            dest=/etc/httpd/conf.d/000-moai.conf
+            backup=yes
+  become: yes
+
+# - name: Copy settings.ini
+  # template: src=settings.ini
+            # dest=/var/www/moai/settings.ini
+  # become: yes
+- name: restart httpd
+  service: name=httpd state=restarted
+  become: yes
+
+- name: Add examples to database
+  command: /opt/moai-env/bin/update_moai moai_example --config /var/www/moai/settings.ini
+  become: yes
+- file: path=/opt/data/moai-example.db owner=apache group=apache mode=0600
+  become: yes
