@@ -9,11 +9,8 @@ git clone https://github.com/nansencenter/nersc-vagrant
 cd nersc-vagrant
 vagrant up
 ```
-<<<<<<< HEAD
-=======
  
 Note: on Windows, you probably need to change the path on line 4 in setup.bat to match your cygwin installation.
->>>>>>> d159b991d3f4cd78914c231becfcb4c2acdd871f
 
 Virtual machines:
 =================
@@ -55,14 +52,11 @@ Roles
 * production
  * Empty
 
-<<<<<<< HEAD
-=======
 * pyoai
  * Installs moai, pyoai and all requirements
  * Installs apache httpd and mod_wsgi
  * Configures apache with moai and starts httpd
 
->>>>>>> d159b991d3f4cd78914c231becfcb4c2acdd871f
 * sample_datasets
  * Download sample data
 
