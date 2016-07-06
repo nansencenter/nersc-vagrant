@@ -31,7 +31,7 @@ script:
   - "ansible-playbook provisioning/site.yml -i provisioning/hosts --syntax-check"
 
   # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook provisioning/site.yml -i provisioning/hosts -l localhost --connection=local --sudo -vvvv"
+  - "ansible-playbook provisioning/site.yml -i provisioning/hosts -l localhost --connection=local -vvvv"
 
   - $HOME/miniconda/bin/nosetests nansat
 
