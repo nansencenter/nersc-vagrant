@@ -12,12 +12,14 @@
   get_url: url="{{ sample_data_url }}/{{ item.mapper }}/{{ item.name }}" dest="{{ sample_data_dir }}/{{ item.mapper }}/{{ item.name }}" force=no
   with_items:
     - "{{ sample_files }}"
+  ignore_errors: yes
 
 - name: Download Nansat landmask
   get_url:
     url: "{{ ftp_nansat_landmask }}/{{ nansat_landmask_file }}"
     dest: "{{ shared_dir }}/{{ nansat_landmask_file }}"
     force: no
+  ignore_errors: yes
 
 - name: Create Nansat landmask data folder
   file: path="{{ shared_dir }}/MOD44W" state=directory
@@ -28,5 +30,6 @@
     src: "{{ shared_dir }}/{{ nansat_landmask_file }}"
     dest: "{{ shared_dir }}/MOD44W/"
     force: no
+  ignore_errors: yes
 
 

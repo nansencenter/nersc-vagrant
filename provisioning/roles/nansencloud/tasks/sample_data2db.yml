@@ -5,6 +5,7 @@
       app_path='{{ dev_sources_dir }}/nansen-cloud/project'
   with_items:
     - '{{ sample_files }}'
+  ignore_errors: yes
 
 - name: Sample data to database | Add private sample images to db
   django_manage: >
@@ -13,4 +14,5 @@
   with_items:
     - '{{ private_sample_files }}'
   when: mount_name is defined and use_local_database is defined and use_local_database
+  ignore_errors: yes
 
