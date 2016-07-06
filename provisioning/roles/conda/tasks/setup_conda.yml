@@ -2,7 +2,7 @@
 #usepython\tasks\setup_conda.yml
 
 - name: Conda | Debug
-  debug: msg="{{ home_dir }} {{ install_dir }} {{ ansible_ssh_user }} {{ cache_dir }} {{ conda_filename }}"
+  debug: msg="{{ ansible_ssh_user }} {{ home_dir }} {{ install_dir }} {{ cache_dir }} {{ conda_filename }}"
 
 - name: Conda | Change owner of install directory
   become: yes

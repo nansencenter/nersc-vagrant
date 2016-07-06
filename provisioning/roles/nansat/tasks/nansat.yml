@@ -9,6 +9,12 @@
   tags:
     - update-nansat
 
+- name: nansat | Debug1
+  debug: msg="{{ dev_sources_dir }}"
+
+- name: nansat | Debug2
+  shell: "echo $PATH; which python"
+
 - name: nansat | Install Nansat (always run to keep the pixel functions updated)
   shell: 'python setup.py build_ext --inplace'
   args:
