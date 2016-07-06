@@ -22,20 +22,5 @@
         state=link
         force=yes
 
-- name: nansat | Debug1
-  debug: msg="{{ dev_sources_dir }}"
-
-- name: nansat | Debug2
-  shell: "echo $PATH"
-
-- name: nansat | Debug3
-  shell: "which pip"
-
-- name: nansat | Debug3
-  shell: "which nosetests"
-
-- name: nansat | Debug3
-  shell: "pip freeze"
-
-- name: nansat | Debug3
+- name: nansat | Nosetests
   shell: "nosetests nansat"
