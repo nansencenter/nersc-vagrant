@@ -1,0 +1,13 @@
+---
+# file: group_vars/travis
+ansible_ssh_user: travis
+
+home_dir: /home/travis
+cache_dir: "{{ cache_dir }}"
+sample_data_dir: "{{ shared_dir }}/test_data"
+install_dir: "{{ home_dir }}"
+conda_dir: "{{ install_dir }}/miniconda"
+python_dist_packages: "{{ conda_dir }}/lib/python2.7/site-packages"
+
+setup_ubuntu: no
+use_conda_cache: no
