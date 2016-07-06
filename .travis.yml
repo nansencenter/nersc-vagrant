@@ -27,6 +27,7 @@ script:
   # Check the role/playbook's syntax.
   - "which ansible-playbook"
   - "which pip"
+  - "whami"
   - "ansible-playbook provisioning/test_site.yml -i provisioning/test_hosts --syntax-check"
 
   # Run the role/playbook with ansible-playbook.
