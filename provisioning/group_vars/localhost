@@ -1,3 +1,6 @@
 ---
 ansible_ssh_user: travis
+shared_dir: /home/travis
+home_dir: /home/travis
+
 
