@@ -44,6 +44,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     condarecipes.vm.network :private_network, ip: "192.168.33.13"
   end
 
+  config.vm.define "pseudo_travis", autostart: false do |condarecipes|
+    condarecipes.vm.network :private_network, ip: "192.168.33.14"
+  end
+
   config.vm.define "thredds", autostart: false do |thredds|
     thredds.vm.network :private_network, ip: "192.168.33.15"
 
