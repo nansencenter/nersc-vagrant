@@ -63,18 +63,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     condarecipes32.vm.network :private_network, ip: "192.168.33.16"
   end
 
-  config.vm.define "condarecipes_osx", autostart: false do |condarecipes_osx|
-    condarecipes_osx.vm.box = "jhcook/osx-elcapitan-10.11"
-    condarecipes_osx.vm.box_url = "https://atlas.hashicorp.com/jhcook/boxes/osx-elcapitan-10.11"
-    condarecipes_osx.vm.network :private_network, ip: "192.168.33.17"
-
-    condarecipes_osx.vm.provider "virtualbox" do |v|
-      v.memory = 6000
-      v.cpus = 4
-    end
-
-  end
-
   config.vm.define "thredds", autostart: false do |thredds|
     thredds.vm.network :private_network, ip: "192.168.33.15"
 
