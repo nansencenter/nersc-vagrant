@@ -80,6 +80,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.inventory_path = "provisioning/hosts"
     ansible.provisioning_path = "/vagrant"
     ansible.verbose = "vvv"
+    ansible.install = true
+    ansible.install_mode = "pip"
   end
 
 end
