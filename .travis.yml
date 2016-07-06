@@ -31,9 +31,9 @@ script:
   - "ansible-playbook provisioning/site.yml -i provisioning/hosts --syntax-check"
 
   # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook provisioning/site.yml -i provisioning/hosts -l localhost --connection=local -vvvv"
+  - "ansible-playbook provisioning/site.yml -i provisioning/hosts -l localhost --connection=local --sudo -vvvv"
 
-  - $HOME/miniconda/bin/nosetests nansat
+#  - $HOME/miniconda/bin/nosetests nansat
 
 ## for fresh ubuntu to mimic travis:
 #sudo apt-get install git libgfortran3 libsqlite3-dev sqlite3 libspatialite-dev spatialite-bin g++ libudunits2-0 libudunits2-dev libjpeg-dev libx11-dev python-dev libffi-dev libssl-dev
