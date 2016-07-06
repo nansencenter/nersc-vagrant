@@ -27,15 +27,3 @@
 
 - name: Conda | Add PATH to .bashrc
   lineinfile: dest="{{ home_dir }}/.bashrc" line="export PATH={{ conda_dir }}/bin:$PATH"
-
-- name: nansat | Debug1
-  debug: msg="{{ dev_sources_dir }}"
-
-- name: nansat | Debug2
-  shell: "echo $PATH"
-
-- name: nansat | Debug3
-  shell: "which python"
-
-- name: nansat | STOP
-  shell: "BALBLA"
