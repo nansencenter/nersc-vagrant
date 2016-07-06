@@ -25,7 +25,7 @@ install:
 
 before_script:
   - export PATH=$HOME/miniconda/bin:$PATH
-  - export GDAL_DATA=$HOME/miniconda/share/gdal"
+  - export GDAL_DATA=$HOME/miniconda/share/gdal
   
 script:
   - "ansible-playbook provisioning/site.yml -i provisioning/hosts --syntax-check"
