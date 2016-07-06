@@ -2,7 +2,7 @@
 # file: group_vars/travis
 ansible_ssh_user: travis
 
-home_dir: /home/travis
+home_dir: "/home/{{ ansible_ssh_user }}"
 cache_dir: "{{ home_dir }}"
 install_dir: "{{ home_dir }}"
 conda_dir: "{{ install_dir }}/miniconda"
