@@ -1,26 +1,16 @@
 ---
 - name: Update apt-get
-  sudo: yes
+  become: yes
   apt: update_cache=yes cache_valid_time=36000
 
 - name: Install required system packages.
   apt: pkg={{ item }}
-  sudo: yes
+  become: yes
   with_items:
     - default-jdk
     - default-jre
     - default-jre-headless
     - cifs-utils
-
-- name: Mount network folders
-  sudo: yes
-  mount:
-    name: "{{ mount_name }}/{{ item }}"
-    src: "{{ mount_src }}/{{ item }}"
-    fstype: cifs
-    opts: "uid={{ uid }},gid={{ gid }},username={{ username }},password={{ password }},domain={{ domain }}"
-    state: mounted
-  with_items: mounted_dirs
 
 - name: Download TOMCAT
   get_url: url="{{ tomcat_url }}/{{ tomcat_file }}.tar.gz" dest="{{ home }}{{ tomcat_file }}.tar.gz" force=no
@@ -30,15 +20,12 @@
 
 - name: Create setenv
   template: src=../templates/tomcat_setenv_sh dest="{{ tomcat_home }}/bin/setenv.sh"
-  
+
 - name: Set setenv to executable
   file: path="{{ tomcat_home }}/bin/setenv.sh" mode=775
 
 - name: Download and deploy THREDDS
   get_url: url="{{ thredds_url }}/{{ thredds_file }}" dest="{{ tomcat_home }}/webapps/{{ thredds_file }}" force=no
-
-- name: Create THREDDS config dir
-  file: path={{ tomcat_home }}/content/ state=directory
 
 - name: Stop TOMCAT
   shell: "{{ tomcat_home }}/bin/catalina.sh stop"

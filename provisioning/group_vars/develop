@@ -1,5 +1,7 @@
 ---
 dev_sources_dir: "{{ shared_dir }}/develop_vm"
 
-nansat_vesrion: develop
+pythesint_version: master
+nansat_version: develop
 nansencloud_version: develop
+add_sample_data: yes

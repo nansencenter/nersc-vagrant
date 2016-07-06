@@ -1,8 +1,6 @@
 ---
-#usepython\tasks\setup_local_vm.yml
-
-- name: Setup Local VM | Mount network folders
-  sudo: yes
+- name: Local VM | Mount network folders
+  become: yes
   mount:
     name: "{{ mount_name }}/{{ item }}"
     src: "{{ mount_src }}/{{ item }}"
@@ -10,8 +8,8 @@
     opts: "uid={{ uid }},gid={{ gid }},username={{ username }},password={{ password }},domain={{ domain }}"
     state: mounted
   with_items: mounted_dirs
-  when: mount_network_folders is defined and mount_network_folders
+  when: mount_name is defined
 
-- name: Setup Local VM | Create shared folder
+- name: Local VM | Create shared folder
   file: path="{{ shared_dir }}" state=directory
-  when: use_shared_dir is defined and use_shared_dir
+  when: shared_dir is defined

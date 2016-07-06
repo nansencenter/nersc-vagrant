@@ -11,23 +11,28 @@
 #       accept_hostkey=yes
 #       #key_file=/home/vagrant/.ssh/id_rsa_github
 
-- name: Add GTOPO30 vrt to .bashrc
+- name: Doppler | Add GTOPO30 vrt to .bashrc
   lineinfile: dest="{{ home_dir }}/.bashrc" line='export GTOPO30={{ gtopo30_path }}'
   when: mount_network_folders is defined and mount_network_folders
 
-- name: Create link from Python dist-packages to sar-doppler
-  sudo: yes
-  file: path='{{ python_dist_packages }}/sardoppler'
-        src='{{ dev_sources_dir }}/sar-doppler/sardoppler'
-        state=link
-        force=yes
-
-- name: Create link from Python dist-packages to sar-doppler mappers
-  sudo: yes
-  file: path='{{ python_dist_packages }}/nansat_mappers'
-        src='{{ dev_sources_dir }}/sar-doppler/nansat_mappers'
-        state=link
-        force=yes
+#- name: Doppler | Download sample datasets
+#  get_url: url="{{ sample_data_url }}/{{ item.mapper }}/{{ item.name }}" dest="{{ sample_data_dir }}/{{ item.mapper }}/{{ item.name }}" force=no
+#  with_items:
+#    - "{{ doppler_files }}"
+#
+#- name: Doppler | Create link from Python dist-packages to sar-doppler
+#  become: yes
+#  file: path='{{ python_dist_packages }}/sardoppler'
+#        src='{{ dev_sources_dir }}/sar-doppler/sardoppler'
+#        state=link
+#        force=yes
+#
+#- name: Doppler | Create link from Python dist-packages to sar-doppler mappers
+#  become: yes
+#  file: path='{{ python_dist_packages }}/nansat_mappers'
+#        src='{{ dev_sources_dir }}/sar-doppler/nansat_mappers'
+#        state=link
+#        force=yes
 
 #- name: Add doppler files to db
 #  django_manage: >

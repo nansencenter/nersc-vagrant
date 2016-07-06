@@ -1,6 +1,5 @@
 .vagrant/
 python/
 shared/
-provisioning/group_vars/thredds
 provisioning/roles/nansencloud/templates/settings.py
-provisioning/group_vars/mounting
+provisioning/roles/localvm/defaults/main.yml

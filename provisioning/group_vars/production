@@ -8,7 +8,6 @@ conda_dir: "{{ install_dir }}/miniconda"
 dev_sources_dir: "{{ install_dir }}"
 python_dist_packages: "{{ conda_dir }}/lib/python2.7/site-packages"
 
-project_name: project
 application_name: nansen-cloud
 virtualenv_path: "{{ install_dir }}/{{ application_name }}"
 project_path: "{{ virtualenv_path }}/{{ project_name }}"
@@ -18,9 +17,7 @@ mount_network_folders: no
 setup_centos: yes
 setup_ubuntu: no
 setup_local_vm: no
-use_shared_dir: no
 use_conda_cache: no
-setup_nansen_cloud: yes
 use_local_database: no
 make_migrations: no
 run_migrate: no

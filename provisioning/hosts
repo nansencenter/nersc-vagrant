@@ -1,30 +1,23 @@
 [develop]
-192.168.33.10
+192.168.33.10 ansible_connection=local
 
 [course]
-192.168.33.11
+192.168.33.11 ansible_connection=local
 
 [condarecipes]
-192.168.33.13
+192.168.33.13 ansible_connection=local
 
 [doppler]
-192.168.33.14
+192.168.33.14 ansible_connection=local
 
 [thredds]
-192.168.33.15
+192.168.33.15 ansible_connection=local
 
-[condarecipes32]
-192.168.33.16
+[pyoai]
+192.168.33.18 ansible_connection=local
 
 [webserver]
 10.47.20.56:5522 ansible_ssh_user=sat
 
 [processing]
 10.47.20.55:5522 ansible_ssh_user=sat
-
-[mounting:children]
-develop
-course
-condarecipes
-doppler
-thredds

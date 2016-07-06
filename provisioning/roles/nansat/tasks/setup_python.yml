@@ -12,7 +12,9 @@
 - name: Python | Install Nansat requirements
   shell: 'conda install -q --yes --copy {{ item }}'
   with_items:
-    scipy
+    libgfortran=1.0
+    numpy=1.10.2
+    scipy=0.16.0
     matplotlib
     nose
     pyproj
@@ -35,14 +37,14 @@
   lineinfile: dest="{{ home_dir }}/.bashrc" line="export GDAL_DATA={{ conda_dir }}/share/gdal"
 
 - name: Python | Add links to some conda libraries to /usr/lib
-  sudo: yes
+  become: yes
   file: src="{{ conda_dir }}/lib/{{ item }}" dest="/usr/lib/{{ item }}" state=link
   with_items:
     - libgeos_c.so
     - libgdal.so
 
 - name: Python | Run ldconfig
-  sudo: yes
+  become: yes
   shell: '/sbin/ldconfig'
 
 - name: Python | Install nansat requirements with PIP
@@ -50,3 +52,4 @@
   with_items:
     - cfunits
     - pillow
+    - mock

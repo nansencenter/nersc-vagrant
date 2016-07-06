@@ -9,8 +9,10 @@ git clone https://github.com/nansencenter/nersc-vagrant
 cd nersc-vagrant
 vagrant up
 ```
+ 
+Note: on Windows, you probably need to change the path on line 4 in setup.bat to match your cygwin installation.
 
-Vurtual machines:
+Virtual machines:
 =================
 * develop : 192.168.33.10
 * course : 192.168.33.11
@@ -22,10 +24,16 @@ Vurtual machines:
 Roles
 =====
 * conda
- * Setup Ubunto or CentOS
+ * Setup Ubuntu or CentOS
+ * Mount netwrok folders
  * Install minimal conda
+
 * condarecipes
  * Prepare for building packages for conda
+
+* condarecipes32
+ * Prepare for building packages for conda for 32bits
+
 * course
  * Clone nansat-lectures
  * Add Jupyter-notebook to crontab
@@ -43,6 +51,11 @@ Roles
 
 * production
  * Empty
+
+* pyoai
+ * Installs moai, pyoai and all requirements
+ * Installs apache httpd and mod_wsgi
+ * Configures apache with moai and starts httpd
 
 * sample_datasets
  * Download sample data
@@ -71,4 +84,4 @@ Shared directories
   * nansen-cloud
   * openwind
 
-NB! **You have to destroy all your machines before git clone**
+NB! **You better destroy all your machines before git clone**

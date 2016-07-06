@@ -34,8 +34,7 @@
   shell: 'python setup.py install'
   args:
     chdir: "{{ ansible_env.HOME }}/pysqlite/"
-  when: git_pysqlite.changed
-  when: use_local_database is defined and use_local_database
+  when: git_pysqlite.changed and use_local_database is defined and use_local_database
 
 - name: Setup Python | Update/checkout Nansen-Cloud Django
   git: repo=https://github.com/nansencenter/nansen-cloud

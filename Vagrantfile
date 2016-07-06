@@ -40,35 +40,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     course.vm.network :private_network, ip: "192.168.33.11"
   end
 
-  config.vm.define "testintegration", autostart: false do |testintegration|
-    testintegration.vm.network :private_network, ip: "192.168.33.12"
-
-    # configure the line below if you have local folder with test data
-    #testintegration.vm.synced_folder "/Data/FTPRoot/pub/nansat/test_data", "/vagrant/shared/test_data", create: true
-
-    testintegration.vm.provider "virtualbox" do |v|
-      v.memory = 6000
-      v.cpus = 4
-    end
-
-  end
-
-  config.vm.define "condarecipes", primary: true do |condarecipes|
+  config.vm.define "condarecipes", autostart: false do |condarecipes|
     condarecipes.vm.network :private_network, ip: "192.168.33.13"
-  end
-
-  config.vm.define "condarecipes32", primary: true do |condarecipes32|
-    condarecipes32.vm.box = "ubuntu/trusty32"
-    condarecipes32.vm.box_url = "https://atlas.hashicorp.com/ubuntu/trusty32"
-    condarecipes32.vm.network :private_network, ip: "192.168.33.16"
-  end
-
-  config.vm.define "doppler", autostart: false do |doppler|
-    doppler.vm.network :private_network, ip: "192.168.33.14"
-    # local at nersc
-    #doppler.vm.synced_folder "/Data/sat/downloads/ASAR/level-0/gsar_rvl", "/vagrant/shared/test_data/gsar", create: true
-    #doppler.vm.synced_folder "/Volumes/sat/doppler/ASAR", "/vagrant/shared/test_data/asar_netcdf_old_doppler", create: true
-    doppler.ssh.insert_key = '~/.ssh/id_rsa_github'
   end
 
   config.vm.define "thredds", autostart: false do |thredds|
@@ -77,6 +50,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     thredds.vm.provider "virtualbox" do |v|
       v.memory = 6000
       v.cpus = 4
+    end
+
+  end
+
+  config.vm.define "pyoai", autostart: false do |pyoai|
+    pyoai.vm.box_url = "https://atlas.hashicorp.com/geerlingguy/boxes/centos7"
+    pyoai.vm.box = "geerlingguy/centos7"
+    pyoai.vm.network :private_network, ip: "192.168.33.18"
+
+    pyoai.vm.provider "virtualbox" do |v|
+      v.memory = 2000
+      v.cpus = 1
     end
 
   end
@@ -90,10 +75,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.forward_agent = true
   config.ssh.forward_x11 = true
 
-  config.vm.provision "ansible" do |ansible|
+  config.vm.provision "ansible_local" do |ansible|
     ansible.playbook = "provisioning/site.yml"
     ansible.inventory_path = "provisioning/hosts"
-    ansible.verbose = "v"
+    ansible.provisioning_path = "/vagrant"
+    ansible.verbose = "vvv"
+    ansible.install = true
+    ansible.install_mode = "pip"
   end
 
 end

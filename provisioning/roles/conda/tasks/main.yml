@@ -5,7 +5,4 @@
 - include: setup_ubuntu.yml
   when: setup_ubuntu is defined and setup_ubuntu
 
-- include: setup_local_vm.yml
-  when: setup_local_vm
-
 - include: setup_conda.yml
