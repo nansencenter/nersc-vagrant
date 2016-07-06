@@ -56,3 +56,11 @@
 - hosts: pyoai
   roles:
     - pyoai
+
+- hosts: travis
+  roles:
+    - conda
+  environment:
+    PATH: "{{ conda_dir }}/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    GDAL_DATA: "{{ conda_dir }}/share/gdal"
+    LC_ALL: "en_US.UTF-8"

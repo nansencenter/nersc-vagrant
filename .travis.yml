@@ -24,10 +24,10 @@ install:
   - pip install -Iv ansible==1.9.3
 
 script:
-  - "ansible-playbook provisioning/test_site.yml -i provisioning/test_hosts --syntax-check"
+  - "ansible-playbook provisioning/site.yml -i provisioning/hosts --syntax-check"
 
   # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook provisioning/test_site.yml -i provisioning/test_hosts -l localhost --connection=local --sudo"
+  - "ansible-playbook provisioning/site.yml -i provisioning/hosts -l localhost --connection=local --sudo"
 
   - $HOME/miniconda/bin/nosetests nansat
 
