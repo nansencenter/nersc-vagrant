@@ -24,10 +24,6 @@ install:
   - pip install -Iv ansible==1.9.3
 
 script:
-  # Check the role/playbook's syntax.
-  - "which ansible-playbook"
-  - "which pip"
-  - "whoami"
   - "ansible-playbook provisioning/test_site.yml -i provisioning/test_hosts --syntax-check"
 
   # Run the role/playbook with ansible-playbook.
