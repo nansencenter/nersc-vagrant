@@ -37,14 +37,14 @@
   lineinfile: dest="{{ home_dir }}/.bashrc" line="export GDAL_DATA={{ conda_dir }}/share/gdal"
 
 - name: Python | Add links to some conda libraries to /usr/lib
-  become: no
+  become: yes
   file: src="{{ conda_dir }}/lib/{{ item }}" dest="/usr/lib/{{ item }}" state=link
   with_items:
     - libgeos_c.so
     - libgdal.so
 
 - name: Python | Run ldconfig
-  become: no
+  become: yes
   shell: '/sbin/ldconfig'
 
 - name: Python | Install nansat requirements with PIP
