@@ -40,16 +40,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     course.vm.network :private_network, ip: "192.168.33.11"
   end
 
-  config.vm.define "testintegration", autostart: false do |testintegration|
-    testintegration.vm.network :private_network, ip: "192.168.33.12"
-    # configure the line below if you have local folder with test data
-    #testintegration.vm.synced_folder "/Data/FTPRoot/pub/nansat/test_data", "/vagrant/shared/test_data", create: true
-    testintegration.vm.provider "virtualbox" do |v|
-      v.memory = 6000
-      v.cpus = 4
-    end
-  end
-
   config.vm.define "condarecipes", autostart: false do |condarecipes|
     condarecipes.vm.network :private_network, ip: "192.168.33.13"
   end
