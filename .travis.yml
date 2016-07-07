@@ -24,22 +24,6 @@ install:
   - pip install -Iv ansible==1.9.3
 
 script:
-  # Check the role/playbook's syntax.
-  - "which ansible-playbook"
-  - "which pip"
-  - "ansible-playbook provisioning/test_site.yml -i provisioning/test_hosts --syntax-check"
+  - "ansible-playbook provisioning/site.yml -i provisioning/hosts --syntax-check"
 
-  # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook provisioning/test_site.yml -i provisioning/test_hosts -l localhost --connection=local"
-
-  - $HOME/miniconda/bin/nosetests nansat
-
-## for fresh ubuntu to mimic travis:
-#sudo apt-get install git libgfortran3 libsqlite3-dev sqlite3 libspatialite-dev spatialite-bin g++ libudunits2-0 libudunits2-dev libjpeg-dev libx11-dev python-dev libffi-dev libssl-dev
-#sudo apt-get install python-pip
-#sudo pip install pip --upgrade
-#sudo pip install --upgrade ndg-httpsclient
-#pip install -Iv ansible==1.9.3
-#ansible-playbook provisioning/test_site.yml -i provisioning/test_hosts --syntax-check
-#ansible-playbook provisioning/test_site.yml -i provisioning/test_hosts -l localhost --connection=local --sudo
-#$HOME/miniconda/bin/nosetests nansat
+  - "ansible-playbook provisioning/site.yml -i provisioning/hosts -l localhost --connection=local --sudo -vvvv"

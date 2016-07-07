@@ -1,8 +1,12 @@
 ---
-#usepython\tasks\setup_python.yml
+#usepython\tasks\setup_conda.yml
+
+- name: Conda | Debug
+  debug: msg="{{ ansible_ssh_user }} {{ home_dir }} {{ install_dir }} {{ cache_dir }} {{ conda_filename }}"
 
 - name: Conda | Change owner of install directory
   become: yes
+  ignore_errors: yes
   file: path="{{ install_dir }}" owner="{{ ansible_ssh_user }}"
 
 - name: Conda | Download Miniconda

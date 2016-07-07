@@ -21,3 +21,6 @@
         src='{{ dev_sources_dir }}/nansat/nansat'
         state=link
         force=yes
+
+- name: nansat | Nosetests
+  shell: "nosetests nansat"
