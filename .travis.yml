@@ -28,5 +28,5 @@ install:
   - pip install -Iv ansible==1.9.3
 
 script:
-  - "ansible-playbook provisioning/site.yml -i provisioning/hosts --syntax-check
+  - ansible-playbook provisioning/site.yml -i provisioning/hosts --syntax-check
   - CC=gcc-4.8 CXX=g++-4.8 ansible-playbook provisioning/site.yml -i provisioning/hosts -l localhost --connection=local --sudo -vvvv
