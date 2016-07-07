@@ -48,7 +48,7 @@
   shell: '/sbin/ldconfig'
 
 - name: Python | Install nansat requirements with PIP
-  pip: name={{ item }} extra_args='--no-cache-dir -I'
+  pip: name={{ item }} #extra_args='--no-cache-dir -I'
   with_items:
     - cfunits
     - pillow

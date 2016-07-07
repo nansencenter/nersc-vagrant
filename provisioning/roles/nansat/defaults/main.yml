@@ -1,4 +1,5 @@
 ---
 use_conda_cache: yes
-nansat_version: v0.6.12
+#nansat_version: v0.6.12
+nansat_version: master_failing
 pythesint_version: v1.1.1
