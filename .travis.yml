@@ -22,6 +22,7 @@ addons:
 install:
   # Install Ansible.
   - pip install -Iv ansible==1.9.3
+  - gcc --version
 
 script:
   - "ansible-playbook provisioning/site.yml -i provisioning/hosts --syntax-check"
