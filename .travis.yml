@@ -18,13 +18,14 @@ addons:
     - libudunits2-dev
     - libjpeg-dev
     - libx11-dev
+    - gcc-4.8
 
 install:
   # Install Ansible.
   - pip install -Iv ansible==1.9.3
   - gcc --version
+  - pip install libais
 
-script:
-  - "ansible-playbook provisioning/site.yml -i provisioning/hosts --syntax-check"
-
-  - "ansible-playbook provisioning/site.yml -i provisioning/hosts -l localhost --connection=local --sudo -vvvv"
+#script:
+#  - "ansible-playbook provisioning/site.yml -i provisioning/hosts --syntax-check"
+#  - "ansible-playbook provisioning/site.yml -i provisioning/hosts -l localhost --connection=local --sudo -vvvv"
