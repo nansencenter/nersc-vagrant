@@ -10,24 +10,21 @@
   when: use_conda_cache is defined and use_conda_cache
 
 - name: Python | Install Nansat requirements
-  shell: 'conda install -q --yes --copy {{ item }}'
+  shell: 'conda install -q --yes --copy -c conda-forge {{ item }}'
   with_items:
-    libgfortran=1.0
-    numpy=1.10.2
-    scipy=0.16.0
+    numpy
+    scipy
     matplotlib
     nose
-    pyproj
     basemap
     netcdf4
     ipython
     jupyter
+    gdal
+    pillow
 
 #Note: jupyter installs "certifi" which breaks the ssl-certificate verification, so that conda partially breaks (at least on centos)
 #- need to disable checking certificates for now - FIX THIS (task "fixing certifi breaking things")
-
-- name: Python | Instal nansat-gdal
-  shell: 'conda install -q --yes --copy -c nersc nansat-gdal'
 
 - name: Python | Copy downloaded packages to cached conda_pkgs
   shell: 'cp {{ conda_dir }}/pkgs/*.[bt][zx][2t] {{ cache_dir }}/conda_pkgs/'
@@ -51,5 +48,4 @@
   pip: name={{ item }} #extra_args='--no-cache-dir -I'
   with_items:
     - cfunits
-    - pillow
     - mock
