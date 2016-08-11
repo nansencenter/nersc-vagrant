@@ -33,6 +33,9 @@
 - name: Python | Add GDAL_DATA to .bashrc
   lineinfile: dest="{{ home_dir }}/.bashrc" line="export GDAL_DATA={{ conda_dir }}/share/gdal"
 
+- name: Python | Add CPL_ZIP_ENCODING to .bashrc
+  lineinfile: dest="{{ home_dir }}/.bashrc" line="CPL_ZIP_ENCODING=UTF-8"
+
 - name: Python | Add links to some conda libraries to /usr/lib
   become: yes
   file: src="{{ conda_dir }}/lib/{{ item }}" dest="/usr/lib/{{ item }}" state=link
