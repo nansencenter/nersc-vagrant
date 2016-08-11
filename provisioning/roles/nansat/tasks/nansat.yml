@@ -9,6 +9,13 @@
   tags:
     - update-nansat
 
+- name: nansat | Clean Nansat (always run to keep the pixel functions updated)
+  shell: 'python setup.py clean --all'
+  args:
+    chdir: '{{ dev_sources_dir }}/nansat'
+  tags:
+    - update-nansat
+
 - name: nansat | Install Nansat (always run to keep the pixel functions updated)
   shell: 'python setup.py build_ext --inplace'
   args:
