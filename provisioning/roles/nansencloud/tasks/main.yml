@@ -13,9 +13,6 @@
 
 - include: setup_python.yml
 
-- include: openwind.yml
-  when: openwind is defined and openwind
-
 - include: setup_db.yml
   when: add_sample_data is defined and add_sample_data 
 

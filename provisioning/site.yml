@@ -5,6 +5,7 @@
     - conda
     - nansat
     - sample_datasets
+    - openwind
     - nansencloud
     - doppler
     - liclipse
@@ -39,12 +40,14 @@
   roles:
     - conda
     - nansat
+    - openwind
     - nansencloud
 
 - hosts: webserver
   roles:
     - conda
     - nansat
+    - openwind
     - nansencloud
     - webserver
 
@@ -62,6 +65,7 @@
     - conda
     - nansat
     - course
+    - openwind
     - nansencloud
   environment:
     PATH: "{{ conda_dir }}/bin:/usr/sbin:/usr/bin:/sbin:/bin"

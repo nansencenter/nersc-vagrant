@@ -11,6 +11,12 @@
         state=link
         force=yes
 
+- name: Openwind | Create link from Python dist-packages to openwind_integration_tests
+  file: path='{{ python_dist_packages }}/openwind_integration_tests'
+        src='{{ dev_sources_dir }}/openwind/openwind_integration_tests'
+        state=link
+        force=yes
+
 - name: Openwind | Create link from Python dist-packages to openwind_local_archive.py
   file: path='{{ python_dist_packages }}/openwind_local_archive.py'
         src='{{ dev_sources_dir }}/openwind/templates/openwind_local_archive.py'
