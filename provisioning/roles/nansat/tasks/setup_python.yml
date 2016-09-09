@@ -17,6 +17,7 @@
     matplotlib
     nose
     basemap
+    basemap-data-hires
     netcdf4
     ipython
     jupyter
