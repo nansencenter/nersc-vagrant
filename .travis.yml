@@ -9,9 +9,6 @@ addons:
     packages:
     - git
     - libgfortran3
-    - libsqlite3-dev
-    - sqlite3
-    - libspatialite-dev
     - spatialite-bin
     - g++
     - libudunits2-0
