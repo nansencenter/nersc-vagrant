@@ -1,25 +1,23 @@
 ---
 # https://www.michaelrigart.be/en/blog/testing-ansible-roles-with-travis-ci.html
 # https://github.com/geerlingguy/ansible-role-ansible
+sudo: required
+dist: trusty
+
 language: python
 python: "2.7"
 
 addons:
   apt:
     packages:
-    - git
     - libgfortran3
     - spatialite-bin
-    - g++
     - libudunits2-0
     - libudunits2-dev
     - libjpeg-dev
     - libx11-dev
-    - gcc-4.8
-    - g++-4.8
-    sources:
-    - ubuntu-toolchain-r-test
-    - ubuntugis
+    - gcc
+    - g++
 
 install:
   # Install Ansible.
@@ -27,4 +25,4 @@ install:
 
 script:
   - ansible-playbook provisioning/site.yml -i provisioning/hosts --syntax-check
-  - CC=gcc-4.8 CXX=g++-4.8 ansible-playbook provisioning/site.yml -i provisioning/hosts -l localhost --connection=local --sudo -vvvv
+  - ansible-playbook provisioning/site.yml -i provisioning/hosts -l localhost --connection=local --sudo -vvvv
