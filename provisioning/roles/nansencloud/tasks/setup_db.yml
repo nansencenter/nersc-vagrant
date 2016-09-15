@@ -1,10 +1,6 @@
 ---
 - name: Setup DB | Run makemigrations on Nansen-Cloud project
-  django_manage: >
-      command=makemigrations
-      app_path='{{ dev_sources_dir }}/nansen-cloud/project'
-      settings='project.settings'
-      pythonpath='{{ dev_sources_dir }}/nansen-cloud/project'
+  shell: '$HOME/miniconda/bin/python $HOME/nansen-cloud/project/manage.py makemigrations'
   tags:
     - update-nansencloud
   when: make_migrations is defined and make_migrations
