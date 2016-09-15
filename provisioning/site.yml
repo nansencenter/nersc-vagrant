@@ -28,8 +28,6 @@
 - hosts: condarecipes
   roles:
     - localvm
-    - conda
-    - condarecipes
   environment:
     PATH: "{{ conda_dir }}/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
