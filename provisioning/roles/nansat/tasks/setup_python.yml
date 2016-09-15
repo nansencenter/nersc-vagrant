@@ -12,6 +12,7 @@
 - name: Python | Install Nansat requirements
   shell: 'conda install -q --yes --copy -c conda-forge {{ item }}'
   with_items:
+    qt=4.8.7=0
     numpy
     scipy
     matplotlib
