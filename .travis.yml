@@ -14,11 +14,12 @@ addons:
     - libudunits2-0
     - libudunits2-dev
     - libjpeg-dev
-#    - libx11-dev
-#    - gcc-4.8
-#    - g++-4.8
-#    sources:
-#    - ubuntu-toolchain-r-test
+    - libx11-dev
+    - gcc-4.8
+    - g++-4.8
+    sources:
+    - ubuntu-toolchain-r-test
+    - ubuntugis
 
 install:
   # Install Ansible.
@@ -26,4 +27,4 @@ install:
 
 script:
   - ansible-playbook provisioning/site.yml -i provisioning/hosts --syntax-check
-  - ansible-playbook provisioning/site.yml -i provisioning/hosts -l localhost --connection=local --sudo -vvvv
+  - CC=gcc-4.8 CXX=g++-4.8 ansible-playbook provisioning/site.yml -i provisioning/hosts -l localhost --connection=local --sudo -vvvv
