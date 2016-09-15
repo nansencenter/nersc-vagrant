@@ -8,12 +8,13 @@
   lineinfile: "dest={{ home_dir }}/.condarc line='ssl_verify: false'"
 
 - name: Setup Python | Install Nansencloud requirements
-  shell: 'conda install -q --yes --copy {{ item }}'
+  shell: 'conda install -q --yes --copy -c conda-forge {{ item }}'
   with_items:
     django
     scikit-learn
     coverage
     psycopg2
+    sqlite
 
 - name: Setup Python | Install nansen-cloud requirements
   pip: name={{ item }}
@@ -21,20 +22,6 @@
     - django-forms-bootstrap
     - django-leaflet
     - ipdb
-
-- name: Setup Python | Clone pysqlite
-  git: repo=https://github.com/ghaering/pysqlite
-       dest="{{ ansible_env.HOME }}/pysqlite/"
-       version=da389878e7c0623cf188387b9fce4fc77d0a9b2c
-       update=no
-  register: git_pysqlite
-  when: use_local_database is defined and use_local_database
-
-- name: Setup Python | Install pysqlite
-  shell: 'python setup.py install'
-  args:
-    chdir: "{{ ansible_env.HOME }}/pysqlite/"
-  when: git_pysqlite.changed and use_local_database is defined and use_local_database
 
 - name: Setup Python | Update/checkout Nansen-Cloud Django
   git: repo=https://github.com/nansencenter/nansen-cloud
