@@ -10,7 +10,7 @@
 - name: Setup Python | Install Nansencloud requirements
   shell: 'conda install -q --yes --copy {{ item }}'
   with_items:
-    django
+    django=1.9
     scikit-learn
     coverage
     psycopg2

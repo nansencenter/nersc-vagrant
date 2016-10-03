@@ -6,3 +6,4 @@ nansat_version: develop
 openwind_version: develop
 nansencloud_version: develop
 add_sample_data: yes
+mount_network_folders: yes

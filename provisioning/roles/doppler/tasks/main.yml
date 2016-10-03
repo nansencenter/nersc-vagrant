@@ -1,4 +1,9 @@
 ---
+- name: Doppler | Add GTOPO30 vrt to .bashrc
+  lineinfile: dest="{{ home_dir }}/.bashrc" line='export GTOPO30={{ gtopo30_path }}'
+  when: mount_network_folders is defined and mount_network_folders
+  ignore_errors: yes
+
 # THIS DOESN'T WORK..:
 #- name: Add the github SSH public key to the vm authorized_keys
 #  authorized_key: user=vagrant key="{{ lookup('file', '/Users/mortenh/.ssh/id_rsa_github.pub') }}"
@@ -11,9 +16,6 @@
 #       accept_hostkey=yes
 #       #key_file=/home/vagrant/.ssh/id_rsa_github
 
-- name: Doppler | Add GTOPO30 vrt to .bashrc
-  lineinfile: dest="{{ home_dir }}/.bashrc" line='export GTOPO30={{ gtopo30_path }}'
-  when: mount_network_folders is defined and mount_network_folders
 
 #- name: Doppler | Download sample datasets
 #  get_url: url="{{ sample_data_url }}/{{ item.mapper }}/{{ item.name }}" dest="{{ sample_data_dir }}/{{ item.mapper }}/{{ item.name }}" force=no
