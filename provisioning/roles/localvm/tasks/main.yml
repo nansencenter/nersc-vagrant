@@ -1,4 +1,10 @@
 ---
+- name: Local VM | Test var mount_name 
+  shell: "echo {{ mount_name }}"
+
+- name: Local VM | Test var mount_src 
+  shell: "echo {{ mount_src }}"
+
 - name: Local VM | Mount network folders
   become: yes
   mount:
