@@ -36,14 +36,14 @@
     chdir: "{{ ansible_env.HOME }}/pysqlite/"
   when: git_pysqlite.changed and use_local_database is defined and use_local_database
 
-#- name: Setup Python | Update/checkout Nansen-Cloud Django
-#       dest="{{ dev_sources_dir }}/nansen-cloud"
-#  git: repo=https://github.com/nansencenter/nansen-cloud
-#       version="{{ nansencloud_version }}"
-#       update=yes
-#       force="{{ git_force_nansencloud }}"
-#  tags:
-#    - update-nansencloud
+- name: Setup Python | Update/checkout Nansen-Cloud Django
+       dest="{{ dev_sources_dir }}/nansen-cloud"
+  git: repo=https://github.com/nansencenter/nansen-cloud
+       version="{{ nansencloud_version }}"
+       update=yes
+       force="{{ git_force_nansencloud }}"
+  tags:
+    - update-nansencloud
 
 - name: Setup Python | Create link from Python dist-packages to nansen-cloud
   file: path='{{ python_dist_packages }}/nansencloud'
