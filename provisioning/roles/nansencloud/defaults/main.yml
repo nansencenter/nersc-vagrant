@@ -7,7 +7,6 @@ create_home_dir_link: yes
 nansencloud_extra: yes
 openwind: yes
 add_sample_data: yes
-nansencloud_version: develop
 private_sample_files: []
 
 # Variables for the django_deploy playbook 
