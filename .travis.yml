@@ -18,6 +18,8 @@ addons:
     - libudunits2-dev
     - libjpeg-dev
     - libx11-dev
+    - gcc-4.8
+    - g++-4.8
     
     sources:
     - ubuntu-toolchain-r-test
