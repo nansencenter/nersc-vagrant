@@ -47,4 +47,4 @@
             backup=yes
   tags:
     - update-nansencloud
-when: use_local_database is not defined or not use_local_database
+  when: use_local_database is not defined or not use_local_database
