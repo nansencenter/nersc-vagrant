@@ -22,8 +22,9 @@
     netcdf4
     ipython
     jupyter
-    gdal
+    gdal=2.1.1
     pillow
+    proj.4=4.9.2
 
 #Note: jupyter installs "certifi" which breaks the ssl-certificate verification, so that conda partially breaks (at least on centos)
 #- need to disable checking certificates for now - FIX THIS (task "fixing certifi breaking things")

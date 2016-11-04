@@ -9,3 +9,13 @@ openwind: yes
 add_sample_data: yes
 nansencloud_version: develop
 private_sample_files: []
+
+# Variables for the django_deploy playbook 
+
+# User
+django_app_user: 'vagrant'
+
+# Application folders
+django_deploy_root_path: '/vagrant/shared/develop_vm/nansen-cloud'
+django_project_path: '{{ django_deploy_root_path }}/{{ django_application_name }}'
+django_application_name: 'project'

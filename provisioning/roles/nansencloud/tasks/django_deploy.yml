@@ -1,0 +1,50 @@
+- name: Django app deploy | create new django project
+  sudo_user: '{{ django_app_user }}'
+  shell: 'django-admin.py startproject {{ django_application_name }}'
+  args:
+    chdir: '{{ django_deploy_root_path }}'
+    creates: '{{ django_project_path }}'
+
+- name: Django app deploy | create site_media and static directories
+  file: path='{{ django_project_path }}/{{ django_application_name }}/{{ item }}'
+        state=directory
+        owner={{ django_app_user }}
+        group={{ django_app_user }}
+  with_items:
+      - site_media  # All site media files
+      - static  # The folder for additional static files
+
+- name: Django app deploy | create subfolders for site_media
+  file: path='{{ django_project_path }}/{{ django_application_name }}/site_media/{{ item }}'
+        state=directory
+        owner={{ django_app_user }}
+        group={{ django_app_user }}
+  with_items:
+      - static
+      - media
+      - downloads
+      - products
+
+- name: Django app deploy | create nansencloud subfolder in site_media/media/
+  file: path='{{ django_project_path }}/{{ django_application_name }}/site_media/media/nansencloud'
+        state=directory
+        owner={{ django_app_user }}
+        group={{ django_app_user }}
+
+- name: Django app deploy | change settings.py
+  template: src=../templates/settings_beta.py
+            dest='{{ django_project_path }}/{{ django_application_name }}/settings.py'
+
+- name: Django app deploy | change urls.py
+  template: src=../templates/urls_beta.py
+            dest='{{ django_project_path }}/{{ django_application_name }}/urls.py'
+
+#------> from nansencloud\tasks\setup_python.yml
+#Override settings.py for non-local-db
+- name: Setup Python | Override the settings.py file
+  template: src=settings.py
+            dest={{ project_path }}/project/settings.py
+            backup=yes
+  tags:
+    - update-nansencloud
+when: use_local_database is not defined or not use_local_database

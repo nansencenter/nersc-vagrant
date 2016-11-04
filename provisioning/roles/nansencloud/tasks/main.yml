@@ -13,9 +13,12 @@
 
 - include: setup_python.yml
 
+- include: django_deploy.yml
+
 - include: setup_db.yml
   when: add_sample_data is defined and add_sample_data 
 
 - include: sample_data2db.yml
   when: add_sample_data is defined and add_sample_data
 
+  

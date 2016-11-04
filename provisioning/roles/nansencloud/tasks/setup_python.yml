@@ -36,14 +36,14 @@
     chdir: "{{ ansible_env.HOME }}/pysqlite/"
   when: git_pysqlite.changed and use_local_database is defined and use_local_database
 
-- name: Setup Python | Update/checkout Nansen-Cloud Django
-  git: repo=https://github.com/nansencenter/nansen-cloud
-       dest="{{ dev_sources_dir }}/nansen-cloud"
-       version="{{ nansencloud_version }}"
-       update=yes
-       force="{{ git_force_nansencloud }}"
-  tags:
-    - update-nansencloud
+#- name: Setup Python | Update/checkout Nansen-Cloud Django
+#       dest="{{ dev_sources_dir }}/nansen-cloud"
+#  git: repo=https://github.com/nansencenter/nansen-cloud
+#       version="{{ nansencloud_version }}"
+#       update=yes
+#       force="{{ git_force_nansencloud }}"
+#  tags:
+#    - update-nansencloud
 
 - name: Setup Python | Create link from Python dist-packages to nansen-cloud
   file: path='{{ python_dist_packages }}/nansencloud'
@@ -59,11 +59,5 @@
   when: create_home_dir_link is defined and create_home_dir_link
 
 #Override settings.py for non-local-db
-- name: Setup Python | Override the settings.py file
-  template: src=settings.py
-            dest={{ project_path }}/project/settings.py
-            backup=yes
-  tags:
-    - update-nansencloud
-  when: use_local_database is not defined or not use_local_database
+# ------> to the /nansencloud/tasks/django_deploy.yml
 
