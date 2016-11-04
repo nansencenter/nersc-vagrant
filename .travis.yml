@@ -11,7 +11,7 @@ addons:
     - libgfortran3
     - libsqlite3-dev
     - sqlite3
-    - libspatialite3=3.0.2
+    - libspatialite3=3.0.2~20120302
     - libspatialite-dev
     - spatialite-bin
     - g++
