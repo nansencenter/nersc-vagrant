@@ -37,8 +37,8 @@
   when: git_pysqlite.changed and use_local_database is defined and use_local_database
 
 - name: Setup Python | Update/checkout Nansen-Cloud Django
-       dest="{{ dev_sources_dir }}/nansen-cloud"
   git: repo=https://github.com/nansencenter/nansen-cloud
+       dest="{{ dev_sources_dir }}/nansen-cloud"
        version="{{ nansencloud_version }}"
        update=yes
        force="{{ git_force_nansencloud }}"
