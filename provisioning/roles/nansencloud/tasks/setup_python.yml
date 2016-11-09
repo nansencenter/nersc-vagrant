@@ -58,6 +58,3 @@
         force=yes
   when: create_home_dir_link is defined and create_home_dir_link
 
-#Override settings.py for non-local-db
-# ------> to the /nansencloud/tasks/django_deploy.yml
-
