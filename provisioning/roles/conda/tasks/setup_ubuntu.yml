@@ -19,6 +19,7 @@
     - libudunits2-dev
     - libjpeg-dev
     - libx11-dev
+    - xterm
 
 - name: Ubuntu | Add Locale
   lineinfile: dest="{{ home_dir }}/.bashrc" line='export LC_ALL="en_US.UTF-8"'
