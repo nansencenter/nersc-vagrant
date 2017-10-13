@@ -26,12 +26,14 @@
   when: build_recipes is defined
   tags:
     - build
+    - build_only
 
 - name: Build | Upload to Anaconda
-  command: "anaconda -t {{ anaconda_token }} upload {{ conda_dir }}/conda-bld/**/{{ item }}*.tar.bz2"
+  shell: "anaconda -t {{ anaconda_token }} upload {{ conda_dir }}/**/linux-64/{{ item }}*.tar.bz2"
   when: anaconda_token is defined and anaconda_upload is defined and anaconda_upload and build_recipes is defined
   with_items: "{{ build_recipes }}"
   tags:
     - build
+    - upload
 #    /home/vagrant/miniconda/conda-bld/linux-64/nansat-0.6.16-py27hd49add4_0.tar.bz2
 #    /home/vagrant/miniconda/conda-bld/**/*.tar.bz2
