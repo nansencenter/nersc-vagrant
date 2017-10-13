@@ -3,6 +3,9 @@
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
+# ex how to run cos_condarecipes with just the tag to update recipes: 
+# export ANSIBLE_ARGS='--tags=update_recipes'; vagrant provision cos_condarecipes
+ANSIBLE_ARGS=ENV['ANSIBLE_ARGS']
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
@@ -24,19 +27,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "thredds", autostart: false do |thredds|
     thredds.vm.network :private_network, ip: "192.168.33.15"
-
     thredds.vm.provider "virtualbox" do |v|
       v.memory = 6000
       v.cpus = 4
     end
-
   end
 
   config.vm.define "pyoai", autostart: false do |pyoai|
     pyoai.vm.box_url = "https://atlas.hashicorp.com/geerlingguy/boxes/centos7"
     pyoai.vm.box = "geerlingguy/centos7"
     pyoai.vm.network :private_network, ip: "192.168.33.18"
-
     pyoai.vm.provider "virtualbox" do |v|
       v.memory = 2000
       v.cpus = 1
@@ -60,6 +60,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.verbose = "vvv"
     ansible.install = true
     ansible.install_mode = "pip"
+    ansible.raw_arguments = ANSIBLE_ARGS
   end
 
 end
