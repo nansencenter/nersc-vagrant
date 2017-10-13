@@ -3,3 +3,8 @@ python/
 shared/
 provisioning/roles/nansencloud/templates/settings.py
 provisioning/roles/localvm/defaults/main.yml
+provisioning/group_vars/thredds
+provisioning/roles/condarecipes/defaults/main.yml
+provisioning/site.retry
+provisioning/group_vars/develop
+provisioning/group_vars/develop

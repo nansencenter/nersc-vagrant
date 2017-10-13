@@ -26,7 +26,10 @@
     GDAL_DATA: "{{ conda_dir }}/share/gdal"
     LC_ALL: "en_US.UTF-8"
 
-- hosts: condarecipes
+- hosts:
+    - condarecipes
+    - cos_condarecipes
+  gather_facts: False
   roles:
     - localvm
     - conda

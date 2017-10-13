@@ -1,0 +1,37 @@
+---
+#condarecipes\tasks\build_recipes.yml
+
+- name: Build | Clean build dir
+  file:
+    state: absent
+    path: "{{ conda_dir }}/conda-bld/"
+  tags:
+    - build
+
+- name: Build | Update conda-recipes
+  git: repo=https://github.com/nansencenter/conda-recipes
+       dest="{{ dev_sources_dir }}/conda-recipes/"
+       version=master
+       update=yes
+  tags: 
+    - update_recipes
+    - build
+  when: update_recipes is defined and update_recipes
+
+- name: Build | Build recipes
+  command: "conda build -c conda-forge {{ item }}"
+  args:
+    chdir: "{{ dev_sources_dir }}/conda-recipes"
+  with_items: "{{ build_recipes }}"
+  when: build_recipes is defined
+  tags:
+    - build
+
+- name: Build | Upload to Anaconda
+  command: "anaconda -t {{ anaconda_token }} upload {{ conda_dir }}/conda-bld/**/{{ item }}*.tar.bz2"
+  when: anaconda_token is defined and anaconda_upload is defined and anaconda_upload and build_recipes is defined
+  with_items: "{{ build_recipes }}"
+  tags:
+    - build
+#    /home/vagrant/miniconda/conda-bld/linux-64/nansat-0.6.16-py27hd49add4_0.tar.bz2
+#    /home/vagrant/miniconda/conda-bld/**/*.tar.bz2

@@ -1,0 +1,10 @@
+---
+#condarecipes\tasks\setup_centos.yml
+- name: Centos | Install required system packages.
+  yum: name={{ item }}
+  become: yes
+  with_items:
+    - libXext
+    - make
+    - libSM
+    - libXrender

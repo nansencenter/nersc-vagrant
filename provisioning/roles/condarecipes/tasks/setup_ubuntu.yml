@@ -1,0 +1,21 @@
+---
+#condarecipes\tasks\setup_ubuntu.yml
+- name: Ubuntu | Instal system tools
+  apt: pkg={{ item }}
+  become: yes
+  with_items:
+    - make
+    - libsm6
+    - libxrender1
+    - libfontconfig1
+
+- name: Add links to sqlite libraries to /usr/lib
+  become: yes
+  file: src="{{ conda_dir }}/lib/{{ item }}" dest="/usr/lib/x86_64-linux-gnu/{{ item }}" state=link
+  with_items:
+    - libsqlite3.so
+    - libsqlite3.so.0
+
+- name: Run ldconfig
+  become: yes
+  shell: '/sbin/ldconfig'

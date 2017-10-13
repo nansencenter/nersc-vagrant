@@ -41,7 +41,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.memory = 2000
       v.cpus = 1
     end
+  end
 
+  config.vm.define "cos_condarecipes", autostart: false do |cos_condarecipes|
+    cos_condarecipes.vm.network :private_network, ip: "192.168.33.19"
+    cos_condarecipes.vm.box = "geerlingguy/centos7"
+	cos_condarecipes.vm.box_url = "https://atlas.hashicorp.com/geerlingguy/boxes/centos7"
   end
 
   config.vm.provider "virtualbox" do |v|

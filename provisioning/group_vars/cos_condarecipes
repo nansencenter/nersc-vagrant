@@ -1,0 +1,8 @@
+---
+dev_sources_dir: "{{ shared_dir }}/cos_condarecipes_vm"
+setup_centos: yes
+setup_ubuntu: no
+build_recipes:
+  - pythesint
+  - nansat
+update_recipes: no

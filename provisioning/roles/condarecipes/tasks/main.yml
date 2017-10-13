@@ -1,33 +1,12 @@
 ---
-- name: Instal system tools
-  apt: pkg={{ item }}
-  become: yes
-  with_items:
-    - libsm6
-    - libxrender1
-    - libfontconfig1
-    - g++
-    - make
+#condarecipes\tasks\main.yml
+- include: setup_centos.yml
+  when: setup_centos is defined and setup_centos
 
-- name: Install conda-build
-  shell: 'conda install -q --yes --copy {{ item }}'
-  with_items:
-    conda-build
-    anaconda-client
+- include: setup_ubuntu.yml
+  when: setup_ubuntu is defined and setup_ubuntu
 
-- name: Update/checkout conda-recipes
-  git: repo=https://github.com/nansencenter/conda-recipes
-       dest="{{ dev_sources_dir }}/conda-recipes/"
-       version=master
-       update=yes
+- include: setup_conda.yml
 
-- name: Add links to sqlite libraries to /usr/lib
-  become: yes
-  file: src="{{ conda_dir }}/lib/{{ item }}" dest="/usr/lib/x86_64-linux-gnu/{{ item }}" state=link
-  with_items:
-    - libsqlite3.so
-    - libsqlite3.so.0
-
-- name: Run ldconfig
-  become: yes
-  shell: '/sbin/ldconfig'
+- include: build_recipes.yml
+  when: build_recipes is defined

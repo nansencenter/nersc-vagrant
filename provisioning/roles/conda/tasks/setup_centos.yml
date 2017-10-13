@@ -1,9 +1,9 @@
 ---
-#usepython\tasks\setup_centos.yml
+#conda\tasks\setup_centos.yml
 - name: Centos | upgrade all packages
   yum: name=* state=latest
   become: yes
-
+  
 - name: Centos | Install required system packages.
   yum: name={{ item }}
   become: yes
@@ -11,6 +11,4 @@
     - git
     - bzip2
     - gcc
-    - libXext
-    - libSM
-    - libXrender
+    - gcc-c++
